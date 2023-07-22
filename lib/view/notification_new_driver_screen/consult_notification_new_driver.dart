@@ -1,14 +1,15 @@
-import 'package:admin_citygo/controllers/notication_new_driver/consult_noti_new_drivers_controller.dart';
+import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/models/notification_new_driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
+import 'package:admin_citygo/view/notification_new_driver_screen/consult_notification_new_driver_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-ConsultNotiNewDriversController consultNotiNewDrivers = Get.put(ConsultNotiNewDriversController());
 NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
+DriversController driversController = Get.put(DriversController());
 
 class ConsultNotiNewDrivers extends StatefulWidget {
   ConsultNotiNewDrivers({Key? key,required this.record}) : super(key: key);
@@ -21,8 +22,7 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
 
   bool checkBox1 = false;
   bool checkBox2 = false;
-
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -47,7 +47,7 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                 top:30,
                 left: 0
             ),
-            child: Text("notification new drivers",style: TextStyle(
+            child: Text("Notification new drivers",style: TextStyle(
                 fontSize: 22,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -79,7 +79,6 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                       ),
                     ),
                   ),
-                  // TopWidget(title: 'Notification New driver'),
                   SizedBox(height: 35,),
                   Container(
                     margin: EdgeInsets.only(left: 50),
@@ -101,222 +100,152 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              fontFamily: "Georgia"),),
-
+                              fontFamily: "Georgia"),
+                        ),
                         SizedBox(height: 12,),
                         Padding(
                           padding: const EdgeInsets.only(left:110),
                           child: Container(
-                            height: 50,
-                            width: 50,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               image: DecorationImage(
-                                  image: NetworkImage(widget.record.identityLink),
+                                  image: NetworkImage(widget.record.driverImage),
                                   fit: BoxFit.cover
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 25,),
                         Padding(
                           padding: const EdgeInsets.only(left:30.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text(widget.record.firstName.capitalize.toString(),style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("First Name".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Last Name".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Birth Date".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Identity Card".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Phone Number ".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Licence type".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("Email".capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                    ],
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(':'),
+                                      SizedBox(height: 25,),
+                                      Text(':'),
+                                      SizedBox(height: 25,),
+                                      Text(':'),
+                                      SizedBox(height: 28,),
+                                      Text(':'),
+                                      SizedBox(height: 28,),
+                                      Text(':'),
+                                      SizedBox(height: 28,),
+                                      Text(':'),
+                                      SizedBox(height: 25,),
+                                      Text(':'),
+                                    ],
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(widget.record.firstName.capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text(widget.record.lastName.capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text(widget.record.birthDate,style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text(widget.record.identityNumber.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text("+216 "+widget.record.phoneNumber.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text(widget.record.licenceType.capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+                                      SizedBox(height: 25,),
+                                      Text(widget.record.email.capitalize.toString(),style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Georgia"),),
+
+
+
+                                    ],
+                                  ),
+                                ],
                               ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("First Name".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text(widget.record.lastName.capitalize.toString(),style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Last Name".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text(widget.record.birthDate,style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Birth Date".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(widget.record.identityNumber.toString(),style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Georgia"),),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right:18.0),
-                                          child: GestureDetector(
-                                            onTap: (){},
-                                            child: Icon(Icons.file_copy_outlined),
-                                          ),
-                                        )
-                                  ],
-                                ),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Identity Card".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("+216 "+widget.record.phoneNumber.toString(),style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Phone Number ".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(widget.record.licenceType.capitalize.toString(),style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Georgia"),),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right:18.0),
-                                      child: GestureDetector(
-                                        onTap: (){},
-                                        child: Icon(Icons.file_copy_outlined),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Licence type".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text(widget.record.email.capitalize.toString(),style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              const Divider(
-                                height: 10,
-                                thickness: 2,
-                                indent: 0,
-                                endIndent: 20,
-                                color: Colors.black,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:8.0),
-                                child: Text("Email".capitalize.toString(),style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Georgia"),),
-                              ),
-                              SizedBox(height: 15,),
+                              SizedBox(height: 25,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
@@ -329,15 +258,15 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                                     children: [
                                       Text("seasonal",style: TextStyle(fontSize: 10),),
                                       Checkbox(value: checkBox1, onChanged: (value){
-                                      if(checkBox2==false){
-                                        setState(() {
-                                          checkBox1=!checkBox1;
-                                        });}
-                                      else{
-                                        setState(() {
-                                          checkBox1=false;
-                                        });
-                                      }
+                                        if(checkBox2==false){
+                                          setState(() {
+                                            checkBox1=!checkBox1;
+                                          });}
+                                        else{
+                                          setState(() {
+                                            checkBox1=false;
+                                          });
+                                        }
                                       }),
                                     ],
                                   ),
@@ -368,50 +297,60 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                                 endIndent: 20,
                                 color: Colors.black,
                               ),
-                              SizedBox(height: 20,),
+                              SizedBox(height: 50,),
                               Center(
                                 child: GestureDetector(
                                   onTap: (){
-                                    print("object");
                                     if(checkBox1 || checkBox2){
                                       String contract="";
-                                    if(checkBox1)
-                                      contract="seasonal" ;
-                                    else contract= "Full Time Contract";
-                                    consultNotiNewDrivers.add_driver(
-                                      DriverModel(
-                                          driverImage: widget.record.identityLink,
-                                          firstName: widget.record.firstName.capitalize.toString(),
-                                          lastName: widget.record.lastName.capitalize.toString(),
-                                          birthDate: widget.record.birthDate,
-                                          identityNumber: widget.record.identityNumber,
-                                          identityCardImage: widget.record.identityLink,
-                                          phoneNumber: widget.record.phoneNumber,
-                                          licenceType: widget.record.licenceType,
-                                          licenceImage: widget.record.identityLink,
-                                          email: widget.record.email,
-                                          contractType: contract
-                                      )
-                                    );
-                                    print(widget.record.valid);
-                                    notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
-                                    print('oookkk');
+                                      if(checkBox1)
+                                        contract="seasonal" ;
+                                      else contract= "Full Time Contract";
+                                      Get.to(()=>ConsultNotiNewDriversImages(record: widget.record , contract: contract));
+
+                                      // driversController.add_driver(
+                                      //     DriverModel(
+                                      //         driverImage: widget.record.driverImage,
+                                      //         firstName: widget.record.firstName.capitalize.toString(),
+                                      //         lastName: widget.record.lastName.capitalize.toString(),
+                                      //         birthDate: widget.record.birthDate,
+                                      //         identityNumber: widget.record.identityNumber,
+                                      //         identityCardImageFace1: widget.record.identityCardImage,
+                                      //         identityCardImageFace2: widget.record.identityCardImage,
+                                      //         phoneNumber: widget.record.phoneNumber,
+                                      //         licenceType: widget.record.licenceType,
+                                      //         licenceImageFace1: widget.record.licenceImage,
+                                      //         licenceImageFace2: widget.record.licenceImage,
+                                      //         email: widget.record.email,
+                                      //         contractType: contract,
+                                      //         password:widget.record.password
+                                      //     )
+                                      // );
+                                      // notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
+
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("Please select contract type"),
+                                          duration: Duration(seconds: 5),
+                                        ),
+                                      );
                                     }
                                   },
                                   child: Container(
                                     width: 120,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: Color(0xFF0F5CA0),
-                                      borderRadius: BorderRadius.circular(10)
+                                        color: Color(0xFF0F5CA0),
+                                        borderRadius: BorderRadius.circular(10)
                                     ),
                                     child: Center(
-                                      child: Text('confirm',
+                                      child: Text('Next',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Georgia',
-                                          color: Colors.white
-                                      ),),
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Georgia',
+                                            color: Colors.white
+                                        ),),
                                     ),
                                   ),
                                 ),
@@ -456,5 +395,7 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
 
 
     );
+
+
   }
 }

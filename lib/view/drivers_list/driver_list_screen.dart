@@ -1,10 +1,14 @@
 import 'package:admin_citygo/view/drivers_list/add_driver.dart';
-import 'package:admin_citygo/controllers/driver_list/drivers_list_controller.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
+import 'package:admin_citygo/view/drivers_list/edit_driver.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../controllers/driver_list/drivers_controller.dart';
+
 
 class DriversListScreen extends StatefulWidget {
   const DriversListScreen({Key? key}) : super(key: key);
@@ -15,7 +19,9 @@ class DriversListScreen extends StatefulWidget {
 
 class _DriversListScreenState extends State<DriversListScreen> {
 
-  DriversListController driversListController = Get.put(DriversListController());
+  // DriversController DriversController = Get.put(DriversController());
+
+  DriversController driversController = Get.put(DriversController());
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -86,7 +92,6 @@ class _DriversListScreenState extends State<DriversListScreen> {
                       ),
                     ),
                   ),
-                  // TopWidget(title: 'Notification New driver'),
                   SizedBox(height: 35,),
                   Container(
                     width: MediaQuery.of(context).size.width*0.9,
@@ -102,7 +107,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                               height: MediaQuery.of(context).size.height*0.68,
                               width: MediaQuery.of(context).size.width*0.9,
                               child: StreamBuilder<QuerySnapshot>(
-                                  stream: driversListController.driversList.snapshots(),
+                                  stream: driversController.driversList.snapshots(),
                                   builder: (context,AsyncSnapshot snapshots){
                                     if(snapshots.connectionState == ConnectionState.waiting){
                                       return Center(
@@ -113,12 +118,13 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                       print('no data ');
                                     }
                                     // else{
-                                    //   return Center(child: CircularProgressIndicator(color: Colors.red,),);}
                                     return ListView.builder(
                                       itemCount: snapshots.data!.docs.length,
                                       itemBuilder: (BuildContext context, int index) {
 
                                         final DocumentSnapshot records = snapshots.data!.docs[index];
+                                        print(records['driverImage']);
+
                                         return Padding(
                                           padding: const EdgeInsets.only(bottom: 20.0),
                                           child: Row(
@@ -129,19 +135,18 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                 width: 50,
                                                 decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(50),
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: NetworkImage(records['driverImage'])
-                                                    )
+                                                ),
+                                                child: Stack(
+                                                  children: [
+                                                    Center(child: const CircularProgressIndicator(),),
+                                                    Center(child: ClipOval(child: Image(image: NetworkImage(records['driverImage']),width:50,height:50,fit: BoxFit.cover)))
+                                                  ],
                                                 ),
                                               ),
                                               SizedBox(width: 10,),
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  // Row(
-                                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  //   children: [
                                                   SizedBox(width: 15,),
                                                   Text(records['firstName']+ " " + records['lastName'],
                                                     style: TextStyle(
@@ -151,9 +156,6 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                     ),
                                                   ),
                                                   SizedBox(width: 60 ,),
-                                                  //
-                                                  //   ],
-                                                  // ),
                                                   Container(
                                                     width:MediaQuery.of(context).size.width*.45,                                                          height: 1,
                                                     decoration: BoxDecoration(
@@ -165,7 +167,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                               ),
                                               GestureDetector(
                                                 onTap: (){
-                                                  print("edit");
+                                                  Get.to(()=>EditDriverScreen(records: records,));
                                                 },
                                                 child: Container(
                                                   height:30,
@@ -221,7 +223,15 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                         ),
                                                                         child: const Text('Delete',style: TextStyle(fontFamily: "Georgia",fontSize: 20),),
                                                                         onPressed: (){
-                                                                          driversListController.delete_driver(records.id);
+                                                                          FirebaseStorage.instance.refFromURL(records['driverImage']).delete();
+                                                                          FirebaseStorage.instance.refFromURL(records['identityCardImageFace1']).delete();
+                                                                          FirebaseStorage.instance.refFromURL(records['identityCardImageFace2']).delete();
+                                                                          FirebaseStorage.instance.refFromURL(records['licenceImageFace1']).delete();
+                                                                          FirebaseStorage.instance.refFromURL(records['licenceImageFace2']).delete();
+                                                                          if(records['more1']!="")FirebaseStorage.instance.refFromURL(records['more1']).delete();
+                                                                          if(records['more2']!="")FirebaseStorage.instance.refFromURL(records['more2']).delete();
+                                                                          if(records['more3']!="")FirebaseStorage.instance.refFromURL(records['more3']).delete();
+                                                                          driversController.delete_driver(records.id);
                                                                           Navigator.pop(context);
                                                                         },
                                                                       ),

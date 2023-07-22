@@ -149,7 +149,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                     print(controller.passwordController.text.trim());
                                     LoginController.instance.loginAdmin(controller.emailController.text.trim(), controller.passwordController.text.trim(),context);
                                   }
-                                  // Get.to(()=>HomeScreen());
                                 },
                                 child: Text(tLogin,style: TextStyle(color: Colors.white,fontSize: 15),),
                                 style: OutlinedButton.styleFrom(

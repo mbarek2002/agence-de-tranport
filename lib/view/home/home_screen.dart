@@ -5,18 +5,33 @@ import 'package:admin_citygo/utils/text_strings.dart';
 import 'package:admin_citygo/view/drivers_list/driver_list_screen.dart';
 import 'package:admin_citygo/view/login/login_screen.dart';
 import 'package:admin_citygo/view/notification_new_driver_screen/notification_new_driver_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
 
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
    HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
+  LoginController loginController = Get.put(LoginController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('bbbeeeeggggin');
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -238,26 +253,40 @@ class HomeScreen extends StatelessWidget {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height* .04,
-            // right:MediaQuery.of(context).size.width*0.5 ,
-            // width: MediaQuery.of(context).size.width,
             child: Container(
-              // color: Colors.green,
               width: MediaQuery.of(context).size.width,
-              // height: 20,
               alignment: Alignment.center,
-              child: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/home_screen/person.jpg"),
-                      fit: BoxFit.cover
+              child: GestureDetector(
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20)
                   ),
-                ),
-                child: GestureDetector(
-                  onTap: ()=>Get.to(()=>HomeScreen()),
-                ),
+                  child: Obx(() {
+                    if (loginController.isLoading.value) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white.withOpacity(0.2),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                            NetworkImage(
+                              loginController.adminImageUrl.value),
+                        )
+                        ),
+                        height: 60,
+                        width: 60,
+                      );
+                    }
+                  }
+                  )
+               ),
+                
+                onTap: ()=>Get.to(()=>HomeScreen()),
               ),
             ),
           ),

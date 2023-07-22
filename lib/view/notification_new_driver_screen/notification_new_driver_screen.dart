@@ -92,12 +92,14 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                               );
                             }
                             if(snapshots.hasData){
+                              print(snapshots.data!.docs.length);
                               return ListView.builder(
                                     itemCount: snapshots.data!.docs.length,
                                     itemBuilder: (BuildContext context, int index) {
-                                      final DocumentSnapshot records = snapshots.data!.docs[index];
+                                      final DocumentSnapshot record = snapshots.data!.docs[index];
+                                      print(record['valid']);
                                       return Card(
-                                        child: ToggleContainer(record: records),
+                                          child:!record['valid'] ? ToggleContainer(record: record):null,
                                       );
                                     }
                           );
@@ -113,8 +115,6 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
               ),
               Positioned(
                 top: MediaQuery.of(context).size.height* .04,
-                // right:MediaQuery.of(context).size.width*0.5 ,
-                // width: MediaQuery.of(context).size.width,
                 child: Container(
                   // color: Colors.green,
                   width: MediaQuery.of(context).size.width,

@@ -1,6 +1,5 @@
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/models/notification_new_driver_model.dart';
-import 'package:admin_citygo/view/home/home_screen_Widgets.dart';
 import 'package:admin_citygo/view/notification_new_driver_screen/consult_notification_new_driver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -68,10 +67,16 @@ class ExpandedContainer extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
-                image: DecorationImage(
-                  image: NetworkImage(record['identityLink']),
-                  fit: BoxFit.cover
-                )
+                // image: DecorationImage(
+                //   image: NetworkImage(record['driverImage']),
+                //   fit: BoxFit.cover
+                // )
+              ),
+              child: Stack(
+                children: [
+                  Center(child: const CircularProgressIndicator(),),
+                  Center(child: ClipOval(child: Image(image: NetworkImage(record['driverImage']),width:50,height:50,fit: BoxFit.cover)))
+                ],
               ),
             ),
             SizedBox(width: 20,),
@@ -109,17 +114,26 @@ class ExpandedContainer extends StatelessWidget {
                   ),
                 ) ,
                    onPressed: (){
-                    Get.to(()=>ConsultNotiNewDrivers(record:NotificationNewDriver(
+                    Get.to(()=>ConsultNotiNewDrivers(
+                        record:NotificationNewDriver(
                       id: record.id,
                       firstName: record['firstName'],
                       lastName: record['lastName'],
                       birthDate: record['birthDate'],
                       identityNumber: record['identityNumber'],
-                      phoneNumber: record['phoneNumber'],
+                      phoneNumber: int.tryParse(record['phoneNumber']) ?? 0,
                       licenceType: record['licenceType'],
                       email: record['email'],
                       valid: record['valid'],
-                      identityLink: record['identityLink']
+                      driverImage: record['driverImage'],
+                      identityCardImageFace1:record['identityCardImageFace1'],
+                      identityCardImageFace2:record['identityCardImageFace2'],
+                      licenceImageFace1: record['licenceImageFace1'],
+                      licenceImageFace2: record['licenceImageFace2'],
+                      moreImage1: record['more1'],
+                      moreImage2: record['more2'],
+                      moreImage3: record['more3'],
+                      password:record['password']
                     )));
                    },
               ),
@@ -178,15 +192,21 @@ class NotExpandedContainer extends StatelessWidget {
             children:[
             Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(record['identityLink']),
-                    // image:AssetImage("assets/images/home_screen/person.jpg"),
-                    fit: BoxFit.cover
-                ),
+                // image: DecorationImage(
+                //   image: NetworkImage(record['driverImage']),
+                //     // image:AssetImage("assets/images/home_screen/person.jpg"),
+                //     fit: BoxFit.cover
+                // ),
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
               width: 50,
               height: 50,
+              child: Stack(
+                children: [
+                  Center(child: const CircularProgressIndicator(),),
+                  Center(child: ClipOval(child: Image(image: NetworkImage(record['driverImage']),width:50,height:50,fit: BoxFit.cover)))
+                ],
+              ),
             ),
 
         SizedBox(width: 30,),
