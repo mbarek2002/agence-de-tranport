@@ -128,10 +128,6 @@ class DriversController extends GetxController{
   }
 
   Future add_driver(DriverModel d)async{
-    print('/////////////////////////////');
-    print('driver controller'+d.password);
-    print('/////////////////////////////');
-
     driversList.add({
       "driverImage":d.driverImage,
       "firstName":d.firstName,
@@ -180,4 +176,122 @@ class DriversController extends GetxController{
 
 ///////////////////fin cud operation/////////////////////
 
+  ///////////////////fetch drivers////////////////////////////
+  // var isLoading =false;
+  // var driverList = <DriverModel>[].obs;
+  // var filteredList = <DriverModel>[].obs;
+  //
+  // Future<void> fetchDrivers()async{
+  //   QuerySnapshot drivers =await FirebaseFirestore.instance.collection('drivers').get();
+  //   driverList.clear();
+  //   for(var driver in drivers.docs){
+  //     try{
+  //       driverList.add(
+  //           DriverModel(
+  //             id: driver.id,
+  //             driverImage: driver['driverImage'],
+  //             firstName: driver['firstName'],
+  //             lastName: driver['lastName'],
+  //             birthDate: driver['birthDate'],
+  //             identityNumber: driver['identityNumber'],
+  //             phoneNumber: driver['phoneNumber'],
+  //             licenceType: driver['licenceType'],
+  //             email: driver ['email'],
+  //             contractType: driver['contractType'],
+  //             identityCardImageFace1: driver['identityCardImageFace1'],
+  //             identityCardImageFace2: driver['identityCardImageFace2'],
+  //             licenceImageFace1: driver['licenceImageFace1'],
+  //             licenceImageFace2: driver['licenceImageFace2'],
+  //             password: driver['password'],
+  //             moreImage1: driver['more1'],
+  //             moreImage2: driver['more2'],
+  //             moreImage3: driver['more3'],
+  //           ));
+  //       isLoading = false;
+  //     }catch(e){
+  //       Get.snackbar('Error', '${e.toString()}');
+  //     }
+  //   }
+  //   filteredList.addAll(driverList);
+  //   print("filter"+filteredList.length.toString());
+  //   print("length"+driverList.length.toString());
+  //
+  // }
+  var isLoading = false.obs;
+  var driverList = <DriverModel>[].obs;
+  var filteredList = <DriverModel>[].obs;
+  var driversNameList = <String>[].obs;
+  var identityDriverList = <int>[].obs;
+
+  Future<void> fetchDrivers() async {
+    try {
+      isLoading.value = true;
+      QuerySnapshot drivers =
+      await FirebaseFirestore.instance.collection('drivers').get();
+      driverList.clear();
+      driversNameList.clear();
+      identityDriverList.clear();
+      print('entreee');
+      for (var driver in drivers.docs) {
+        driverList.add(
+            DriverModel(
+                          id: driver.id,
+                          driverImage: driver['driverImage'],
+                          firstName: driver['firstName'],
+                          lastName: driver['lastName'],
+                          birthDate: driver['birthDate'],
+                          identityNumber: driver['identityNumber'],
+                          phoneNumber: driver['phoneNumber'],
+                          licenceType: driver['licenceType'],
+                          email: driver ['email'],
+                          contractType: driver['contractType'],
+                          identityCardImageFace1: driver['identityCardImageFace1'],
+                          identityCardImageFace2: driver['identityCardImageFace2'],
+                          licenceImageFace1: driver['licenceImageFace1'],
+                          licenceImageFace2: driver['licenceImageFace2'],
+                          password: driver['password'],
+                          moreImage1: driver['more1'],
+                          moreImage2: driver['more2'],
+                          moreImage3: driver['more3'],
+                        )
+        );
+        driversNameList.add(driver['firstName']+" "+driver['lastName']);
+        identityDriverList.add(driver['identityNumber']);
+      }
+      print(driverList.length);
+      print(filteredList.length);
+
+      // Copy the filteredList into driverList
+      filteredList.clear();
+      filteredList.addAll(driverList);
+
+      isLoading.value = false;
+    } catch (e) {
+     print('Error '+ e.toString());
+    }
+  }
+  void updateList(String value){
+    // filteredList.value = driverList.where(
+    //         (element) =>
+    //     element.firstName!.toLowerCase().capitalize!.contains(value.toLowerCase())).toList();
+    filteredList.clear();
+    if (value.isEmpty) {
+      // If search query is empty, show all drivers
+      filteredList.addAll(driverList);
+    } else {
+      for (var driver in driverList) {
+        if (driver.firstName.toLowerCase().contains(value.toLowerCase()) ||
+            driver.lastName.toLowerCase().contains(value.toLowerCase())) {
+          filteredList.add(driver);
+        }
+      }
+    }
+
+  }
 }
+
+
+
+
+
+

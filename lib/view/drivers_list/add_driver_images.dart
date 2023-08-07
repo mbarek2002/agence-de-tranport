@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/drivers_list/driver_list_screen.dart';
@@ -26,12 +27,12 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
 
   int counter=0;
   final DriversController controller = Get.put(DriversController());
+  LoginController loginController =Get.put(LoginController());
+
 
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         appBar: AppBar(
           leading: Padding(
@@ -294,7 +295,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                     )),
                                     onTap: (){
                                       controller.pickLicenceFileFace2();
-                                      // print("mlf,mfld,gmfdl,g"+controller.identityImageFace1.value);
                                       // return;
                                       // showModalBottomSheet(
                                       //     context: context,
@@ -302,7 +302,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                       // );
                                       // controller.pickImage();
                                       // Navigator.pop(context);
-                                      // print("dslkflsdkjlfdkn  :"+controller.licenceImageFace1.value);
                                     },
                                   ),
                                 ],
@@ -350,12 +349,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                 SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: (){
-                                    print("Saveeee");
-
-                                    print(controller.selectedIdentityFace1.value);
-                                    print(controller.selectedIdentityFace1.value);
-                                    print(controller.selectedIdentityFace1.value);
-                                    print(controller.selectedIdentityFace1.value);
                                     if(
                                     controller.selectedIdentityFace1.value==null || controller.selectedIdentityFace1.value==null||
                                         controller.selectedLicenceFace1.value==null ||controller.selectedLicenceFace2.value==null
@@ -368,10 +361,38 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                       );
                                     }
                                     else {
+                                      try{
+                                        showDialog(
+                                            context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
+                                        uploadFiles().then((value) {
+                                          Navigator.pop(context);
+
+                                          // Get.offAll(() => HomeScreen());
+                                          Get.back();
+                                          Get.back();
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text("Driver added succeffuly"),
+                                              duration: Duration(seconds: 3),
+                                            ),
+                                          );
+                                        }
+                                        );
+
+                                      }catch(e){
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text("there is an error"+e.toString()),
+                                            duration: Duration(seconds: 5),
+                                          ),
+                                        );
+                                      }
+
+
                                       // controller.init();
-                                      uploadFiles().then((value) =>
-                                          Get.offAll(() => HomeScreen()));
-                                          // Navigator.push(context, MaterialPageRoute(builder: ((builder)=>DriversListScreen()))));
+
+                                      // Navigator.push(context, MaterialPageRoute(builder: ((builder)=>DriversListScreen()))));
                                     }
                                   },
                                   child: Center(
@@ -407,7 +428,7 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/home_screen/person.jpg"),
+                        image: NetworkImage(loginController.adminImageUrl.value),
                         fit: BoxFit.cover
                     ),
                   ),
@@ -624,7 +645,10 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
           children: [
             Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
             InkWell(
-              onTap: (){},
+              onTap: (){
+                controller.selectedMore2.value=null;
+
+              },
               child: Text('cancel',style: TextStyle(color: Colors.red,fontSize: 15),),
             )
           ],
@@ -698,7 +722,9 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
           children: [
             Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
             InkWell(
-              onTap: (){},
+              onTap: (){
+                controller.selectedMore3.value=null;
+              },
               child: Text('cancel',style: TextStyle(color: Colors.red,fontSize: 15),),
             )
           ],
@@ -711,96 +737,147 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
 
   Future<void> uploadFiles() async {
 
+    showDialog(
+        context: context, builder: ((builder) => Center(child: CircularProgressIndicator())));
+    try {
 ///////////image driver upload ///////
-    final driverUploadTask = FirebaseStorage.instance.ref(
-        'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${widget.record.driverImage?.split('/').last}')
-        .putFile(File(widget.record.driverImage!));
-    final driverSnapshot =await driverUploadTask.whenComplete(() => null);
-    final driverImageURL=await driverSnapshot.ref.getDownloadURL();
-
+      final driverImageURL;
+    if(widget.record.driverImage != "") {
+      final driverUploadTask = FirebaseStorage.instance.ref(
+          'drivers/' + DateTime
+              .now()
+              .difference(DateTime(2022, 1, 1))
+              .inSeconds
+              .toString() + '${widget.record.driverImage
+              ?.split('/')
+              .last}')
+          .putFile(File(widget.record.driverImage));
+      final driverSnapshot = await driverUploadTask.whenComplete(() => null);
+       driverImageURL = await driverSnapshot.ref.getDownloadURL();
+    }
+    else{
+      driverImageURL="";
+    }
 ///////////identity card upload////////////
 
+      final driverCardFace1UploadTask = FirebaseStorage.instance.ref(
+          'drivers/' + DateTime
+              .now()
+              .difference(DateTime(2022, 1, 1))
+              .inSeconds
+              .toString() + '${controller.selectedIdentityFace1.value!
+              .path
+              .split('/')
+              .last}')
+          .putFile(controller.selectedIdentityFace1.value!);
+      final driverCardFace1Snapshot = await driverCardFace1UploadTask
+          .whenComplete(() => null);
+      final driverCardFace1ImageURL = await driverCardFace1Snapshot.ref
+          .getDownloadURL();
 
-    final driverCardFace1UploadTask = FirebaseStorage.instance.ref(
-        'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedIdentityFace1.value!.path.split('/').last}')
-        .putFile(controller.selectedIdentityFace1.value!);
-    final driverCardFace1Snapshot =await driverCardFace1UploadTask.whenComplete(() => null);
-    final driverCardFace1ImageURL=await driverCardFace1Snapshot.ref.getDownloadURL();
+      print("selectedIdentityFace2 : "+controller.selectedIdentityFace2.value!.path);
 
-    final driverCardFace2UploadTask = FirebaseStorage.instance.ref(
-        'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedIdentityFace2.value!.path.split('/').last}')
-        .putFile(controller.selectedIdentityFace2.value!);
-    final driverCardFace2Snapshot =await driverCardFace2UploadTask.whenComplete(() => null);
-    final driverCardFace2ImageURL=await driverCardFace2Snapshot.ref.getDownloadURL();
+      final driverCardFace2UploadTask = FirebaseStorage.instance.ref(
+          'drivers/' + DateTime
+              .now()
+              .difference(DateTime(2022, 1, 1))
+              .inSeconds
+              .toString() + '${controller.selectedIdentityFace2.value!
+              .path
+              .split('/')
+              .last}')
+          .putFile(controller.selectedIdentityFace2.value!);
+      final driverCardFace2Snapshot = await driverCardFace2UploadTask
+          .whenComplete(() => null);
+      final driverCardFace2ImageURL = await driverCardFace2Snapshot.ref
+          .getDownloadURL();
 
 //////////////////licence card upload//////////////
 
 
-    final licenceCardFace1UploadTask = FirebaseStorage.instance.ref(
-        'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedLicenceFace1.value!.path.split('/').last}')
-        .putFile(controller.selectedLicenceFace1.value!);
-    final licenceCardFace1Snapshot =await licenceCardFace1UploadTask.whenComplete(() => null);
-    final licenceCardFace1ImageURL=await licenceCardFace1Snapshot.ref.getDownloadURL();
+      final licenceCardFace1UploadTask = FirebaseStorage.instance.ref(
+          'drivers/' + DateTime
+              .now()
+              .difference(DateTime(2022, 1, 1))
+              .inSeconds
+              .toString() + '${controller.selectedLicenceFace1.value!
+              .path
+              .split('/')
+              .last}')
+          .putFile(controller.selectedLicenceFace1.value!);
+      final licenceCardFace1Snapshot = await licenceCardFace1UploadTask
+          .whenComplete(() => null);
+      final licenceCardFace1ImageURL = await licenceCardFace1Snapshot.ref
+          .getDownloadURL();
 
-    final licenceCardFace2UploadTask = FirebaseStorage.instance.ref(
-        'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedLicenceFace2.value!.path.split('/').last}')
-        .putFile(controller.selectedLicenceFace2.value!);
-    final licenceCardFace2Snapshot =await licenceCardFace2UploadTask.whenComplete(() => null);
-    final licenceCardFace2ImageURL=await licenceCardFace2Snapshot.ref.getDownloadURL();
+      final licenceCardFace2UploadTask = FirebaseStorage.instance.ref(
+          'drivers/' + DateTime
+              .now()
+              .difference(DateTime(2022, 1, 1))
+              .inSeconds
+              .toString() + '${controller.selectedLicenceFace2.value!
+              .path
+              .split('/')
+              .last}')
+          .putFile(controller.selectedLicenceFace2.value!);
+      final licenceCardFace2Snapshot = await licenceCardFace2UploadTask
+          .whenComplete(() => null);
+      final licenceCardFace2ImageURL = await licenceCardFace2Snapshot.ref
+          .getDownloadURL();
 ///////////////////more image upload////////////////
-    var more1ImageURL='';
-    var more2ImageURL='';
-    var more3ImageURL='';
+      var more1ImageURL = '';
+      var more2ImageURL = '';
+      var more3ImageURL = '';
 
-    if(controller.selectedMore1.value != null){
-      final more1UploadTask = FirebaseStorage.instance.ref(
-          'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedMore1.value!.path.split('/').last}')
-          .putFile(controller.selectedMore1.value!);
-      final more1Snapshot =await more1UploadTask.whenComplete(() => {});
-       more1ImageURL=await more1Snapshot.ref.getDownloadURL();
-    }
-    if(controller.selectedMore2.value != null){
-      final more2UploadTask = FirebaseStorage.instance.ref(
-          'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedMore2.value!.path.split('/').last}')
-          .putFile(controller.selectedMore2.value!);
-      final more2Snapshot =await more2UploadTask.whenComplete(() => {});
-       more2ImageURL=await more2Snapshot.ref.getDownloadURL();
-    }
-    if(controller.selectedMore3.value != null){
-      final more3UploadTask = FirebaseStorage.instance.ref(
-          'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedMore3.value!.path.split('/').last}')
-          .putFile(controller.selectedMore3.value!);
-      final more3Snapshot =await more3UploadTask.whenComplete(() => {});
-       more3ImageURL=await more3Snapshot.ref.getDownloadURL();
-    }
-    print('///////////////////////////');
-    print(widget.record.driverImage?.split('/').last);
-    print(controller.selectedIdentityFace1.value!.path);
-    print(controller.selectedIdentityFace2.value!.path);
-    print(controller.selectedLicenceFace1.value!.path);
-    print(controller.selectedLicenceFace2.value!.path);
-    print('///////////////////////////');
-    print(driverImageURL);
-    print(driverCardFace1ImageURL);
-    print(driverCardFace2ImageURL);
-    print(licenceCardFace1ImageURL);
-    print(licenceCardFace2ImageURL);
-    print('more');
-    print(more1ImageURL);
-    print(more2ImageURL);
-    print(more3ImageURL);
-    print('///////////////////////////');
-
-    print('add driver image'+widget.record.password);
-    print('/////////////////////////////');
-
-    controller.add_driver(
-        DriverModel(
-            driverImage:driverImageURL,
+      if (controller.selectedMore1.value != null) {
+        final more1UploadTask = FirebaseStorage.instance.ref(
+            'drivers/' + DateTime
+                .now()
+                .difference(DateTime(2022, 1, 1))
+                .inSeconds
+                .toString() + '${controller.selectedMore1.value!
+                .path
+                .split('/')
+                .last}')
+            .putFile(controller.selectedMore1.value!);
+        final more1Snapshot = await more1UploadTask.whenComplete(() => {});
+        more1ImageURL = await more1Snapshot.ref.getDownloadURL();
+      }
+      if (controller.selectedMore2.value != null) {
+        final more2UploadTask = FirebaseStorage.instance.ref(
+            'drivers/' + DateTime
+                .now()
+                .difference(DateTime(2022, 1, 1))
+                .inSeconds
+                .toString() + '${controller.selectedMore2.value!
+                .path
+                .split('/')
+                .last}')
+            .putFile(controller.selectedMore2.value!);
+        final more2Snapshot = await more2UploadTask.whenComplete(() => {});
+        more2ImageURL = await more2Snapshot.ref.getDownloadURL();
+      }
+      if (controller.selectedMore3.value != null) {
+        final more3UploadTask = FirebaseStorage.instance.ref(
+            'drivers/' + DateTime
+                .now()
+                .difference(DateTime(2022, 1, 1))
+                .inSeconds
+                .toString() + '${controller.selectedMore3.value!
+                .path
+                .split('/')
+                .last}')
+            .putFile(controller.selectedMore3.value!);
+        final more3Snapshot = await more3UploadTask.whenComplete(() => {});
+        more3ImageURL = await more3Snapshot.ref.getDownloadURL();
+      }
+      controller.add_driver(
+          DriverModel(
+            driverImage: driverImageURL,
             firstName: widget.record.firstName,
             lastName: widget.record.lastName,
             birthDate: widget.record.birthDate,
-            identityNumber:widget.record.identityNumber,
+            identityNumber: widget.record.identityNumber,
             identityCardImageFace1: driverCardFace1ImageURL,
             identityCardImageFace2: driverCardFace2ImageURL,
             phoneNumber: widget.record.phoneNumber,
@@ -810,12 +887,16 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
             email: widget.record.email,
             contractType: widget.record.contractType,
             password: widget.record.password,
-            moreImage1:more1ImageURL,
-            moreImage2:more2ImageURL,
-            moreImage3:more3ImageURL,
-        )
-    );
-
+            moreImage1: more1ImageURL,
+            moreImage2: more2ImageURL,
+            moreImage3: more3ImageURL,
+          )
+      );
+      Navigator.pop(context);
+    } on FirebaseException catch (e) {
+      Navigator.pop(context);
+      print("Failed with error '${e.code}': ${e.message}");
+    }
   }
 
 }

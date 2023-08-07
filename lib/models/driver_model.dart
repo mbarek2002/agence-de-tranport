@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class DriverModel {
   final String? id;
-  final String? driverImage;
+  final String driverImage;
   final String firstName;
   final String lastName;
   final String birthDate;
@@ -23,7 +23,7 @@ class DriverModel {
 
   DriverModel({
      this.id,
-     this.driverImage,
+   required  this.driverImage,
     required this.firstName,
     required this.lastName,
   required this.birthDate,

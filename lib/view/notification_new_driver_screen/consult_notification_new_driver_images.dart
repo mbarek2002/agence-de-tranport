@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/models/notification_new_driver_model.dart';
@@ -30,6 +31,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
 
   final DriversController controller = Get.put(DriversController());
   NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
+  LoginController loginController =Get.put(LoginController());
+
 
   String? identityFace1ImageUrl;
   String? identityFace2ImageUrl;
@@ -51,13 +54,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
   }
   @override
   Widget build(BuildContext context) {
-      print(identityFace1ImageUrl);
-      print(identityFace2ImageUrl);
-          print(licenceFace1ImageUrl);
-          print(licenceFace2ImageUrl);
-          print(more1ImageUrl);
-          print(more2ImageUrl);
-          print(more3ImageUrl);
     return Scaffold(
         appBar: AppBar(
           leading: Padding(
@@ -82,7 +78,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                 top:30,
                 left: 0
             ),
-            child: Text("Edit driver",style: TextStyle(
+            child: Text("Notification new drivers",style: TextStyle(
                 fontSize: 22,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -137,12 +133,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  Text('Upload Identity',style:TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
-                                ],
-                              ),
+                              Text('Driver Identity',style:TextStyle(fontWeight: FontWeight.bold)),
                               SizedBox(height: 5,),
                               Row(
                                 children: [
@@ -335,7 +326,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                                     onTap:(){
                                                       if(controller.selectedIdentityFace2.value!=null && controller.selectedIdentityFace2.value!.path.split('/')!.last.endsWith('.pdf'))
                                                       {
-                                                        // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                         showDialog(
                                                             context: context,
                                                             builder: (
@@ -423,7 +413,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                                             )
                                                         );
                                                       else {
-                                                        print('oooookkkkk');
                                                         // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                         showDialog(
                                                             context: context,
@@ -487,14 +476,9 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                   // )),
                                 ],
                               ),
-                              Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
+                              // Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
                               SizedBox(height: 12,),
-                              Row(
-                                children: [
-                                  Text('Upload Licence',style:TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
-                                ],
-                              ),
+                              Text('Driver Licence',style:TextStyle(fontWeight: FontWeight.bold)),
                               SizedBox(height: 5,),
                               Row(
                                 children: [
@@ -649,7 +633,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                                             )
                                                         );
                                                       else {
-                                                        print('oooookkkkk');
                                                         // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                         showDialog(
                                                             context: context,
@@ -777,7 +760,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                                             )
                                                         );
                                                       else {
-                                                        print('oooookkkkk');
                                                         // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                         showDialog(
                                                             context: context,
@@ -803,7 +785,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                   ),
                                 ],
                               ),
-                              Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
+                              // Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
                               SizedBox(height: 12,),
 
                               if(widget.record.moreImage1!="")moreWidget1(),
@@ -839,7 +821,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                 SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: ()async{
-                                    print("Saveeee");
 
                                     notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
 
@@ -863,10 +844,15 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                           moreImage2: widget.record.moreImage2,
                                           moreImage3: widget.record.moreImage3,
                                         )
-                                    ).then((value) =>Get.offAll(()=>HomeScreen()));
-
+                                    ).then((value) {
+                                      // Get.offAll(() => HomeScreen())
+                                      Get.back();
+                                      Get.back();
+                                    }
+                                    );
 
                                   },
+
                                   child: Center(
                                     child: Container(
                                       width: 120,
@@ -900,7 +886,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/home_screen/person.jpg"),
+                        image: NetworkImage(loginController.adminImageUrl.value),
                         fit: BoxFit.cover
                     ),
                   ),
@@ -1022,7 +1008,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                   )
                               );
                             else {
-                              print('oooookkkkk');
                               // SfPdfViewer.network(widget.record.identityCardImageFace1);
                               showDialog(
                                   context: context,
@@ -1051,7 +1036,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //   children: [
-        Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
+        // Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
         // InkWell(
         //   onTap: (){
         //     controller.selectedMore1.value=null;
@@ -1222,7 +1207,6 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                   )
                               );
                             else {
-                              print('oooookkkkk');
                               // SfPdfViewer.network(widget.record.identityCardImageFace1);
                               showDialog(
                                   context: context,
@@ -1251,7 +1235,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
         //   children: [
-        Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
+        // Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
         //     InkWell(
         //       onTap: (){
         //         controller.selectedMore1.value=null;
@@ -1328,8 +1312,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                     )
                         :widget.record.moreImage3!.split('?').first.endsWith('.jpeg')
                         ?Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Image.network(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Image.network(
                         widget.record.moreImage3!,
                         width: 200,
                         fit: BoxFit.fill,
@@ -1337,8 +1321,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                     )
                         : widget.record.moreImage3!.split('?').first.endsWith('.png')
                         ?Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Image.network(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Image.network(
                         widget.record.moreImage3!,
                         width: 200,
                         fit: BoxFit.fill,
@@ -1471,7 +1455,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
               )
           ),
         ),
-        Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
+        // Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
 
       ],
     );

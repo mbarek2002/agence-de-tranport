@@ -1,3 +1,4 @@
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
@@ -19,6 +20,7 @@ class NotificationNewDrivers extends StatefulWidget {
 class _NotificationNewDriversState extends State<NotificationNewDrivers> {
 
   NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
+  LoginController loginController =Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                     top:30,
                     left: 0
                 ),
-                child: Text("notification new drivers",style: TextStyle(
+                child: Text("Notification new drivers",style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -80,10 +82,11 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                     ),
                     // TopWidget(title: 'Notification New driver'),
                     SizedBox(height: 80,),
-                    Center(child: Container(
-                      height: MediaQuery.of(context).size.height*0.73,
-                      width: MediaQuery.of(context).size.width,
-                        child:StreamBuilder<QuerySnapshot>(
+                    Center(
+                        child: Container(
+                        height: MediaQuery.of(context).size.height*0.73,
+                        width: MediaQuery.of(context).size.width,
+                          child:StreamBuilder<QuerySnapshot>(
                           stream:notificationNewDriverController.notiDrivers.snapshots(),
                           builder: (context,AsyncSnapshot snapshots) {
                             if(snapshots.connectionState == ConnectionState.waiting){
@@ -92,20 +95,24 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                               );
                             }
                             if(snapshots.hasData){
-                              print(snapshots.data!.docs.length);
                               return ListView.builder(
                                     itemCount: snapshots.data!.docs.length,
                                     itemBuilder: (BuildContext context, int index) {
                                       final DocumentSnapshot record = snapshots.data!.docs[index];
-                                      print(record['valid']);
-                                      return Card(
-                                          child:!record['valid'] ? ToggleContainer(record: record):null,
+                                      return
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                            top: 10,
+                                          ),
+                                          child:!record['valid'] ?
+                                          ToggleContainer(record: record):SizedBox(width:0),
                                       );
                                     }
-                          );
+                                  );
                             }
                             else{
-                              return Center(child: CircularProgressIndicator(color: Colors.red,),);}
+                              return Center(child: CircularProgressIndicator(color: Colors.red,),);
+                            }
                           }
                         ),
                     )
@@ -126,7 +133,7 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       image: DecorationImage(
-                          image: AssetImage("assets/images/home_screen/person.jpg"),
+                          image: NetworkImage(loginController.adminImageUrl.value),
                           fit: BoxFit.cover
                       ),
                     ),

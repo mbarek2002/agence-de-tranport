@@ -2,8 +2,8 @@ import 'package:admin_citygo/Binding/controller_binding.dart';
 import 'package:admin_citygo/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 
 void main() async{
@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: SplashSreeen(),
-      initialBinding: ControllerBinding(),
-      builder: EasyLoading.init(),
+
+      // builder: EasyLoading.init(),
+
     );
   }
 }

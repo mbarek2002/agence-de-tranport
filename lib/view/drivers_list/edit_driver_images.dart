@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
@@ -25,6 +26,7 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
   UploadTask? uploadTask;
 
   final DriversController controller = Get.put(DriversController());
+  LoginController loginController =Get.put(LoginController());
 
   @override
   void initState() {
@@ -300,8 +302,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                                             )
                                                         );
                                                        else {
-                                                         print('oooookkkkk');
-                                                         // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                         showDialog(
                                                             context: context,
                                                             builder: (
@@ -513,7 +513,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                                               )
                                                           );
                                                         else {
-                                                          print('oooookkkkk');
                                                           // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                           showDialog(
                                                               context: context,
@@ -773,7 +772,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                                               )
                                                           );
                                                         else {
-                                                          print('oooookkkkk');
                                                           // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                           showDialog(
                                                               context: context,
@@ -985,7 +983,7 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                                               )
                                                           );
                                                         else {
-                                                          print('oooookkkkk');
+
                                                           // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                                           showDialog(
                                                               context: context,
@@ -1057,26 +1055,12 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                 SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: ()async{
-                                    print("Saveeee");
-
-
-                                    print(widget.record.driverImage);
-                                    print(controller.selectedIdentityFace1.value);
-                                    print(controller.selectedIdentityFace2.value);
-                                    print(controller.selectedLicenceFace1.value);
-                                    print(controller.selectedLicenceFace2.value);
-                                    print(controller.selectedMore1.value);
-                                    print(controller.selectedMore2.value);
-                                    print(controller.selectedMore3.value);
-
-
 
                                     final driverImageURL;
                                     if(widget.record.driverImage!.split('/').last.endsWith('.jpg')||
                                         widget.record.driverImage!.split('/').last.endsWith('.jpeg')||
                                         widget.record.driverImage!.split('/').last.endsWith('.png')
                                     ){
-                                      print('entreeerrr driver');
                                       final driverUploadTask = FirebaseStorage.instance.ref(
                                           'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${widget.record.driverImage?.split('/').last}')
                                           .putFile(File(widget.record.driverImage!));
@@ -1088,7 +1072,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     }
                                     final identity1ImageURL;
                                     if(controller.selectedIdentityFace1.value !=null){
-                                      print('entreeerrr selectedIdentityFace1');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.identityCardImageFace1).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1103,7 +1086,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
                                     final identity2ImageURL;
                                     if(controller.selectedIdentityFace2.value !=null){
-                                      print('entreeerrr selectedIdentityFace2');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.identityCardImageFace2).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1118,7 +1100,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
                                     final licence1ImageURL;
                                     if(controller.selectedLicenceFace1.value !=null){
-                                      print('entreeerrr selectedLicenceFace1');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.licenceImageFace1).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1132,7 +1113,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
                                     final licence2ImageURL;
                                     if(controller.selectedLicenceFace2.value !=null){
-                                      print('entreeerrr selectedLicenceFace2');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.licenceImageFace2).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1147,7 +1127,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
                                     final more1ImageUrl;
                                     if(controller.selectedMore1.value != null){
-                                      print('entreeerrr more1ImageUrl');
                                       FirebaseStorage.instance.refFromURL(widget.record.moreImage1!).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
                                           'drivers/'+DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString()+'${controller.selectedMore1.value!.path.split('/').last}')
@@ -1157,11 +1136,8 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     }else{
                                       more1ImageUrl=widget.record.moreImage1;
                                     }
-
-
                                     final more2ImageUrl;
                                     if(controller.selectedMore2.value != null){
-                                      print('entreeerrr more2ImageUrl');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.moreImage2!).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1175,7 +1151,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
                                     final more3ImageUrl;
                                     if(controller.selectedMore3.value != null){
-                                      print('entreeerrr more3ImageUrl');
 
                                       FirebaseStorage.instance.refFromURL(widget.record.moreImage3!).delete();
                                       final driverUploadTask = FirebaseStorage.instance.ref(
@@ -1186,55 +1161,64 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     }else{
                                       more3ImageUrl=widget.record.moreImage3;
                                     }
+                                      try {
+                                      showDialog(
+                                          context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
+                                        controller.init();
+                                        controller.update_driver(
+                                            DriverModel(
+                                              id: widget.record.id,
+                                              driverImage: driverImageURL,
+                                              firstName: widget.record
+                                                  .firstName,
+                                              lastName: widget.record.lastName,
+                                              birthDate: widget.record
+                                                  .birthDate,
+                                              identityNumber: widget.record
+                                                  .identityNumber,
+                                              identityCardImageFace1: identity1ImageURL,
+                                              identityCardImageFace2: identity2ImageURL,
+                                              phoneNumber: widget.record
+                                                  .phoneNumber,
+                                              licenceType: widget.record
+                                                  .licenceType,
+                                              licenceImageFace1: licence1ImageURL,
+                                              licenceImageFace2: licence2ImageURL,
+                                              email: widget.record.email,
+                                              contractType: widget.record
+                                                  .contractType,
+                                              password: widget.record.password,
+                                              moreImage1: more1ImageUrl,
+                                              moreImage2: more2ImageUrl,
+                                              moreImage3: more3ImageUrl,
+                                            )
+                                        ).then((value) {
+                                            Get.offAll(() => HomeScreen());
+                                          // Get.back();
+                                          // Get.back();
+                                        });
 
-                                    print('/////////////////////////');
-
-                                    print(driverImageURL);
-                                    print(identity1ImageURL);
-                                    print(identity2ImageURL);
-                                    print(licence1ImageURL);
-                                    print(licence2ImageURL);
-                                    print(more1ImageUrl);
-                                    print(more2ImageUrl);
-                                    print(more3ImageUrl);
-
-                                    print('/////////////////////////');
-
-
-
-
-                                      controller.init();
-
-                                      controller.update_driver(
-                                        DriverModel(
-                                          id: widget.record.id,
-                                          driverImage: driverImageURL,
-                                            firstName: widget.record.firstName,
-                                            lastName: widget.record.lastName,
-                                            birthDate: widget.record.birthDate,
-                                            identityNumber: widget.record.identityNumber,
-                                            identityCardImageFace1: identity1ImageURL,
-                                            identityCardImageFace2: identity2ImageURL,
-                                            phoneNumber: widget.record.phoneNumber,
-                                            licenceType: widget.record.licenceType,
-                                            licenceImageFace1: licence1ImageURL,
-                                            licenceImageFace2: licence2ImageURL,
-                                            email: widget.record.email,
-                                            contractType: widget.record.contractType,
-                                            password: widget.record.password,
-                                            moreImage1: more1ImageUrl,
-                                            moreImage2: more2ImageUrl,
-                                            moreImage3: more3ImageUrl,
-                                        )
-                                      ).then((value) => Get.to(()=>HomeScreen()));
-
-
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("Driver updated succeffuly"),
+                                          duration: Duration(seconds: 3),
+                                        ),
+                                      );
+                                      }catch(e){
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("there is an error"+e.toString()),
+                                          duration: Duration(seconds: 5),
+                                        ),
+                                      );
+                                      }
                                   },
                                   child: Center(
                                     child: Container(
                                       width: 120,
                                       height: 30,
-                                      child: Center(child: Text('Save',style: TextStyle(color: Colors.white),)),
+                                      child: Center(child: Text('Edit',style: TextStyle(color: Colors.white),)),
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
                                           color: Color(0xFF333333)
@@ -1263,7 +1247,7 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/home_screen/person.jpg"),
+                        image: NetworkImage(loginController.adminImageUrl.value),
                         fit: BoxFit.cover
                     ),
                   ),
@@ -1467,7 +1451,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     )
                                 );
                               else {
-                                print('oooookkkkk');
                                 // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                 showDialog(
                                     context: context,
@@ -1704,8 +1687,6 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     )
                                 );
                               else {
-                                print('oooookkkkk');
-                                // SfPdfViewer.network(widget.record.identityCardImageFace1);
                                 showDialog(
                                     context: context,
                                     builder: (
@@ -1972,18 +1953,8 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
 
           ),
         )),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-            Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
-            // InkWell(
-            //   onTap: (){
-            //     controller.selectedMore1.value=null;
-            //   },
-            //   child: Text('cancel',style: TextStyle(color: Colors.red,fontSize: 15),),
-            // )
-        //   ],
-        // ),
+         Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 10,color: Colors.grey),),
+
       ],
     );
   }

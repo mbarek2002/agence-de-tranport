@@ -45,7 +45,7 @@ class _SplashSreeenState extends State<SplashSreeen> {
                 children: [
                   Image(image: AssetImage(tCityGoLogo),width: 100,height: 100,),
                   Image(image: AssetImage(tTunPro),width: 100,height: 100,),
-                  Image(image: AssetImage(tBTTLogo),width: 70,height: 70,),
+                  Image(image: AssetImage(tBBXLogo),width: 70,height: 70,),
                 ],
               )
             ],

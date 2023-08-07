@@ -144,9 +144,6 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: OutlinedButton(
                                 onPressed: (){
                                   if (_formKey.currentState!.validate()) {
-                                    // GEtUtils.isEmail('abs@gmail.com') ? validate() : errorMessage();
-                                    print(controller.emailController.text.trim());
-                                    print(controller.passwordController.text.trim());
                                     LoginController.instance.loginAdmin(controller.emailController.text.trim(), controller.passwordController.text.trim(),context);
                                   }
                                 },

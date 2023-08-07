@@ -86,7 +86,8 @@ class ExpandedContainer extends StatelessWidget {
               children: [
               Text(record["firstName"]+ " " + record["lastName"]),
               Text("ID N° :"+record["identityNumber"].toString()),
-            ],)
+            ],
+            )
           ],
         ),
         SizedBox(height: 15,) ,

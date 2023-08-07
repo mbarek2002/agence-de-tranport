@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginController extends GetxController{
@@ -21,18 +23,18 @@ class LoginController extends GetxController{
   void getAdminImage(String email)async {
     await Future.delayed(Duration(seconds: 4));
     QuerySnapshot adminsData =await FirebaseFirestore.instance.collection('admins').where("email",isEqualTo: email).get();
-    print(email);
     for (var admin in adminsData.docs)
         adminImageUrl.value = admin['imageUrl'];
-        print(adminImageUrl.value);
 
-    print(adminsData);
     isLoading.value=false;
   }
+
+  // final storage = GetStorage();
 
 
 
   void loginAdmin(String email,String password,BuildContext context)async{
+
     showDialog(
         context: context,
         builder: (context){
@@ -43,7 +45,8 @@ class LoginController extends GetxController{
     );
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email, password: password).then((value) => Get.offAll(()=>HomeScreen()));
+            email: email, password: password).then((value) =>Get.offAll(()=>HomeScreen()));
+
         Navigator.pop(context);
       }on FirebaseAuthException catch(e){
         if(e.code.toLowerCase() == 'invalid-email'){

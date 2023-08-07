@@ -1,3 +1,4 @@
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/view/drivers_list/add_driver.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/drivers_list/edit_driver.dart';
@@ -20,24 +21,33 @@ class DriversListScreen extends StatefulWidget {
 class _DriversListScreenState extends State<DriversListScreen> {
 
   // DriversController DriversController = Get.put(DriversController());
+  LoginController loginController =Get.put(LoginController());
+
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    driversController.fetchDrivers();
+  }
 
   DriversController driversController = Get.put(DriversController());
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        child: Icon(
-          Icons.add,
-          size: 40,
-          color: Colors.white,
+        resizeToAvoidBottomInset:false,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.add,
+            size: 40,
+            color: Colors.white,
+          ),
+          onPressed: (){
+            // Get.to(()=>AddDriverScreen);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddDriverScreen()));
+            print("add");
+          },
         ),
-        onPressed: (){
-          // Get.to(()=>AddDriverScreen);
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddDriverScreen()));
-          print("add");
-        },
-      ),
         appBar: AppBar(
           leading: Padding(
             padding:  EdgeInsets.only(
@@ -97,58 +107,97 @@ class _DriversListScreenState extends State<DriversListScreen> {
                     width: MediaQuery.of(context).size.width*0.9,
                     child: Column(
                       children: [
-                          TextFormField(
-                            // style:,
+                        TextFormField(
+                          onChanged: (value)=>driversController.updateList(value),
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.search),
+                            hintText:"search by name , identity card",
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                                width: 2.0,
+                              ),
+                            ),
                           ),
+                          // style:,
+                        ),
                         SizedBox(height: 30,),
                         Center(
                           child: SingleChildScrollView(
                             child: Container(
-                              height: MediaQuery.of(context).size.height*0.68,
-                              width: MediaQuery.of(context).size.width*0.9,
-                              child: StreamBuilder<QuerySnapshot>(
-                                  stream: driversController.driversList.snapshots(),
-                                  builder: (context,AsyncSnapshot snapshots){
-                                    if(snapshots.connectionState == ConnectionState.waiting){
-                                      return Center(
-                                        child: CircularProgressIndicator(color: Colors.green,),
-                                      );
-                                    }
-                                    if(!snapshots.hasData){
-                                      print('no data ');
-                                    }
-                                    // else{
-                                    return ListView.builder(
-                                      itemCount: snapshots.data!.docs.length,
-                                      itemBuilder: (BuildContext context, int index) {
+                                height: MediaQuery.of(context).size.height*0.6,
+                                width: MediaQuery.of(context).size.width*0.9,
+                                child:
+                                Obx(()=>RefreshIndicator(
+                                  onRefresh: (){
+                                    driversController.fetchDrivers();
+                                    return Future.delayed(
+                                      Duration(seconds: 1)
+                                    );
+                                  },
+                                  child: ListView.builder(
+                                    itemCount: driversController.filteredList.length,
+                                    itemBuilder: (BuildContext context, int index) {
 
-                                        final DocumentSnapshot records = snapshots.data!.docs[index];
-                                        print(records['driverImage']);
-
-                                        return Padding(
-                                          padding: const EdgeInsets.only(bottom: 20.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Container(
-                                                height:50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(50),
-                                                ),
-                                                child: Stack(
-                                                  children: [
-                                                    Center(child: const CircularProgressIndicator(),),
-                                                    Center(child: ClipOval(child: Image(image: NetworkImage(records['driverImage']),width:50,height:50,fit: BoxFit.cover)))
-                                                  ],
-                                                ),
+                                      return Padding(
+                                        padding: const EdgeInsets.only(bottom: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Container(
+                                              height:50,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
                                               ),
-                                              SizedBox(width: 10,),
-                                              Column(
+                                              child: Stack(
+                                                children: [
+                                                  // Center(child: ClipOval(child: Image(
+                                                  //     image:records['driverImage'] != ''
+                                                  //     ?NetworkImage(records['driverImage'])
+                                                  //     :AssetImage('assets/images/Exclude.png')
+                                                  //     ,width:50,height:50,fit: BoxFit.cover)))
+                                                  // try{
+                                                  if(driversController.driverList[index].driverImage != '')
+                                                    Center(
+                                                        child:ClipOval(
+                                                          child:Image(image: NetworkImage(driversController.driverList[index].driverImage)
+                                                              ,width:50,height:50,fit: BoxFit.cover),
+                                                        )
+                                                    )
+                                                  else Center(
+                                                      child:ClipOval(child:Image(image: AssetImage('assets/images/Exclude.png')
+                                                          ,width:50,height:50,fit: BoxFit.cover))
+                                                  )
+                                                  // }catch{
+                                                  // Center(
+                                                  // child:ClipOval(child:Image(image: AssetImage('assets/images/Exclude.png')
+                                                  // ,width:50,height:50,fit: BoxFit.cover))
+                                                  // )
+                                                  // }
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 10,),
+                                            Container(
+                                              width:MediaQuery.of(context).size.width*.55,
+                                              child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   SizedBox(width: 15,),
-                                                  Text(records['firstName']+ " " + records['lastName'],
+                                                  Text(driversController.driverList[index].firstName+ " " + driversController.driverList[index].lastName,
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight: FontWeight.bold,
@@ -165,155 +214,160 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                   )
                                                 ],
                                               ),
-                                              GestureDetector(
-                                                onTap: (){
-                                                  Get.to(()=>EditDriverScreen(records: records,));
-                                                },
-                                                child: Container(
-                                                  height:30,
-                                                  width:30,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "assets/icons/edit.png"
-                                                          )
-                                                      )
-                                                  ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                Get.to(()=>EditDriverScreen(records: driversController.filteredList[index],));
+                                              },
+                                              child: Container(
+                                                height:30,
+                                                width:30,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "assets/icons/edit.png"
+                                                        )
+                                                    )
                                                 ),
                                               ),
-                                              GestureDetector(
-                                                onTap:  () {
-                                                  showModalBottomSheet<void>(
-                                                    backgroundColor: Colors.transparent,
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return Stack(
-                                                        children: [
-                                                          Opacity(
-                                                            opacity: .8,
-                                                            child: Container(
-                                                              height: 250,
-                                                              decoration: BoxDecoration(
-                                                                  color: Colors.blue,
-                                                                  borderRadius: BorderRadius.only(
-                                                                      topLeft: Radius.circular(40),
-                                                                      topRight: Radius.circular(40)
-                                                                  )
-                                                              ),
-                                                              child: Center(
-                                                                child: Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  children: <Widget>[
-                                                                    Text(records['firstName']+" "+records['lastName'],
-                                                                      style: TextStyle(
-                                                                          fontSize: 30,
-                                                                          color: Colors.white,
-                                                                          fontFamily: "Georgia"
-                                                                      ),),
-                                                                    SizedBox(height: 10,),
-                                                                    SizedBox(
-                                                                      width: 200,
-                                                                      child: ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            elevation: 20,
-                                                                            shadowColor: Colors.blue[700],
-                                                                            primary: Color(0xDADADA).withOpacity(0.69),
-                                                                            onPrimary: Colors.white
-                                                                        ),
-                                                                        child: const Text('Delete',style: TextStyle(fontFamily: "Georgia",fontSize: 20),),
-                                                                        onPressed: (){
-                                                                          FirebaseStorage.instance.refFromURL(records['driverImage']).delete();
-                                                                          FirebaseStorage.instance.refFromURL(records['identityCardImageFace1']).delete();
-                                                                          FirebaseStorage.instance.refFromURL(records['identityCardImageFace2']).delete();
-                                                                          FirebaseStorage.instance.refFromURL(records['licenceImageFace1']).delete();
-                                                                          FirebaseStorage.instance.refFromURL(records['licenceImageFace2']).delete();
-                                                                          if(records['more1']!="")FirebaseStorage.instance.refFromURL(records['more1']).delete();
-                                                                          if(records['more2']!="")FirebaseStorage.instance.refFromURL(records['more2']).delete();
-                                                                          if(records['more3']!="")FirebaseStorage.instance.refFromURL(records['more3']).delete();
-                                                                          driversController.delete_driver(records.id);
-                                                                          Navigator.pop(context);
-                                                                        },
+                                            ),
+                                            GestureDetector(
+                                              onTap:  () {
+                                                showModalBottomSheet<void>(
+                                                  backgroundColor: Colors.blue,
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return Stack(
+                                                      children: [
+                                                        Opacity(
+                                                          opacity: .8,
+                                                          child: Container(
+                                                            height: 250,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.blue,
+                                                                borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius.circular(40),
+                                                                    topRight: Radius.circular(40)
+                                                                )
+                                                            ),
+                                                            child: Center(
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                mainAxisSize: MainAxisSize.min,
+                                                                children: <Widget>[
+                                                                  Text(driversController.driverList[index].firstName+" "+driversController.driverList[index].lastName,
+                                                                    style: TextStyle(
+                                                                        fontSize: 30,
+                                                                        color: Colors.white,
+                                                                        fontFamily: "Georgia"
+                                                                    ),),
+                                                                  SizedBox(height: 10,),
+                                                                  SizedBox(
+                                                                    width: 200,
+                                                                    child: ElevatedButton(
+                                                                      style: ElevatedButton.styleFrom(
+                                                                          elevation: 20,
+                                                                          shadowColor: Colors.blue[700],
+                                                                          primary: Color(0xDADADA).withOpacity(0.69),
+                                                                          onPrimary: Colors.white
                                                                       ),
+                                                                      child: const Text('Delete',style: TextStyle(fontFamily: "Georgia",fontSize: 20),),
+                                                                      onPressed: (){
+                                                                        if(driversController.driverList[index].driverImage!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].driverImage).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].identityCardImageFace1).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].identityCardImageFace2).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].licenceImageFace1).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].licenceImageFace2).delete();
+                                                                        if(driversController.driverList[index].moreImage1!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage1!).delete();
+                                                                        if(driversController.driverList[index].moreImage2!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage2!).delete();
+                                                                        if(driversController.driverList[index].moreImage3!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage3!).delete();
+                                                                        driversController.delete_driver(driversController.driverList[index].id!);
+                                                                        driversController.fetchDrivers();
+                                                                        Navigator.pop(context);
+                                                                      },
                                                                     ),
-                                                                    SizedBox(height: 15,),
-                                                                    SizedBox(
-                                                                      width: 200,
-                                                                      child: ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            elevation: 20,
-                                                                            shadowColor: Colors.blue[700],
-                                                                            primary: Color(0x0F5CA0).withOpacity(0.8),
-                                                                            onPrimary: Colors.white
-                                                                        ),
-                                                                        child: const Text('Cancel',style: TextStyle(fontFamily: "Georgia",fontSize: 20)),
-                                                                        onPressed: () => Navigator.pop(context),
+                                                                  ),
+                                                                  SizedBox(height: 15,),
+                                                                  SizedBox(
+                                                                    width: 200,
+                                                                    child: ElevatedButton(
+                                                                      style: ElevatedButton.styleFrom(
+                                                                          elevation: 20,
+                                                                          shadowColor: Colors.blue[700],
+                                                                          primary: Color(0x0F5CA0).withOpacity(0.8),
+                                                                          onPrimary: Colors.white
                                                                       ),
+                                                                      child: const Text('Cancel',style: TextStyle(fontFamily: "Georgia",fontSize: 20)),
+                                                                      onPressed: () => Navigator.pop(context),
                                                                     ),
-                                                                  ],
-                                                                ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),
-                                                          Positioned(
-                                                              top:0,
-                                                              left:MediaQuery.of(context).size.width*0.45,
-                                                              child: Transform.translate(
-                                                                offset: Offset(0,-35),
-                                                                child: Container(
-                                                                  width: 60,
-                                                                  height: 70,
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                                                                      image: DecorationImage(
-                                                                          fit:BoxFit.fill,
-                                                                          image:NetworkImage(
-                                                                            records['driverImage'],
-                                                                          )
-                                                                      )
-
-                                                                  ),
+                                                        ),
+                                                        Positioned(
+                                                            top:0,
+                                                            left:MediaQuery.of(context).size.width*0.45,
+                                                            child: Transform.translate(
+                                                              offset: Offset(0,-35),
+                                                              child: Container(
+                                                                width: 60,
+                                                                height: 70,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                                                                    color: Colors.white.withOpacity(0.4)
                                                                 ),
-                                                              )
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                child: Container(
-                                                  height:30,
-                                                  width:30,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "assets/icons/delete.png"
-                                                          )
-                                                      )
-                                                  ),
+                                                                child: driversController.driverList[index].driverImage!=""
+                                                                    ?ClipOval(
+                                                                  child: Image.network(
+                                                                    driversController.driverList[index].driverImage,
+                                                                    fit:BoxFit.cover,
+                                                                  ),
+                                                                ):
+                                                                Image.asset(
+                                                                  'assets/images/Exclude.png',
+                                                                  fit:BoxFit.fill,
+                                                                ),
+                                                              ),
+                                                            )
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                height:30,
+                                                width:30,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "assets/icons/delete.png"
+                                                        )
+                                                    )
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                              ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ))
+                              //     }
+                              // ),
                             ),
                           ),
                         )
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height* .04,
-              // right:MediaQuery.of(context).size.width*0.5 ,
-              // width: MediaQuery.of(context).size.width,
               child: Container(
                 // color: Colors.green,
                 width: MediaQuery.of(context).size.width,
@@ -325,7 +379,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/home_screen/person.jpg"),
+                        image: NetworkImage(loginController.adminImageUrl.value),
                         fit: BoxFit.cover
                     ),
                   ),

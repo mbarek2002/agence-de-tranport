@@ -1,7 +1,10 @@
+import 'package:admin_citygo/controllers/courses/courses_controller.dart';
+import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/utils/text_strings.dart';
+import 'package:admin_citygo/view/courses_list/courses_list_screen.dart';
 import 'package:admin_citygo/view/drivers_list/driver_list_screen.dart';
 import 'package:admin_citygo/view/login/login_screen.dart';
 import 'package:admin_citygo/view/notification_new_driver_screen/notification_new_driver_screen.dart';
@@ -22,16 +25,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
   LoginController loginController = Get.put(LoginController());
+  DriversController  driversController =Get.put(DriversController());
+  CoursesController coursesController = Get.put(CoursesController());
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
-  }
+    driversController.fetchDrivers();
 
+    // coursesController.fetchCourses();
+  }
   @override
   Widget build(BuildContext context) {
-    print('bbbeeeeggggin');
+    print(driversController.driverList.length);
+    print(driversController.filteredList.length);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -88,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ),
                     ),
-                SizedBox(height: 150,),
+                SizedBox(height: 200,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -149,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: 60,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -161,10 +171,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                                 color: Colors.white,
-                              image: DecorationImage(
-                                image: AssetImage("assets/icons/request-new.png")
-                              )
+                              // image: DecorationImage(
+                              //   image: AssetImage("assets/icons/care-request-reviewer.png")
+                              // )
                             ),
+                            child: Icon(Icons.calendar_month_outlined,size: 60,color: Color(0xFF0F5CA0),),
                           ),
                         ),
                     ),
@@ -173,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 80,
                       child: GestureDetector(
                       onTap: (){
-                        Get.to(()=>NotificationNewDrivers());
+                        Get.to(()=>CoursesListSceen());
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -188,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(
-                                  "assets/icons/planning.png"
+                                    "assets/icons/care-request-reviewer.png"
                                 )
                               )
                             ),
@@ -199,55 +210,55 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                 ),
                 SizedBox(height: 40,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: Container(
-                    decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(tHomeList)
-                    )
-                    ),
-                      child:  Container(
-                        decoration: BoxDecoration(
-                        image:DecorationImage(
-                          image: AssetImage(
-                            "assets/icons/care-request-reviewer.png"
-                          )
-                        )),
-                      ),
-                    ),
-                    ),
-
-                    badges.Badge(
-                      badgeContent: Text(''),
-                      child: SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image:DecorationImage(
-                                    image: AssetImage(
-                                        "assets/icons/notification-bell-new.png"
-                                    )
-                                )),
-                          ),
-
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     SizedBox(
+                //       width: 80,
+                //       height: 80,
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.all(Radius.circular(10)),
+                //         image: DecorationImage(
+                //         fit: BoxFit.cover,
+                //         image: AssetImage(tHomeList)
+                //         )
+                //       ),
+                //         child:  Container(
+                //         decoration: BoxDecoration(
+                //         image:DecorationImage(
+                //           image: AssetImage(
+                //             "assets/icons/care-request-reviewer.png"
+                //           )
+                //         )),
+                //       ),
+                //     ),
+                //     ),
+                //
+                //     badges.Badge(
+                //       badgeContent: Text(''),
+                //       child: SizedBox(
+                //         width: 80,
+                //         height: 80,
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.all(Radius.circular(10)),
+                //             color: Colors.white
+                //           ),
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //                 image:DecorationImage(
+                //                     image: AssetImage(
+                //                         "assets/icons/notification-bell-new.png"
+                //                     )
+                //                 )),
+                //           ),
+                //
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // ),
                   ],
             ),
           ),
@@ -291,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height* .24,
+            top: MediaQuery.of(context).size.height* .3,
             width: MediaQuery.of(context).size.width*1.52,
             child: Container(
               width: MediaQuery.of(context).size.width,

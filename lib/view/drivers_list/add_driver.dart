@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/drivers_list/add_driver_images.dart';
@@ -20,7 +21,7 @@ class AddDriverScreen extends StatefulWidget {
 
 class _AddDriverScreenState extends State<AddDriverScreen> {
   String _selectedItem = '';
-  List<String> _dropdownItems = ['A1', 'A', 'B','B+E','C','C+E','D','D1','D+E','H'];
+  List<String> _dropdownItems = ['AA', 'A', 'B','B+E','C','C+E','D','D1','D+E','G'+'H'];
 
    bool checkBox1 = false;
    bool checkBox2 = false;
@@ -59,6 +60,8 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
 
 
   XFile? pickedFile;
+
+  LoginController loginController =Get.put(LoginController());
 
   @override
   void initState() {
@@ -317,6 +320,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                             ),
                             TextFormField(
                               controller: controller.passwordController,
+                              obscureText: true,
                               validator: Validators.compose([
                                 Validators.required('Password is required'),
                                 Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
@@ -378,32 +382,40 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                       children: [
                                         Text("seasonal",style: TextStyle(fontSize: 10),),
                                         Checkbox(value: checkBox1, onChanged: (value){
-                                          if(checkBox2==false){
+                                          print("check Box1"+value.toString());
+
+
+                                           if(checkBox2==true){
                                             setState(() {
                                               checkBox1=!checkBox1;
+                                              checkBox2=!checkBox2;
                                             });}
                                           else{
                                             setState(() {
-                                              checkBox1=false;
+                                              checkBox1=!checkBox1;
                                             });
                                           }
+
                                         }),
                                       ],
                                     ),
-
                                     Row(
                                       children: [
                                         Text("Full Time Contract",style: TextStyle(fontSize: 10),),
                                         Checkbox(value: checkBox2, onChanged: (value){
-                                          if(checkBox1==false){
+                                          print("check Box2"+value.toString());
+
+                                           if(checkBox1==true){
                                             setState(() {
+                                              checkBox1=!checkBox1;
                                               checkBox2=!checkBox2;
                                             });}
-                                          else{
-                                            setState((){
-                                              checkBox2=false;
-                                            });
-                                          }
+                                           else{
+                                             setState(() {
+                                               checkBox2=!checkBox2;
+
+                                             });
+                                           }
                                         }),
                                       ],
                                     ),
@@ -457,20 +469,35 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                 }
                                 if(_formKey.currentState!.validate()){
 
-                                  print(validLicenceType);
-                                  print(validContratType);
                                   if(!validLicenceType && !validContratType)
                                     if(_image==null){
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text("Please choose a profile picture"),
-                                          duration: Duration(seconds: 5),
-                                        ),
-                                      );
+                                      // ScaffoldMessenger.of(context).showSnackBar(
+                                      //   SnackBar(
+                                      //     content: Text("Please choose a profile picture"),
+                                      //     duration: Duration(seconds: 5),
+                                      //   ),
+                                      // );
                                       // Navigator.pop(context);
+                                      Get.to(AddDriverImagesScreen(
+                                          record:DriverModel(
+                                              driverImage: "",
+                                              firstName: controller.firstNameController.text.capitalize.toString(),
+                                              lastName: controller.lastNameController.text.capitalize.toString(),
+                                              birthDate: controller.birthDateController.text,
+                                              identityNumber:int.tryParse(controller.identityNumberController.text) ?? 0,
+                                              identityCardImageFace1: "",
+                                              identityCardImageFace2: "",
+                                              phoneNumber: int.tryParse(controller.phoneNumberController.text) ?? 0,
+                                              licenceType: _selectedItem,
+                                              licenceImageFace1: "",
+                                              licenceImageFace2: "",
+                                              email: controller.emailController.text,
+                                              contractType: contract,
+                                              password: controller.passwordController.text
+                                          )
+                                      ));
                                     }
                                   else
-                                      print(_image!.path);
                                     Get.to(AddDriverImagesScreen(
                                     record:DriverModel(
                                         driverImage: _image!.path,
@@ -527,7 +554,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     image: DecorationImage(
-                        image: AssetImage("assets/images/home_screen/person.jpg"),
+                        image: NetworkImage(loginController.adminImageUrl.value),
                         fit: BoxFit.cover
                     ),
                   ),
@@ -617,7 +644,6 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                InkWell(
                  onTap:() {
                    getImageFromGallery();
-                   print(_image);
                  },
                  child: Container(
                    child: Row(
@@ -653,12 +679,10 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
        if (pickedFile != null) {
          driverImageName =pickedFile.name;
          _image = File(pickedFile.path);
-         print(_image);
        } else {
          print('No image selected.');
        }
      });
-     print(_image);
      Navigator.pop(context);
    }
 
@@ -685,9 +709,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
       final identityDownloadURL = await identitySnapshot.ref.getDownloadURL();
       final licenceDownloadURL = await licenceSnapshot.ref.getDownloadURL();
 
-    print('Driver download link: $driverDownloadURL');
-    print('Identity download link: $identityDownloadURL');
-    print('Licence download link: $licenceDownloadURL');
+
     controller.add_driver(
         DriverModel(
             driverImage: driverDownloadURL,
