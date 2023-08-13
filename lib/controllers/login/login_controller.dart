@@ -1,12 +1,11 @@
 
 import 'package:admin_citygo/view/home/home_screen.dart';
+import 'package:admin_citygo/view/notification_new_driver_screen/consult_notification_new_driver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginController extends GetxController{
@@ -19,14 +18,20 @@ class LoginController extends GetxController{
 
   RxBool isLoading=true.obs;
   RxString adminImageUrl=''.obs;
-  
+  RxString idAdmin=''.obs;
   void getAdminImage(String email)async {
-    await Future.delayed(Duration(seconds: 4));
-    QuerySnapshot adminsData =await FirebaseFirestore.instance.collection('admins').where("email",isEqualTo: email).get();
-    for (var admin in adminsData.docs)
+    try {
+      await Future.delayed(Duration(seconds: 4));
+      QuerySnapshot adminsData = await FirebaseFirestore.instance.collection(
+          'admins').where("email", isEqualTo: email).get();
+      for (var admin in adminsData.docs) {
         adminImageUrl.value = admin['imageUrl'];
-
-    isLoading.value=false;
+        idAdmin.value = admin.id;
+      }
+      isLoading.value = false;
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   // final storage = GetStorage();
@@ -45,8 +50,8 @@ class LoginController extends GetxController{
     );
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email, password: password).then((value) =>Get.offAll(()=>HomeScreen()));
-
+            email: email, password: password).then((value)=>Get.offAll(()=>HomeScreen())
+        );
         Navigator.pop(context);
       }on FirebaseAuthException catch(e){
         if(e.code.toLowerCase() == 'invalid-email'){
@@ -61,7 +66,8 @@ class LoginController extends GetxController{
                 );
               }
           );
-        }else if(e.code.toLowerCase() == 'wrong-password'){
+        }
+        else if(e.code.toLowerCase() == 'wrong-password'){
           Navigator.pop(context);
           showDialog(
               context: context,

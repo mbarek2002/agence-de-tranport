@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
+import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/models/course_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_excel/excel.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +23,7 @@ class CoursesController extends GetxController{
 
   CollectionReference courses = FirebaseFirestore.instance.collection("courses");
 
+  LoginController loginController =Get.put(LoginController());
 
   RxInt formNum = 1.obs;
 
@@ -35,21 +38,16 @@ class CoursesController extends GetxController{
   RxString image=''.obs;
 
   RxBool isChecked = true.obs;
+  RxBool isLoading = false.obs;
 
   RxBool isReturn = false.obs;
   RxBool checkBox1 = false.obs;
   RxBool checkBox2 = false.obs;
-////////////////////////////////////////////
-
-
-
-////////////////////////////////////////////
-
 
   void init(){
     image.value='';
     selectedItem.value = 'Driver name';
-    formNum.value = 1;
+    // formNum.value = 1;
     validLicenceType.value=false;
     passengerCarDetails=RxList<rowdata>([]);
     passengerDetails=RxList<rowdata>([]);
@@ -65,10 +63,18 @@ class CoursesController extends GetxController{
     }
 
   }
+  /////////////////////////////////
+  var coursesListAdmin = <Course>[].obs;
+  var coursesListDriver = <Course>[].obs;
 
+/////////////admin////////////////
   var coursesList = <Course>[].obs;
   var coursesListToday = <Course>[].obs;
   var coursesListTomorrow = <Course>[].obs;
+  /////////////driver////////////////
+  var coursesListDrivers = <Course>[].obs;
+  var coursesListTodayDrivers = <Course>[].obs;
+  var coursesListTomorrowDrivers = <Course>[].obs;
 
   List<Course> mergedList =<Course>[].obs;
 ///////////////////////////////////////
@@ -89,138 +95,103 @@ class CoursesController extends GetxController{
   }
 
 /////////////////crud opertion///////////////////////
+  List<rowdata>? passengersDetailsFetch;
   Future<void> fetchCourses() async {
-    // try {
-      Timestamp? dropOffDate;
-      List<rowdata>? passengersDetails;
+    try {
+      isLoading.value=true;
+    Timestamp? dropOffDate;
+      String? orderUrl;
       QuerySnapshot courses =await FirebaseFirestore.instance.collection('courses').orderBy('pickUpDate', descending: true).get();
-      coursesList.clear();
-      coursesListToday.clear();
-      coursesListTomorrow.clear();
+      coursesListAdmin.clear();
+      coursesListDriver.clear();
+
       for (var course in courses.docs) {
         var courseData = course.data() as Map<String, dynamic>;
-        // if (courseData.containsKey('dropOffLocation')) {
-        //   if (course['dropOffLocation'] != null ||
-        //       course['dropOffLocation'] != "")
-        //     dropOffLocation = course['dropOffLocation'];
-        // }
-        //
-        // if (courseData.containsKey('dropOffDate')) {
-        //   if (course['dropOffDate'] != null || course['dropOffDate'] != "")
-        //     dropOffDate = course['dropOffDate'];
-        // }
-        //
-        // if (courseData.containsKey('passengersNum')){
-        //   if(course['passengersNum']!=null || course['passengersNum']!="")
-        //     passengersNum= course['passengersNum'];
-        // }
-        //
-        // if(courseData.containsKey('orderUrl')){
-        //   if(course['orderUrl']!=null || course['orderUrl']!="")
-        //     orderUrl=  course['orderUrl'];
-        // }
-        //
-        // if(courseData.containsKey('passengersDetails') ){
-        //   List<dynamic>? passengersDetailsData = courseData['passengersDetails'];
-        //   passengersDetails = passengersDetailsData?.map(
-        //         (passengerData) => rowdata(
-        //       firstname: passengerData['firstname'],
-        //       lastName: passengerData['lastName'],
-        //       identityNum: passengerData['identityNum'],
-        //     ),
-        //   ).toList();}
-        //
-        // pickUpDate=courseData['pickUpDate'];
-        // coursesList.add(
-        //     CourseModel(
-        //         id: course.id,
-        //         type: "",
-        //         pickUpLocation: courseData['pickUpLocation'],
-        //         driverName: courseData['driverName'],
-        //         dropOffLocation: dropOffLocation,
-        //         pickUpDate:pickUpDate.toDate(),
-        //         dropOffDate:dropOffDate?.toDate(),
-        //         passengersNum:passengersNum,
-        //         orderUrl:orderUrl,
-        //         passengersDetails:passengersDetails,
-        //         identityNum: courseData['identityNum']
-        //     )
-        // );
-        Timestamp date=course['pickUpDate'];
-        // DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch);
-        // print(dateTime);
-        // print(course['regNumber']);
-        // print(date.toDate());
-        // print(DateTime.fromMillisecondsSinceEpoch(course['pickUpDate'].millisecondsSinceEpoch));
-        // DateTime dateTime2 = DateTime.fromMillisecondsSinceEpoch(course['pickUpDate'].millisecondsSinceEpoch, isUtc: true);
-        // final parisTime = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(dateTime.toLocal());
-        //
-        // print(parisTime);
-        // print('////////////////111///////////////');
-        // print(DateFormat('dd/MM/yyyy, HH:mm').format( DateTime.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch)));
-        // print('///////////////////////////////');
-        // print(readTimestamp(date.millisecondsSinceEpoch));
 
-        if(course['check']=="car"){
-          if( date.toDate().year==DateTime.now().year && date.toDate().month==DateTime.now().month && date.toDate().day==DateTime.now().day)
-            {
-          coursesListToday.add(
+        try {
+          if (courseData.containsKey('passengersDetails')) {
+            List<dynamic>? passengersDetailsData = courseData['passengersDetails'];
+            passengersDetailsFetch = passengersDetailsData?.map(
+                  (passengerData) =>
+                  rowdata(
+                    firstname: passengerData['firstname'],
+                    lastName: passengerData['lastName'],
+                    identityNum: passengerData['identityNum'],
+                  ),
+            ).toList();
+          }
+          if(courseData.containsKey('dropOffDate')){
+             dropOffDate = course['dropOffDate'];
+          }
+          if(courseData.containsKey('orderUrl')){
+             orderUrl = course['orderUrl'];
+          }
+          Timestamp date = course['pickUpDate'];
+
+
+          if(courseData.containsKey('idAdmin')) {
+            if (course['idAdmin'] == loginController.idAdmin.value) {
+              coursesListAdmin.add(
+                  Course(
+                    check: course['check'],
+                    adminId: course['idAdmin'],
+                    id: course.id,
+                    pickUpLocation: course['pickUpLocation'],
+                    dropOffLocation: course['dropOffLocation'],
+                    pickUpDate: date.toDate(),
+                    passengersNum: course['passengersNum'],
+                    seatingCapacity: course['seatingCapacity'],
+                    regNumber: course['regNumber'],
+                    driverName: course['driverName'],
+                    seen: course['seen'],
+                    identityNum: course['identityNum'],
+                    passengersDetails: passengersDetailsFetch,
+                    orderUrl: orderUrl,
+                    dropOffDate: dropOffDate?.toDate(),
+                  )
+              );
+            }
+          }
+          else{
+            coursesListDriver.add(
                 Course(
+                  check: course['check'],
                   id: course.id,
                   pickUpLocation: course['pickUpLocation'],
                   dropOffLocation: course['dropOffLocation'],
-                  pickUpDate:date.toDate(),
+                  pickUpDate: date.toDate(),
                   passengersNum: course['passengersNum'],
-                  seatingCapacity:course['seatingCapacity'],
+                  seatingCapacity: course['seatingCapacity'],
                   regNumber: course['regNumber'],
                   driverName: course['driverName'],
-                  seen: course['seen'],
                   identityNum: course['identityNum'],
-                )
-            );}
-          else if(date.toDate().year==DateTime.now().add(Duration(days: 1)).year && date.toDate().month==DateTime.now().add(Duration(days: 1)).month && date.toDate().day==DateTime.now().add(Duration(days: 1)).day)
-            {
-
-              coursesListTomorrow.add(
-                Course(
-                  id: course.id,
-                  pickUpLocation: course['pickUpLocation'],
-                  dropOffLocation: course['dropOffLocation'],
-                  pickUpDate:date.toDate(),
-                  passengersNum: course['passengersNum'],
-                  seatingCapacity:course['seatingCapacity'],
-                  regNumber: course['regNumber'],
-                  driverName: course['driverName'],
-                  seen: course['seen'],
-                  identityNum: course['identityNum'],
-
+                  passengersDetails: passengersDetailsFetch,
+                  orderUrl: orderUrl,
+                  dropOffDate: dropOffDate?.toDate(),
                 )
             );
-            }
-            else {
-        coursesList.add(
-                Course(
-                  id: course.id,
-                  pickUpLocation: course['pickUpLocation'],
-                  dropOffLocation: course['dropOffLocation'],
-                  pickUpDate:date.toDate(),
-                  passengersNum: course['passengersNum'],
-                  seatingCapacity:course['seatingCapacity'],
-                  regNumber: course['regNumber'],
-                  driverName: course['driverName'],
-                  seen: course['seen'],
-                  identityNum: course['identityNum'],
-                )
-            );
-            }
+          }
+
+
+        }catch(e){
+          print(e.toString());
         }
       }
 
+    filterCoursesTodayAdmin();
+    filterCoursesTomorrowAdmin();
+    filterCoursesOthersAdmin();
 
-    // } catch (e) {
-    //   print('Error '+ e.toString());
-    // }
+////////////////////////
+    filterCoursesTodayDriver();
+    filterCoursesTomorrowDriver();
+    filterCoursesOthersDriver();
 
+      isLoading.value=false;
+
+    } catch (e) {
+      print('Error '+ e.toString());
+    }
   }
 
   Future add_course(CourseModel d)async{
@@ -258,8 +229,104 @@ class CoursesController extends GetxController{
   Future delete_course(String id )async{
     await courses.doc(id).delete();
   }
-  ////////////////////////////////////////*
+  ///////////////admin/////////////////////////
+  void filterCoursesTodayAdmin() {
+    coursesListToday.assignAll(coursesListAdmin.where((course) =>
+    course.pickUpDate.year == DateTime.now().year
+    && course.pickUpDate.month == DateTime.now().month
+    && course.pickUpDate.day == DateTime.now().day
+    ));
+  }
+  void filterCoursesTomorrowAdmin() {
+    coursesListTomorrow.assignAll(coursesListAdmin.where((course) =>
+    course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
+    && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
+    && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
+    ));
+  }
+  void filterCoursesOthersAdmin() {
+    coursesList.assignAll(coursesListAdmin.where((course) =>
+        // course.pickUpDate.year != DateTime.now().add(Duration(days: 1)).year
+        // && course.pickUpDate.month != DateTime.now().add(Duration(days: 1)).month
+        // && course.pickUpDate.day != DateTime.now().add(Duration(days: 1)).day
+        // && course.pickUpDate.year != DateTime.now().year
+        // && course.pickUpDate.month != DateTime.now().month
+        // && course.pickUpDate.day != DateTime.now().day
+      !coursesListToday.contains(course)
+        && !coursesListTomorrow.contains(course)
+    ));
+  }
+///////////////////driver///////////////////////////
+  void filterCoursesTodayDriver() {
+    coursesListTodayDrivers.assignAll(coursesListDriver.where((course) =>
+    course.pickUpDate.year == DateTime.now().year
+        && course.pickUpDate.month == DateTime.now().month
+        && course.pickUpDate.day == DateTime.now().day
+    ));
+  }
+  void filterCoursesTomorrowDriver() {
+    coursesListTomorrowDrivers.assignAll(coursesListDriver.where((course) =>
+    course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
+        && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
+        && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
+    ));
+  }
+  void filterCoursesOthersDriver() {
+    coursesListDrivers.assignAll(coursesListDriver.where((course) =>
+    // course.pickUpDate.year != DateTime.now().add(Duration(days: 1)).year
+    // && course.pickUpDate.month != DateTime.now().add(Duration(days: 1)).month
+    // && course.pickUpDate.day != DateTime.now().add(Duration(days: 1)).day
+    // && course.pickUpDate.year != DateTime.now().year
+    // && course.pickUpDate.month != DateTime.now().month
+    // && course.pickUpDate.day != DateTime.now().day
+    !coursesListTodayDrivers.contains(course)
+        && !coursesListTomorrowDrivers.contains(course)
+    ));
+  }
 
+  void filter(String prefix){
+    coursesListToday.assignAll(coursesListAdmin.where((course) =>
+        course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && course.pickUpDate.year == DateTime.now().year
+            && course.pickUpDate.month == DateTime.now().month
+            && course.pickUpDate.day == DateTime.now().day
+    ));
+    coursesListTomorrow.assignAll(coursesListAdmin.where((course) =>
+    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
+        && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
+        && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
+    ));
+
+    coursesList.assignAll(coursesListAdmin.where((course) =>
+    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && !coursesListToday.contains(course)
+        && !coursesListTomorrow.contains(course)
+    ));
+
+
+    coursesListTodayDrivers.assignAll(coursesListDriver.where((course) =>
+        course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && course.pickUpDate.year == DateTime.now().year
+            && course.pickUpDate.month == DateTime.now().month
+            && course.pickUpDate.day == DateTime.now().day
+    ));
+    coursesListTomorrowDrivers.assignAll(coursesListDriver.where((course) =>
+    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
+        && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
+        && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
+    ));
+
+    coursesListDrivers.assignAll(coursesListDriver.where((course) =>
+    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+        && !coursesListToday.contains(course)
+        && !coursesListTomorrow.contains(course)
+    ));
+
+
+
+  }
 
 ///////////////////////////pick excel for car/////////////////////////////////////////
   RxList<rowdata> passengerCarDetails =RxList<rowdata>([]);
@@ -295,6 +362,7 @@ class CoursesController extends GetxController{
           );
       }
     }
+    passengerCarDetails.length;
   }
 ////////////////////////////////////////////////////////////////////
 ///////////////////////////pick excel for bus/////////////////////////////////////////
@@ -303,7 +371,6 @@ class CoursesController extends GetxController{
   String? filePassenger;
   Future importFromExcelForPassenger() async {
 
-    passengerDetails =RxList<rowdata>([]);
 
     FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -315,6 +382,7 @@ class CoursesController extends GetxController{
     var bytes = File(file!).readAsBytesSync();
     var excel = Excel.decodeBytes(bytes);
     var isFirstRow = true;
+    passengerDetails =RxList<rowdata>([]);
     for (var table in excel.tables.keys) {
       for (var row in excel.tables[table]!.rows) {
         if (isFirstRow) {
@@ -331,8 +399,22 @@ class CoursesController extends GetxController{
         );
       }
     }
+    passengerDetails.length;
   }
 ////////////////////////////////////////////////////////////////////
+
+
+  // void showToast(String message) {
+  //   Fluttertoast.showToast(
+  //     msg: message,
+  //     toastLength: Toast.LENGTH_SHORT,
+  //     gravity: ToastGravity.BOTTOM,
+  //     timeInSecForIosWeb: 1,
+  //     backgroundColor: Colors.grey,
+  //     textColor: Colors.white,
+  //     fontSize: 16.0,
+  //   );
+  // }
 
 
 }

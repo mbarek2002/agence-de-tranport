@@ -217,7 +217,7 @@ class DriversController extends GetxController{
   //   print("length"+driverList.length.toString());
   //
   // }
-  var isLoading = false.obs;
+  RxBool isLoading = false.obs;
   var driverList = <DriverModel>[].obs;
   var filteredList = <DriverModel>[].obs;
   var driversNameList = <String>[].obs;
@@ -231,7 +231,6 @@ class DriversController extends GetxController{
       driverList.clear();
       driversNameList.clear();
       identityDriverList.clear();
-      print('entreee');
       for (var driver in drivers.docs) {
         driverList.add(
             DriverModel(
@@ -258,10 +257,7 @@ class DriversController extends GetxController{
         driversNameList.add(driver['firstName']+" "+driver['lastName']);
         identityDriverList.add(driver['identityNumber']);
       }
-      print(driverList.length);
-      print(filteredList.length);
 
-      // Copy the filteredList into driverList
       filteredList.clear();
       filteredList.addAll(driverList);
 
@@ -271,23 +267,25 @@ class DriversController extends GetxController{
     }
   }
   void updateList(String value){
+
+    filteredList.assignAll(driverList.where((driver) =>
+        (driver.firstName.toLowerCase()+" "+driver.lastName.toLowerCase())!.startsWith(value.toLowerCase())));
     // filteredList.value = driverList.where(
     //         (element) =>
     //     element.firstName!.toLowerCase().capitalize!.contains(value.toLowerCase())).toList();
-    filteredList.clear();
-    if (value.isEmpty) {
-      // If search query is empty, show all drivers
-      filteredList.addAll(driverList);
-    } else {
-      for (var driver in driverList) {
-        if (driver.firstName.toLowerCase().contains(value.toLowerCase()) ||
-            driver.lastName.toLowerCase().contains(value.toLowerCase())) {
-          filteredList.add(driver);
-        }
-      }
-    }
-
+    // filteredList.clear();
+    // if (value.isEmpty) {
+    //   filteredList.addAll(driverList);
+    // } else {
+    //   for (var driver in driverList) {
+    //     if (driver.firstName.toLowerCase().contains(value.toLowerCase()) ||
+    //         driver.lastName.toLowerCase().contains(value.toLowerCase())) {
+    //       filteredList.add(driver);
+    //     }
+    //   }
+    // }
   }
+
 }
 
 

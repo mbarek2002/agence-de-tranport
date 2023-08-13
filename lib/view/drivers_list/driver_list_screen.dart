@@ -1,3 +1,4 @@
+import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/view/drivers_list/add_driver.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
@@ -22,12 +23,17 @@ class _DriversListScreenState extends State<DriversListScreen> {
 
   // DriversController DriversController = Get.put(DriversController());
   LoginController loginController =Get.put(LoginController());
+  HomeController homeController = Get.put(HomeController());
 
 
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('////////////////////');
+
     driversController.fetchDrivers();
+    print('////////////////////');
+    print(homeController.box.read('email'));
   }
 
   DriversController driversController = Get.put(DriversController());
@@ -105,7 +111,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                   SizedBox(height: 35,),
                   Container(
                     width: MediaQuery.of(context).size.width*0.9,
-                    child: Column(
+                    child:Obx(()=> Column(
                       children: [
                         TextFormField(
                           onChanged: (value)=>driversController.updateList(value),
@@ -135,12 +141,13 @@ class _DriversListScreenState extends State<DriversListScreen> {
                         ),
                         SizedBox(height: 30,),
                         Center(
-                          child: SingleChildScrollView(
+                          child:
+                              SingleChildScrollView(
                             child: Container(
                                 height: MediaQuery.of(context).size.height*0.6,
                                 width: MediaQuery.of(context).size.width*0.9,
                                 child:
-                                Obx(()=>RefreshIndicator(
+                                RefreshIndicator(
                                   onRefresh: (){
                                     driversController.fetchDrivers();
                                     return Future.delayed(
@@ -354,14 +361,13 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                       );
                                     },
                                   ),
-                                ))
-                              //     }
-                              // ),
+                                )
+
                             ),
                           ),
                         )
                       ],
-                    ),
+                    )),
                   ),
                 ],
               ),

@@ -14,13 +14,15 @@ class Course {
   String? orderUrl;
   List<rowdata>? passengersDetails;
   int? identityNum;
-  bool seen;
+  bool? seen;
+  String check;
 
 
 
-  Course({this.id,this.adminId,required  this.pickUpLocation,required this.dropOffLocation,this.dropOffDate,
+
+      Course({this.id,this.adminId,required  this.pickUpLocation,required this.dropOffLocation,this.dropOffDate,
     required this.pickUpDate, required this.passengersNum, required this.seatingCapacity, required this.regNumber
-    ,required this.driverName, this.orderUrl,this.passengersDetails,required this.seen,
+    ,required this.driverName, this.orderUrl,this.passengersDetails, this.seen,required this.check,
     this.identityNum});
 
 

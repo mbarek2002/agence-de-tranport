@@ -1,5 +1,6 @@
 import 'package:admin_citygo/controllers/courses/courses_controller.dart';
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
+import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/controllers/notication_new_driver/notication_new_driver_controller.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:get_storage/get_storage.dart';
 
 
 
@@ -28,15 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
   DriversController  driversController =Get.put(DriversController());
   CoursesController coursesController = Get.put(CoursesController());
 
-
+  HomeController homeController = Get.put(HomeController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
-
-    // coursesController.fetchCourses();
+    homeController.box.write("email", FirebaseAuth.instance.currentUser!.email.toString());
   }
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
                      IconButton(
                          onPressed: (){
                        LoginController().signAdminOut();
+                       homeController.box.remove("email");
                        Get.offAll(()=>LogInScreen());
-                     },icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
+                     }
+                     ,icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
                    ],
                  ),
            ),
@@ -286,8 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             fit: BoxFit.cover,
                             image:
                             NetworkImage(
-                              loginController.adminImageUrl.value),
-                        )
+                              loginController.adminImageUrl.value
+                            ),
+                          )
                         ),
                         height: 60,
                         width: 60,
@@ -297,24 +300,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                ),
                 
-                onTap: ()=>Get.to(()=>HomeScreen()),
-              ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height* .3,
-            width: MediaQuery.of(context).size.width*1.52,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              // height: 20,
-              alignment: Alignment.center,
-              child: Container(
-                width: 20,
-                height: 20,
-                child:  Icon(Icons.add,color: Color(0xFF0F5CA0),size: 30,)
-              ),
-            ),
-          ),
+                onTap: () {
+                  Get.to(() => HomeScreen());
+                }
+
+                ),
+                ),
+                ),
+          //       Positioned(
+          //       top: MediaQuery.of(context).size.height* .3,
+          //       width: MediaQuery.of(context).size.width*1.52,
+          //       child: Container(
+          //       width: MediaQuery.of(context).size.width,
+          //       // height: 20,
+          //       alignment: Alignment.center,
+          //       child: Container(
+          //       width: 20,
+          //       height: 20,
+          //       child:  Icon(Icons.add,color: Color(0xFF0F5CA0),
+          //       size: 30,)
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
