@@ -1,4 +1,3 @@
-import 'package:admin_citygo/Binding/controller_binding.dart';
 import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:admin_citygo/view/splash_screen/splash_screen.dart';
@@ -14,7 +13,7 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FlutterDownloader.initialize(debug: true);
+  await FlutterDownloader.initialize(debug: true,ignoreSsl: true);
   await GetStorage.init();
   runApp(const MyApp());
 }

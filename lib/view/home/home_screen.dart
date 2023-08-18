@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Obx(() {
                     if (loginController.isLoading.value) {
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     } else {
                       return Container(
                         decoration: BoxDecoration(
@@ -301,27 +301,12 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
                 
                 onTap: () {
-                  Get.to(() => HomeScreen());
+                  Get.offAll(() => HomeScreen());
                 }
 
                 ),
                 ),
                 ),
-          //       Positioned(
-          //       top: MediaQuery.of(context).size.height* .3,
-          //       width: MediaQuery.of(context).size.width*1.52,
-          //       child: Container(
-          //       width: MediaQuery.of(context).size.width,
-          //       // height: 20,
-          //       alignment: Alignment.center,
-          //       child: Container(
-          //       width: 20,
-          //       height: 20,
-          //       child:  Icon(Icons.add,color: Color(0xFF0F5CA0),
-          //       size: 30,)
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

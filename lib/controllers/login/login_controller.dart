@@ -95,5 +95,4 @@ class LoginController extends GetxController{
   void signAdminOut(){
     FirebaseAuth.instance.signOut();
   }
-
 }

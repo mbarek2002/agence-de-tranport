@@ -1,5 +1,4 @@
 
-
 class AdminModel{
   final String UserName;
   final String title;

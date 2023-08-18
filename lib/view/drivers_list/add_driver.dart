@@ -251,6 +251,21 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                             TextFormField(
                               controller: controller.identityNumberController,
                               keyboardType: TextInputType.number,
+                              onChanged: (val){
+
+                                print(controller.identityDriverList.contains(val));
+                                print(val);
+                                if(controller.identityDriverList.contains(val)){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'choose an order picture and a passengers list'
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please entre Identity Number';
@@ -302,6 +317,9 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                   return 'Please entre Email';
                                 }else if(!GetUtils.isEmail(value)){
                                   return 'Please entre that contains @ and .';
+                                }
+                                else if(controller.driverEmailList.contains(value)){
+                                  return 'this email is already used';
                                 }
                                 return null;
                               },
@@ -568,39 +586,47 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
     );
   }
   Widget imageProfile(){
-     return Stack(
+     return Column(
        children: <Widget>[
-         Center(
-           child: CircleAvatar(
-             backgroundColor: Colors.white10,
-             radius: 35.0,
-             child:_image == null
-                 ? Image(image: AssetImage('assets/images/Exclude.png'),fit: BoxFit.fill,width: 70,)
-                   :ClipOval(child: Image.file(_image!,width:70,fit: BoxFit.cover,))
+         GestureDetector(
+           onTap: (){
+             showModalBottomSheet(
+                 context: context,
+                 builder: ((builder)=>bottomSheet())
+             );
+           },
+           child: Center(
+             child: CircleAvatar(
+               backgroundColor: Colors.white10,
+               radius: 35.0,
+               child:_image == null
+                   ? Image(image: AssetImage('assets/images/Exclude.png'),fit: BoxFit.fill,width: 70,)
+                     :ClipOval(child: Image.file(_image!,width:70,fit: BoxFit.cover,))
+             ),
            ),
          ),
 
-         Positioned(
-           bottom: 5,
-             right: 100,
-             child: InkWell(
-               onTap: (){
-                 showModalBottomSheet(
-                     context: context,
-                     builder: ((builder)=>bottomSheet())
-                 );
-               },
-               child: Container(
-                 width: 20,
-                 height: 20,
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(45),
-                    color: Color(0xFF373737)
-                 ),
-                   child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
-               ),
-             )
-         )
+         // Container(
+         //   // top: MediaQuery.of(context).size.height*0.05,
+         //   //   right: MediaQuery.of(context).size.width*0.25,
+         //     child: InkWell(
+         //       onTap: (){
+         //         showModalBottomSheet(
+         //             context: context,
+         //             builder: ((builder)=>bottomSheet())
+         //         );
+         //       },
+         //       child: Container(
+         //         width: 20,
+         //         height: 20,
+         //         decoration: BoxDecoration(
+         //           borderRadius: BorderRadius.circular(45),
+         //            color: Color(0xFF373737)
+         //         ),
+         //           child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
+         //       ),
+         //     )
+         // )
        ],
      );
   }

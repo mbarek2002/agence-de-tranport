@@ -7,8 +7,6 @@ import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/models/course_model.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
-import 'package:admin_citygo/view/courses_list/add_course_xl.dart';
-import 'package:admin_citygo/view/courses_list/edit_course_xl.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -739,29 +737,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                             numeric: true,
                                                                           ),
                                                                         ],
-                                                                        // rows: const <DataRow>[
-                                                                        //   DataRow(
-                                                                        //     cells: <DataCell>[
-                                                                        //       DataCell(Text('Sarah')),
-                                                                        //       DataCell(Text('19')),
-                                                                        //       DataCell(Text('Student')),
-                                                                        //     ],
-                                                                        //   ),
-                                                                        //   DataRow(
-                                                                        //     cells: <DataCell>[
-                                                                        //       DataCell(Text('Janine')),
-                                                                        //       DataCell(Text('43')),
-                                                                        //       DataCell(Text('Professor')),
-                                                                        //     ],
-                                                                        //   ),
-                                                                        //   DataRow(
-                                                                        //     cells: <DataCell>[
-                                                                        //       DataCell(Text('William')),
-                                                                        //       DataCell(Text('27')),
-                                                                        //       DataCell(Text('Associate Professor')),
-                                                                        //     ],
-                                                                        //   ),
-                                                                        // ],
+                                                                      
                                                                         rows: List<DataRow>.generate(coursesController.passengerDetails.length, (int index) =>
                                                                             DataRow(
                                                                                 cells:<DataCell>[

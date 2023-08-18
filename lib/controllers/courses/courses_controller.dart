@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_excel/excel.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CoursesController extends GetxController{
 
@@ -20,6 +22,9 @@ class CoursesController extends GetxController{
   TextEditingController luggageConroller= TextEditingController();
   TextEditingController regNumberController= TextEditingController();
   TextEditingController seatingCapacityController= TextEditingController();
+  TextEditingController luggageBigSizeController= TextEditingController();
+  TextEditingController luggageMediumSizeController= TextEditingController();
+  TextEditingController collieController= TextEditingController();
 
   CollectionReference courses = FirebaseFirestore.instance.collection("courses");
 
@@ -36,6 +41,11 @@ class CoursesController extends GetxController{
   RxBool validLicenceType=false.obs;
 
   RxString image=''.obs;
+  RxString imageCar1=''.obs;
+  RxString imageCar2=''.obs;
+  RxString imageCar3=''.obs;
+  RxString imageCar4=''.obs;
+
 
   RxBool isChecked = true.obs;
   RxBool isLoading = false.obs;
@@ -44,17 +54,85 @@ class CoursesController extends GetxController{
   RxBool checkBox1 = false.obs;
   RxBool checkBox2 = false.obs;
 
+  RxInt usedLuggageBigSize=0.obs;
+  RxInt usedLuggageMediumSize=0.obs;
+  RxInt usedCollie=0.obs;
+
+  var carImage1URL="".obs;
+  var carImage2URL="".obs;
+  var carImage3URL="".obs;
+  var carImage4URL="".obs;
+
+//////////////////////////check list//////////////////////////////
+
+  RxBool checkList = false.obs;
+  RxBool checkList1 = false.obs;
+  RxBool checkList2 = false.obs;
+  RxBool checkList3 = false.obs;
+  RxBool checkList4 = false.obs;
+  RxBool checkList5 = false.obs;
+  RxBool checkList6 = false.obs;
+  RxBool checkList7 = false.obs;
+  RxBool checkList8 = false.obs;
+  RxBool checkList9 = false.obs;
+  RxBool checkList10 = false.obs;
+  RxBool checkList11 = false.obs;
+  RxBool checkList12 = false.obs;
+  RxBool checkList13 = false.obs;
+  RxBool checkList14 = false.obs;
+  RxBool checkList15 = false.obs;
+  RxBool checkList16 = false.obs;
+
+  var checkListTable = <checklistData>[].obs;
+
+
+////////////////////////////end check list///////////////////////////////////
   void init(){
     image.value='';
     selectedItem.value = 'Driver name';
-    // formNum.value = 1;
     validLicenceType.value=false;
     passengerCarDetails=RxList<rowdata>([]);
     passengerDetails=RxList<rowdata>([]);
-    isReturn = false.obs;
-    checkBox1 = false.obs;
-    checkBox2 = false.obs;
+    isReturn.value = false;
+    checkBox1.value = false;
+    checkBox2.value = false;
+
+
+     usedLuggageBigSize.value=0;
+     usedLuggageMediumSize.value=0;
+     usedCollie.value=0;
+
+     image.value="";
+     imageCar1.value="";
+     imageCar2.value="";
+     imageCar3.value="";
+     imageCar4.value="";
+
+     carImage1URL.value="";
+     carImage2URL.value="";
+     carImage3URL.value="";
+     carImage4URL.value="";
+
+     checkList.value = false;
+     checkList1.value = false;
+     checkList2.value = false;
+     checkList3.value = false;
+     checkList4.value = false;
+     checkList5.value = false;
+     checkList6.value = false;
+     checkList7.value = false;
+     checkList8.value = false;
+     checkList9.value = false;
+     checkList10.value = false;
+     checkList11.value = false;
+     checkList12.value = false;
+     checkList13.value = false;
+     checkList14.value = false;
+     checkList15.value = false;
+     checkList16.value = false;
+
   }
+
   Future<void> pickOrderFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf','png','jpg']);
 
@@ -96,6 +174,16 @@ class CoursesController extends GetxController{
 
 /////////////////crud opertion///////////////////////
   List<rowdata>? passengersDetailsFetch;
+  List<checklistData>? carDetailsFetch;
+
+  int? collie;
+  int? luggageBigSize;
+  int? luggageMediumSize;
+  String? carImg1Url;
+  String? carImg2Url;
+  String? carImg3Url;
+  String? carImg4Url;
+
   Future<void> fetchCourses() async {
     try {
       isLoading.value=true;
@@ -107,8 +195,10 @@ class CoursesController extends GetxController{
 
       for (var course in courses.docs) {
         var courseData = course.data() as Map<String, dynamic>;
-
+          print(course.id);
         try {
+        //   passengersDetailsFetch?.clear();
+        //   carDetailsFetch?.clear();
           if (courseData.containsKey('passengersDetails')) {
             List<dynamic>? passengersDetailsData = courseData['passengersDetails'];
             passengersDetailsFetch = passengersDetailsData?.map(
@@ -120,17 +210,65 @@ class CoursesController extends GetxController{
                   ),
             ).toList();
           }
+          if (courseData.containsKey('checkCarDetails')) {
+            List<dynamic>?  carDetailsData = courseData['checkCarDetails'];
+            carDetailsFetch = carDetailsData?.map(
+                  (carData) =>
+                      checklistData(
+                    name: carData['name'],
+                    state: carData['state'],
+                  ),
+            ).toList();
+
+          }
           if(courseData.containsKey('dropOffDate')){
              dropOffDate = course['dropOffDate'];
           }
           if(courseData.containsKey('orderUrl')){
              orderUrl = course['orderUrl'];
           }
+
+          if(courseData.containsKey('carImage1URL')){
+            carImg1Url = course['carImage1URL'];
+          }
+          if(courseData.containsKey('carImage2URL')){
+            carImg2Url = course['carImage2URL'];
+          }
+          if(courseData.containsKey('carImage3URL')){
+            carImg3Url = course['carImage3URL'];
+          }
+          if(courseData.containsKey('carImage4URL')){
+            carImg4Url = course['carImage4URL'];
+          }
+
+          if(courseData.containsKey('collie')){
+            collie = course['collie'];
+          }
+          if(courseData.containsKey('luggageBigSize')){
+            luggageBigSize = course['luggageBigSize'];
+          }
+          if(courseData.containsKey('luggageMediumSize')){
+            luggageMediumSize = course['luggageMediumSize'];
+          }
+
+          if(courseData.containsKey('usedCollie')){
+            usedCollie.value = course['usedCollie'];
+          }
+          if(courseData.containsKey('usedLuggageBigSize')){
+            usedLuggageBigSize.value = course['usedLuggageBigSize'];
+          }
+          if(courseData.containsKey('usedLuggageMediumSize')){
+            usedLuggageMediumSize.value = course['usedLuggageMediumSize'];
+          }
+
+
+
           Timestamp date = course['pickUpDate'];
 
 
           if(courseData.containsKey('idAdmin')) {
             if (course['idAdmin'] == loginController.idAdmin.value) {
+
               coursesListAdmin.add(
                   Course(
                     check: course['check'],
@@ -146,8 +284,19 @@ class CoursesController extends GetxController{
                     seen: course['seen'],
                     identityNum: course['identityNum'],
                     passengersDetails: passengersDetailsFetch,
+                    carListDetails: carDetailsFetch,
                     orderUrl: orderUrl,
                     dropOffDate: dropOffDate?.toDate(),
+                    carImage1URL: carImg1Url,
+                    carImage2URL: carImg2Url,
+                    carImage3URL: carImg3Url,
+                    carImage4URL: carImg4Url,
+                    collie: collie,
+                    usedCollie: usedCollie.value,
+                    luggageBigSize: luggageBigSize,
+                    usedLuggageBigSize: usedLuggageBigSize.value,
+                    luggageMediumSize: luggageMediumSize,
+                    usedLuggageMediumSize: usedLuggageMediumSize.value
                   )
               );
             }
@@ -178,6 +327,8 @@ class CoursesController extends GetxController{
         }
       }
 
+
+
     filterCoursesTodayAdmin();
     filterCoursesTomorrowAdmin();
     filterCoursesOthersAdmin();
@@ -207,7 +358,6 @@ class CoursesController extends GetxController{
       if(d.passengersNum!=null)"passengersNum":d.passengersNum,
       if(d.passengersDetails!=null)"passengersDetails": d.passengersDetails?.map((passenger) => passenger.toJson()).toList(),
     });
-
   }
 
   Future update_course(CourseModel d)async{
@@ -243,17 +393,16 @@ class CoursesController extends GetxController{
     && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
     && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
     ));
+    print("///////////////");
+    print(coursesListTomorrow[0].carListDetails!.length);
+    print(coursesListTomorrow[0].carImage1URL);
+
   }
   void filterCoursesOthersAdmin() {
     coursesList.assignAll(coursesListAdmin.where((course) =>
-        // course.pickUpDate.year != DateTime.now().add(Duration(days: 1)).year
-        // && course.pickUpDate.month != DateTime.now().add(Duration(days: 1)).month
-        // && course.pickUpDate.day != DateTime.now().add(Duration(days: 1)).day
-        // && course.pickUpDate.year != DateTime.now().year
-        // && course.pickUpDate.month != DateTime.now().month
-        // && course.pickUpDate.day != DateTime.now().day
-      !coursesListToday.contains(course)
-        && !coursesListTomorrow.contains(course)
+    course.pickUpDate.year >= DateTime.now().add(Duration(days: 1)).year
+        && course.pickUpDate.month >= DateTime.now().add(Duration(days: 1)).month
+        && course.pickUpDate.day > DateTime.now().add(Duration(days: 1)).day
     ));
   }
 ///////////////////driver///////////////////////////
@@ -273,61 +422,54 @@ class CoursesController extends GetxController{
   }
   void filterCoursesOthersDriver() {
     coursesListDrivers.assignAll(coursesListDriver.where((course) =>
-    // course.pickUpDate.year != DateTime.now().add(Duration(days: 1)).year
-    // && course.pickUpDate.month != DateTime.now().add(Duration(days: 1)).month
-    // && course.pickUpDate.day != DateTime.now().add(Duration(days: 1)).day
-    // && course.pickUpDate.year != DateTime.now().year
-    // && course.pickUpDate.month != DateTime.now().month
-    // && course.pickUpDate.day != DateTime.now().day
-    !coursesListTodayDrivers.contains(course)
-        && !coursesListTomorrowDrivers.contains(course)
+    course.pickUpDate.year >= DateTime.now().add(Duration(days: 1)).year
+        && course.pickUpDate.month >= DateTime.now().add(Duration(days: 1)).month
+        && course.pickUpDate.day > DateTime.now().add(Duration(days: 1)).day
     ));
   }
 
+
   void filter(String prefix){
     coursesListToday.assignAll(coursesListAdmin.where((course) =>
-        course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && course.pickUpDate.year == DateTime.now().year
-            && course.pickUpDate.month == DateTime.now().month
-            && course.pickUpDate.day == DateTime.now().day
+        && course.pickUpDate.month == DateTime.now().month
+        && course.pickUpDate.day == DateTime.now().day
     ));
     coursesListTomorrow.assignAll(coursesListAdmin.where((course) =>
-    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
         && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
         && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
     ));
 
     coursesList.assignAll(coursesListAdmin.where((course) =>
-    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && !coursesListToday.contains(course)
         && !coursesListTomorrow.contains(course)
     ));
 
 
     coursesListTodayDrivers.assignAll(coursesListDriver.where((course) =>
-        course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && course.pickUpDate.year == DateTime.now().year
-            && course.pickUpDate.month == DateTime.now().month
-            && course.pickUpDate.day == DateTime.now().day
+        && course.pickUpDate.month == DateTime.now().month
+        && course.pickUpDate.day == DateTime.now().day
     ));
     coursesListTomorrowDrivers.assignAll(coursesListDriver.where((course) =>
-    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year
         && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
         && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
     ));
 
     coursesListDrivers.assignAll(coursesListDriver.where((course) =>
-    course.driverName.toLowerCase()!.startsWith(prefix.toLowerCase())
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && !coursesListToday.contains(course)
         && !coursesListTomorrow.contains(course)
     ));
 
-
-
   }
-
 ///////////////////////////pick excel for car/////////////////////////////////////////
   RxList<rowdata> passengerCarDetails =RxList<rowdata>([]);
 
@@ -401,20 +543,6 @@ class CoursesController extends GetxController{
     }
     passengerDetails.length;
   }
-////////////////////////////////////////////////////////////////////
-
-
-  // void showToast(String message) {
-  //   Fluttertoast.showToast(
-  //     msg: message,
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //     timeInSecForIosWeb: 1,
-  //     backgroundColor: Colors.grey,
-  //     textColor: Colors.white,
-  //     fontSize: 16.0,
-  //   );
-  // }
 
 
 }
@@ -423,7 +551,9 @@ class rowdata {
   final String firstname;
   final String lastName;
   final String identityNum;
-  rowdata({required this.firstname, required this.lastName, required this.identityNum});
+
+  rowdata(
+      {required this.firstname, required this.lastName, required this.identityNum});
 
   Map<String, dynamic> toJson() {
     return {
@@ -432,5 +562,18 @@ class rowdata {
       'identityNum': identityNum,
     };
   }
+}
 
+class checklistData{
+  final String name;
+  final bool state;
+
+  checklistData({required this.name, required this.state});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'state': state,
+    };
+  }
 }

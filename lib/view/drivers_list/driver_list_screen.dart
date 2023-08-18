@@ -2,6 +2,7 @@ import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/view/drivers_list/add_driver.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
+import 'package:admin_citygo/view/drivers_list/driverDetails.dart';
 import 'package:admin_citygo/view/drivers_list/edit_driver.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,7 +50,6 @@ class _DriversListScreenState extends State<DriversListScreen> {
             color: Colors.white,
           ),
           onPressed: (){
-            // Get.to(()=>AddDriverScreen);
             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddDriverScreen()));
             print("add");
           },
@@ -140,7 +140,10 @@ class _DriversListScreenState extends State<DriversListScreen> {
                           // style:,
                         ),
                         SizedBox(height: 30,),
-                        Center(
+                        if(driversController.isLoading.value)
+                          Center(child: CircularProgressIndicator(),)
+                        else
+                          Center(
                           child:
                               SingleChildScrollView(
                             child: Container(
@@ -168,19 +171,17 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                               width: 50,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(50),
+                                                color: Colors.white
                                               ),
-                                              child: Stack(
+                                              child: Column(
                                                 children: [
-                                                  // Center(child: ClipOval(child: Image(
-                                                  //     image:records['driverImage'] != ''
-                                                  //     ?NetworkImage(records['driverImage'])
-                                                  //     :AssetImage('assets/images/Exclude.png')
-                                                  //     ,width:50,height:50,fit: BoxFit.cover)))
-                                                  // try{
-                                                  if(driversController.driverList[index].driverImage != '')
+                                                  if(driversController.filteredList[index].driverImage != '')
                                                     Center(
                                                         child:ClipOval(
-                                                          child:Image(image: NetworkImage(driversController.driverList[index].driverImage)
+                                                          child:Image(
+                                                              image: NetworkImage(
+                                                                  driversController.filteredList[index].driverImage
+                                                              )
                                                               ,width:50,height:50,fit: BoxFit.cover),
                                                         )
                                                     )
@@ -188,38 +189,37 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                       child:ClipOval(child:Image(image: AssetImage('assets/images/Exclude.png')
                                                           ,width:50,height:50,fit: BoxFit.cover))
                                                   )
-                                                  // }catch{
-                                                  // Center(
-                                                  // child:ClipOval(child:Image(image: AssetImage('assets/images/Exclude.png')
-                                                  // ,width:50,height:50,fit: BoxFit.cover))
-                                                  // )
-                                                  // }
                                                 ],
                                               ),
                                             ),
                                             SizedBox(width: 10,),
-                                            Container(
-                                              width:MediaQuery.of(context).size.width*.55,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(width: 15,),
-                                                  Text(driversController.driverList[index].firstName+ " " + driversController.driverList[index].lastName,
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: "Georgia"
+                                            GestureDetector(
+                                              onTap: (){
+                                                Get.to(()=>DriverDetails(record: driversController.filteredList[index]));
+                                              },
+                                              child: Container(
+                                                width:MediaQuery.of(context).size.width*.55,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(width: 15,),
+                                                    Text(driversController.filteredList[index].firstName+ " " + driversController.filteredList[index].lastName,
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontFamily: "Georgia"
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 60 ,),
-                                                  Container(
-                                                    width:MediaQuery.of(context).size.width*.45,                                                          height: 1,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        color: Colors.white
-                                                    ),
-                                                  )
-                                                ],
+                                                    SizedBox(width: 60 ,),
+                                                    Container(
+                                                      width:MediaQuery.of(context).size.width*.45,                                                          height: 1,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(20),
+                                                          color: Colors.white
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             GestureDetector(
@@ -262,7 +262,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 mainAxisSize: MainAxisSize.min,
                                                                 children: <Widget>[
-                                                                  Text(driversController.driverList[index].firstName+" "+driversController.driverList[index].lastName,
+                                                                  Text(driversController.filteredList[index].firstName+" "+driversController.filteredList[index].lastName,
                                                                     style: TextStyle(
                                                                         fontSize: 30,
                                                                         color: Colors.white,
@@ -280,15 +280,15 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                       ),
                                                                       child: const Text('Delete',style: TextStyle(fontFamily: "Georgia",fontSize: 20),),
                                                                       onPressed: (){
-                                                                        if(driversController.driverList[index].driverImage!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].driverImage).delete();
-                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].identityCardImageFace1).delete();
-                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].identityCardImageFace2).delete();
-                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].licenceImageFace1).delete();
-                                                                        FirebaseStorage.instance.refFromURL(driversController.driverList[index].licenceImageFace2).delete();
-                                                                        if(driversController.driverList[index].moreImage1!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage1!).delete();
-                                                                        if(driversController.driverList[index].moreImage2!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage2!).delete();
-                                                                        if(driversController.driverList[index].moreImage3!="")FirebaseStorage.instance.refFromURL(driversController.driverList[index].moreImage3!).delete();
-                                                                        driversController.delete_driver(driversController.driverList[index].id!);
+                                                                        if(driversController.filteredList[index].driverImage!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].driverImage).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.filteredList[index].identityCardImageFace1).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.filteredList[index].identityCardImageFace2).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.filteredList[index].licenceImageFace1).delete();
+                                                                        FirebaseStorage.instance.refFromURL(driversController.filteredList[index].licenceImageFace2).delete();
+                                                                        if(driversController.filteredList[index].moreImage1!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage1!).delete();
+                                                                        if(driversController.filteredList[index].moreImage2!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage2!).delete();
+                                                                        if(driversController.filteredList[index].moreImage3!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage3!).delete();
+                                                                        driversController.delete_driver(driversController.filteredList[index].id!);
                                                                         driversController.fetchDrivers();
                                                                         Navigator.pop(context);
                                                                       },
@@ -325,10 +325,10 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                     borderRadius: BorderRadius.all(Radius.circular(40)),
                                                                     color: Colors.white.withOpacity(0.4)
                                                                 ),
-                                                                child: driversController.driverList[index].driverImage!=""
+                                                                child: driversController.filteredList[index].driverImage!=""
                                                                     ?ClipOval(
                                                                   child: Image.network(
-                                                                    driversController.driverList[index].driverImage,
+                                                                    driversController.filteredList[index].driverImage,
                                                                     fit:BoxFit.cover,
                                                                   ),
                                                                 ):

@@ -308,7 +308,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                               ),
                               Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
                               SizedBox(height: 12,),
-
                               if(counter>=1)moreWidget1(),
                               if(counter>=2)moreWidget2(),
                               if(counter>=3)moreWidget3(),
@@ -323,7 +322,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                               ),
                             ],
                           ),
-
                           Positioned(
                             bottom: 20,
                             right: 10,
@@ -366,8 +364,6 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                             context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
                                         uploadFiles().then((value) {
                                           Navigator.pop(context);
-
-                                          // Get.offAll(() => HomeScreen());
                                           Get.back();
                                           Get.back();
                                           ScaffoldMessenger.of(context).showSnackBar(
