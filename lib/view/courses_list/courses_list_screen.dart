@@ -68,8 +68,6 @@ Future download(String url)async{
     );
   }
 
-
-
 }
 
   @override
@@ -84,15 +82,14 @@ Future download(String url)async{
     send!.send([id, status, progress]);
   }
 
-
-
   ReceivePort _port = ReceivePort();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+      FloatingActionButton(
           backgroundColor: Colors.blue,
           child: Icon(
             Icons.add,
@@ -189,11 +186,64 @@ Future download(String url)async{
                   SizedBox(
                     height: 10,
                   ),
+                  Container(
+                    height:MediaQuery.of(context).size.height*0.05,
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    child: Row(
+                        children:[
+                          GestureDetector(
+                            child: Container(
+                              color:coursesController.formNum.value==1
+                                    ?Color(0xFF0F5CA0).withOpacity(0.6)
+                                    :Color(0xFF3C77E1),
+                              width: MediaQuery.of(context).size.width * (0.95/2),
+                              child:Center(
+                                child:Text(
+                                  'Courses',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontFamily:"Georgia",
+                                    ),
+                                ),
+                              ),
+                            ),
+                              onTap:(){
+                                coursesController.formNum.value=1;
+                                print(
+                                  coursesController.formNum.value
+                                );
+                              }
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              color:coursesController.formNum.value==2
+                                  ?Color(0xFF0F5CA0).withOpacity(0.6)
+                                  :Color(0xFF3C77E1),
+                              width: MediaQuery.of(context).size.width * (0.95/2),
+                              child:Center(
+                                child:Text(
+                                  'History',
+                                  style: TextStyle(
+                                    color:Colors.white,
+                                    fontSize: 20,
+                                    fontFamily:"Georgia",
+                                  ),
+                                ),
+                              ),
+                            ),
+                              onTap:(){
+                                coursesController.formNum.value=2;
+                              }
+                          )
+                        ]
+                    ),
+                  ),
                   if(coursesController.isLoading.value)
                   Center(child:CircularProgressIndicator())
                   else
                     Container(
-                    height: MediaQuery.of(context).size.height * 0.615,
+                    height: MediaQuery.of(context).size.height * 0.55,
                     width: MediaQuery.of(context).size.width * 0.95,
                     child:RefreshIndicator(
                         onRefresh: () {
@@ -204,7 +254,8 @@ Future download(String url)async{
                           }
                           return Future.delayed(Duration(seconds: 1));
                         },
-                        child: ListView(
+                        child: coursesController.formNum.value==1
+                        ?ListView(
                           children: [
                             Container(
                               decoration: BoxDecoration(
@@ -248,7 +299,6 @@ Future download(String url)async{
                                               children: [
                                                 GestureDetector(
                                                   onTap: (){
-                                                    print(coursesController.coursesListTomorrow[i].carListDetails!.length);
                                                     courseDetails(context,coursesController.coursesListTomorrow[i]);
                                                   },
                                                   child: Container(
@@ -397,13 +447,6 @@ Future download(String url)async{
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -454,17 +497,17 @@ Future download(String url)async{
                                                                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                               ),
                                                                               onPressed: () {
-                                                                                coursesController.delete_course(coursesController.coursesListTomorrow[i].id!);
+                                                                                coursesController.delete_course(coursesController.coursesListTomorrow[i]);
                                                                                 coursesController.fetchCourses();
                                                                                 Navigator.pop(context);
                                                                               },
                                                                             ),
                                                                           ),
-                                                                          SizedBox(
+                                                                            SizedBox(
                                                                             width:
                                                                                 25,
                                                                           ),
-                                                                          SizedBox(
+                                                                            SizedBox(
                                                                             width:
                                                                                 100,
                                                                             child:
@@ -731,7 +774,7 @@ Future download(String url)async{
                                                                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                               ),
                                                                               onPressed: () {
-                                                                                coursesController.delete_course(coursesController.coursesListTomorrow[i].id!);
+                                                                                coursesController.delete_course(coursesController.coursesListTomorrow[i]);
                                                                                 coursesController.fetchCourses();
                                                                                 Navigator.pop(context);
                                                                               },
@@ -1011,8 +1054,7 @@ Future download(String url)async{
                                                                                 10,
                                                                           ),
                                                                           SizedBox(
-                                                                            width:
-                                                                                100,
+                                                                            width: 100,
                                                                             child:
                                                                                 ElevatedButton(
                                                                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
@@ -1020,8 +1062,8 @@ Future download(String url)async{
                                                                                 'Delete',
                                                                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                               ),
-                                                                              onPressed: () {
-                                                                                coursesController.delete_course(coursesController.coursesListTomorrow[i].id!);
+                                                                              onPressed: ()async {
+                                                                                await coursesController.delete_course(coursesController.coursesListTomorrow[i]);
                                                                                 coursesController.fetchCourses();
                                                                                 Navigator.pop(context);
                                                                               },
@@ -1264,13 +1306,6 @@ Future download(String url)async{
                                                         borderRadius:
                                                         BorderRadius
                                                             .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -1320,8 +1355,8 @@ Future download(String url)async{
                                                                             'Delete',
                                                                             style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                           ),
-                                                                          onPressed: () {
-                                                                            coursesController.delete_course(coursesController.coursesListTomorrowDrivers[i].id!);
+                                                                          onPressed: () async{
+                                                                            await coursesController.delete_course(coursesController.coursesListTomorrowDrivers[i]);
                                                                             coursesController.fetchCourses();
                                                                             Navigator.pop(context);
                                                                           },
@@ -1594,8 +1629,8 @@ Future download(String url)async{
                                                                             'Delete',
                                                                             style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                           ),
-                                                                          onPressed: () {
-                                                                            coursesController.delete_course(coursesController.coursesListTodayDrivers[i].id!);
+                                                                          onPressed: () async{
+                                                                            await coursesController.delete_course(coursesController.coursesListTodayDrivers[i]);
                                                                             coursesController.fetchCourses();
                                                                             Navigator.pop(context);
                                                                           },
@@ -1868,8 +1903,8 @@ Future download(String url)async{
                                                                             'Delete',
                                                                             style: TextStyle(fontFamily: "Georgia", fontSize: 15),
                                                                           ),
-                                                                          onPressed: () {
-                                                                            coursesController.delete_course(coursesController.coursesListDrivers[i].id!);
+                                                                          onPressed: () async{
+                                                                            await coursesController.delete_course(coursesController.coursesListDrivers[i]);
                                                                             coursesController.fetchCourses();
                                                                             Navigator.pop(context);
                                                                           },
@@ -1921,6 +1956,840 @@ Future download(String url)async{
                             )
                           ],
                         )
+                        :ListView(
+                            children:[
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:BorderRadius.circular(5),
+                                  color: Color(0xFF0F5CA0).withOpacity(0.7),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if(coursesController.coursesListTodayHistory.isNotEmpty)Padding(
+                                      padding: const EdgeInsets.only(left: 35.0),
+                                      child: Text(
+                                        'Today',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontFamily: "Georgia",
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    if(coursesController.coursesListTodayHistory.isNotEmpty)
+                                      for (int i = 0; i <coursesController.coursesListTodayHistory.length; i++)
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.height*0.085,
+                                            width:
+                                            MediaQuery.of(context).size.width * 0.9,
+                                            padding: EdgeInsets.only(
+                                                left: 5, right: 5, bottom: 15),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        courseDetails(context,coursesController.coursesListTodayHistory[i]);
+                                                      },
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.85,
+                                                        height: MediaQuery.of(context).size.height*0.065,
+                                                        decoration: BoxDecoration(
+                                                            color:coursesController.coursesListTodayHistory[i].finished==true
+                                                                ?Color(0xFF0F5CA0)
+                                                                .withOpacity(0.5)
+                                                            :Colors.white
+                                                                .withOpacity(0.8),
+                                                            borderRadius:
+                                                            BorderRadius.circular(5)),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              width: 70,
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListTodayHistory[i]
+                                                                        .pickUpLocation
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  height: 2,
+                                                                  width: 30,
+                                                                  color: Colors.black,
+                                                                ),
+                                                                Container(
+                                                                  height: 5,
+                                                                  width: 5,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    shape: BoxShape.circle,
+                                                                    color: Colors.black,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              width: 70,
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListTodayHistory[i]
+                                                                        .dropOffLocation!
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                            if(coursesController.coursesListTodayHistory[i].finished==true)
+                                                              Icon(
+                                                                  Icons.check_circle,
+                                                                  color:Color(0xFF1590CF)
+                                                                  )
+                                                            else
+                                                              Icon(Icons.hourglass_full,
+                                                                  color:Colors.grey[400],)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // SizedBox(width: 5),
+                                                    // Container(
+                                                    //   width: 65,
+                                                    //   height: 48,
+                                                    //   decoration: BoxDecoration(
+                                                    //       color: Colors.white
+                                                    //           .withOpacity(0.8),
+                                                    //       borderRadius:
+                                                    //       BorderRadius.circular(
+                                                    //           5)),
+                                                    //   child: Column(
+                                                    //     mainAxisAlignment:
+                                                    //     MainAxisAlignment
+                                                    //         .spaceEvenly,
+                                                    //     children: [
+                                                    //       Icon(
+                                                    //         Icons
+                                                    //             .people_alt_outlined,
+                                                    //         size: 20,
+                                                    //       ),
+                                                    //       Center(
+                                                    //         child: Container(
+                                                    //           child: Text(
+                                                    //               coursesController
+                                                    //                   .coursesListTodayHistory[i]
+                                                    //                   .passengersNum
+                                                    //                   .toString() +
+                                                    //                   '/' +
+                                                    //                   coursesController
+                                                    //                       .coursesListTodayHistory[i]
+                                                    //                       .seatingCapacity
+                                                    //                       .toString(),
+                                                    //               style: TextStyle(
+                                                    //                   fontSize: 13,
+                                                    //                   fontFamily:
+                                                    //                   'Georgia',
+                                                    //                   fontWeight:
+                                                    //                   FontWeight
+                                                    //                       .bold)),
+                                                    //         ),
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                  ],
+                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListTodayHistory[i]));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.edit,
+                                                //           color: Color(0xFF0F5CA0),
+                                                //           size: 23,
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     SizedBox(
+                                                //       width: 5,
+                                                //     ),
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         showDialog(
+                                                //             context: context,
+                                                //             builder:
+                                                //             ((builder) =>
+                                                //                 AlertDialog(
+                                                //                   content:
+                                                //                   Container(
+                                                //                     height: 100,
+                                                //                     width: 300,
+                                                //                     decoration: BoxDecoration(
+                                                //                         borderRadius: BorderRadius.only(
+                                                //                             topLeft:
+                                                //                             Radius.circular(40),
+                                                //                             topRight: Radius.circular(40))),
+                                                //                     child:
+                                                //                     Center(
+                                                //                       child:
+                                                //                       Row(
+                                                //                         mainAxisAlignment:
+                                                //                         MainAxisAlignment.spaceBetween,
+                                                //                         mainAxisSize:
+                                                //                         MainAxisSize.min,
+                                                //                         children: <Widget>[
+                                                //                           SizedBox(
+                                                //                             height:
+                                                //                             10,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
+                                                //                               child: const Text(
+                                                //                                 'Delete',
+                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
+                                                //                               ),
+                                                //                               onPressed: () {
+                                                //                                 coursesController.delete_course(coursesController.coursesListTodayHistory[i].id!);
+                                                //                                 coursesController.fetchCourses();
+                                                //                                 Navigator.pop(context);
+                                                //                               },
+                                                //                             ),
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             25,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
+                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
+                                                //                               onPressed: () => Navigator.pop(context),
+                                                //                             ),
+                                                //                           ),
+                                                //                         ],
+                                                //                       ),
+                                                //                     ),
+                                                //                   ),
+                                                //                 )));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.delete,
+                                                //           color: Color(0xFF000000)
+                                                //               .withOpacity(0.54),
+                                                //         ),
+                                                //       ),
+                                                //     )
+                                                //   ],
+                                                // )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    if(coursesController.coursesListYesterDayHistory.length>0)Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 35.0,
+                                          top:10
+                                      ),
+                                      child: Text(
+                                        'YesterDay',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontFamily: "Georgia",
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    if(coursesController.coursesListYesterDayHistory.isNotEmpty)
+                                      for (int i = 0; i <coursesController.coursesListYesterDayHistory.length; i++)
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.height*0.085,
+                                            width: MediaQuery.of(context).size.width * 0.9,
+                                            padding: EdgeInsets.only(
+                                                left: 5, right: 5, bottom: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        courseDetails(context,coursesController.coursesListYesterDayHistory[i]);
+                                                      },
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.85,
+                                                        height: MediaQuery.of(context).size.height*0.065,
+                                                        decoration: BoxDecoration(
+                                                            color: Color(0xFF0F5CA0)
+                                                                .withOpacity(0.5),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              width: 70,
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListYesterDayHistory[i]
+                                                                        .pickUpLocation
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 15,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  height: 2,
+                                                                  width: 30,
+                                                                  color: Colors.black,
+                                                                ),
+                                                                Container(
+                                                                  height: 5,
+                                                                  width: 5,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color:
+                                                                    Colors.black,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              width: 70,
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListYesterDayHistory[i]
+                                                                        .dropOffLocation!
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 15,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // SizedBox(width: 5),
+                                                    // Container(
+                                                    //   width: 65,
+                                                    //   height: 48,
+                                                    //   decoration: BoxDecoration(
+                                                    //       color:Colors.white
+                                                    //           .withOpacity(0.8),
+                                                    //       borderRadius:
+                                                    //       BorderRadius.circular(
+                                                    //           5)),
+                                                    //   child: Column(
+                                                    //     mainAxisAlignment:
+                                                    //     MainAxisAlignment
+                                                    //         .center,
+                                                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                                                    //     children: [
+                                                    //       Icon(
+                                                    //         Icons.people_alt_outlined,
+                                                    //         size: 20,
+                                                    //       ),
+                                                    //       Container(
+                                                    //         // width:70,
+                                                    //         child: Text(
+                                                    //             coursesController
+                                                    //                 .coursesListYesterDayHistory[i]
+                                                    //                 .passengersNum
+                                                    //                 .toString() +
+                                                    //                 '/' +
+                                                    //                 coursesController
+                                                    //                     .coursesListYesterDayHistory[i]
+                                                    //                     .seatingCapacity
+                                                    //                     .toString(),
+                                                    //             style: TextStyle(
+                                                    //                 fontSize: 13,
+                                                    //                 fontFamily:
+                                                    //                 'Georgia',
+                                                    //                 fontWeight:
+                                                    //                 FontWeight
+                                                    //                     .bold)),
+                                                    //       ),
+                                                    //
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                  ],
+                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListYesterDayHistory[i]));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.edit,
+                                                //           color: Color(0xFF0F5CA0),
+                                                //           size: 23,
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     SizedBox(
+                                                //       width: 5,
+                                                //     ),
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         showDialog(
+                                                //             context: context,
+                                                //             builder:
+                                                //             ((builder) =>
+                                                //                 AlertDialog(
+                                                //                   content:
+                                                //                   Container(
+                                                //                     height: 100,
+                                                //                     width: 300,
+                                                //                     decoration: BoxDecoration(
+                                                //                         borderRadius: BorderRadius.only(
+                                                //                             topLeft:
+                                                //                             Radius.circular(40),
+                                                //                             topRight: Radius.circular(40))),
+                                                //                     child:
+                                                //                     Center(
+                                                //                       child:
+                                                //                       Row(
+                                                //                         mainAxisAlignment:
+                                                //                         MainAxisAlignment.spaceBetween,
+                                                //                         mainAxisSize:
+                                                //                         MainAxisSize.min,
+                                                //                         children: <Widget>[
+                                                //                           SizedBox(
+                                                //                             height:
+                                                //                             10,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
+                                                //                               child: const Text(
+                                                //                                 'Delete',
+                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
+                                                //                               ),
+                                                //                               onPressed: () {
+                                                //                                 coursesController.delete_course(coursesController.coursesListYesterDayHistory[i].id!);
+                                                //                                 coursesController.fetchCourses();
+                                                //                                 Navigator.pop(context);
+                                                //                               },
+                                                //                             ),
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             25,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
+                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
+                                                //                               onPressed: () => Navigator.pop(context),
+                                                //                             ),
+                                                //                           ),
+                                                //                         ],
+                                                //                       ),
+                                                //                     ),
+                                                //                   ),
+                                                //                 )));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.delete,
+                                                //           color: Color(0xFF000000)
+                                                //               .withOpacity(0.54),
+                                                //         ),
+                                                //       ),
+                                                //     )
+                                                //   ],
+                                                // )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    if(coursesController.coursesListOlderHistory.isNotEmpty)Padding(
+                                      padding: const EdgeInsets.only(left: 35.0),
+                                      child: Text(
+                                        'Older',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontFamily: "Georgia",
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    if(coursesController.coursesListOlderHistory.isNotEmpty)
+                                      for (int i = 0;i < coursesController.coursesListOlderHistory.length;i++)
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 0.0, left: 10),
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.height*0.085,
+                                            width: MediaQuery.of(context).size.width * 0.9,
+                                            padding: EdgeInsets.only(
+                                                left: 5, right: 5, bottom: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        courseDetails(context,coursesController.coursesListOlderHistory[i]);
+                                                      },
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.85,
+                                                        height: MediaQuery.of(context).size.height*0.065,
+                                                        decoration: BoxDecoration(
+                                                            color: Color(0xFF0F5CA0)
+                                                                .withOpacity(0.7),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                          children: [
+                                                            Container(
+                                                              height:45,
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              width: 70,
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListOlderHistory[i]
+                                                                        .pickUpLocation
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Container(
+                                                                  height: 2,
+                                                                  width: 30,
+                                                                  color: Colors.black,
+                                                                ),
+                                                                Container(
+                                                                  height: 5,
+                                                                  width: 5,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color:
+                                                                    Colors.black,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              width: 70,
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 8.0),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    coursesController
+                                                                        .coursesListOlderHistory[i]
+                                                                        .dropOffLocation!
+                                                                        .capitalize
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      fontFamily:
+                                                                      'Georgia',
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // SizedBox(width: 5),
+                                                    // Container(
+                                                    //   width: 60,
+                                                    //   height: 48,
+                                                    //   decoration: BoxDecoration(
+                                                    //       color: Colors.white
+                                                    //           .withOpacity(0.8),
+                                                    //       borderRadius:
+                                                    //       BorderRadius.circular(
+                                                    //           5)),
+                                                    //   child: Center(
+                                                    //     child: Column(
+                                                    //       mainAxisAlignment:
+                                                    //       MainAxisAlignment
+                                                    //           .center,
+                                                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                                                    //       children: [
+                                                    //         Icon(
+                                                    //           Icons
+                                                    //               .people_alt_outlined,
+                                                    //           size: 20,
+                                                    //         ),
+                                                    //         Center(
+                                                    //           child: Container(
+                                                    //             // width:60,
+                                                    //             child: Text(
+                                                    //                 coursesController
+                                                    //                     .coursesListOlderHistory[i]
+                                                    //                     .passengersNum
+                                                    //                     .toString() +
+                                                    //                     '/' +
+                                                    //                     coursesController
+                                                    //                         .coursesListOlderHistory[i]
+                                                    //                         .seatingCapacity
+                                                    //                         .toString(),
+                                                    //                 style: TextStyle(
+                                                    //                     fontSize: 13,
+                                                    //                     fontFamily:
+                                                    //                     'Georgia',
+                                                    //                     fontWeight:
+                                                    //                     FontWeight
+                                                    //                         .bold)),
+                                                    //           ),
+                                                    //         ),
+                                                    //       ],
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                  ],
+                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListOlderHistory[i]));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.edit,
+                                                //           color: Color(0xFF0F5CA0),
+                                                //           size: 23,
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     SizedBox(
+                                                //       width: 5,
+                                                //     ),
+                                                //     GestureDetector(
+                                                //       onTap: () {
+                                                //         showDialog(
+                                                //             context: context,
+                                                //             builder:
+                                                //             ((builder) =>
+                                                //                 AlertDialog(
+                                                //                   content:
+                                                //                   Container(
+                                                //                     height: 100,
+                                                //                     width: 300,
+                                                //                     decoration: BoxDecoration(
+                                                //                         borderRadius: BorderRadius.only(
+                                                //                             topLeft:
+                                                //                             Radius.circular(40),
+                                                //                             topRight: Radius.circular(40))),
+                                                //                     child:
+                                                //                     Center(
+                                                //                       child:
+                                                //                       Row(
+                                                //                         mainAxisAlignment:
+                                                //                         MainAxisAlignment.spaceBetween,
+                                                //                         mainAxisSize:
+                                                //                         MainAxisSize.min,
+                                                //                         children: <Widget>[
+                                                //                           SizedBox(
+                                                //                             height:
+                                                //                             10,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
+                                                //                               child: const Text(
+                                                //                                 'Delete',
+                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
+                                                //                               ),
+                                                //                               onPressed: () {
+                                                //                                 coursesController.delete_course(coursesController.coursesListOlderHistory[i].id!);
+                                                //                                 coursesController.fetchCourses();
+                                                //                                 Navigator.pop(context);
+                                                //                               },
+                                                //                             ),
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             25,
+                                                //                           ),
+                                                //                           SizedBox(
+                                                //                             width:
+                                                //                             100,
+                                                //                             child:
+                                                //                             ElevatedButton(
+                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
+                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
+                                                //                               onPressed: () => Navigator.pop(context),
+                                                //                             ),
+                                                //                           ),
+                                                //                         ],
+                                                //                       ),
+                                                //                     ),
+                                                //                   ),
+                                                //                 )));
+                                                //       },
+                                                //       child: Container(
+                                                //         height: 40,
+                                                //         width: 25,
+                                                //         decoration: BoxDecoration(
+                                                //             color: Colors.white,
+                                                //             borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(5)),
+                                                //         child: Icon(
+                                                //           Icons.delete,
+                                                //           color: Color(0xFF000000)
+                                                //               .withOpacity(0.54),
+                                                //         ),
+                                                //       ),
+                                                //     )
+                                                //   ],
+                                                // )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                  ],
+                                ),
+                              ),
+                            ]
+                        )
                       )
                   )
                 ],
@@ -1953,24 +2822,23 @@ Future download(String url)async{
   }
 
   Future<dynamic> courseDetails(BuildContext context,Course course) {
-    print(course.carImage1URL);
-    print(course.carImage2URL);
-    print(course.carImage3URL);
-    print(course.carImage4URL);
-
+    print('ooooooooooooorrrrrrrrrrrrrrrrrrrrrrrr');
+    print(course.id);
+    print(course.orderUrl);
+    print('ooooooooooooorrrrrrrrrrrrrrrrrrrrrrrr');
     return showDialog(
                                                       context: context,
                                                       builder: (builder)=>AlertDialog(
                                                         content: Container(
                                                           height: MediaQuery.of(context).size.height*0.7,
                                                           width: MediaQuery.of(context).size.width*0.8,
-                                                          child:Column(
+                                                          child:ListView(
                                                             children: [
                                                               SizedBox(
                                                                 height:MediaQuery.of(context).size.height*0.02,
                                                               ),
                                                               Container(
-                                                                height:MediaQuery.of(context).size.height*0.5,
+                                                                height:MediaQuery.of(context).size.height*0.6,
                                                                 width: MediaQuery.of(context).size.width*0.77,
                                                                 decoration:BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(15),
@@ -2005,11 +2873,17 @@ Future download(String url)async{
                                                                               SizedBox(
                                                                                 width: MediaQuery.of(context).size.width*0.05,
                                                                               ),
-                                                                              Text(
-                                                                                course.pickUpLocation,
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.white
+                                                                              Container(
+                                                                                width: MediaQuery.of(context).size.width*0.45,
+                                                                                child: SingleChildScrollView(
+                                                                                  scrollDirection: Axis.horizontal,
+                                                                                  child: Text(
+                                                                                    course.pickUpLocation,
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.white
+                                                                                      ),
                                                                                   ),
+                                                                                ),
                                                                               )
                                                                             ],
                                                                           ),
@@ -2051,11 +2925,17 @@ Future download(String url)async{
                                                                               SizedBox(
                                                                                 width: MediaQuery.of(context).size.width*0.05,
                                                                               ),
-                                                                              Text(
-                                                                                course.dropOffLocation,
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.white
+                                                                              Container(
+                                                                                width: MediaQuery.of(context).size.width*0.45,
+                                                                                child: SingleChildScrollView(
+                                                                                  scrollDirection: Axis.horizontal,
+                                                                                  child: Text(
+                                                                                    course.dropOffLocation,
+                                                                                    style: TextStyle(
+                                                                                        color: Colors.white
+                                                                                    ),
                                                                                   ),
+                                                                                ),
                                                                               )
                                                                             ],
                                                                           ),
@@ -2149,6 +3029,15 @@ Future download(String url)async{
                                                                           ),
                                                                           numeric: true,
                                                                         ),
+                                                                        DataColumn(
+                                                                          label: Expanded(
+                                                                            child: Text(
+                                                                              'State',
+                                                                              style: TextStyle(fontStyle: FontStyle.italic),
+                                                                            ),
+                                                                          ),
+                                                                          numeric: true,
+                                                                        ),
                                                                       ],
 
                                                                       rows: List<DataRow>.generate(course.passengersDetails!.length, (int index) =>
@@ -2160,6 +3049,9 @@ Future download(String url)async{
                                                                                 DataCell(Text(course.passengersDetails![index].identityNum.substring(0, course.passengersDetails![index].identityNum.indexOf('.'))))
                                                                                     :
                                                                                 DataCell(Text(coursesController.passengerDetails[index].identityNum)),
+                                                                                DataCell(Checkbox(
+                                                                                  value: course.passengersDetails![index].state, onChanged: (bool? value) {},
+                                                                                ))
 
                                                                               ]
                                                                           )
@@ -2221,6 +3113,72 @@ Future download(String url)async{
                                                                                   style: TextStyle(
                                                                                     color: Colors.white
                                                                                   ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height: MediaQuery.of(context).size.height*0.01,
+                                                                        ),
+                                                                        Container(
+                                                                          color: Colors.white,
+                                                                          height: 2,
+                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Container(
+                                                                          width: MediaQuery.of(context).size.width*0.58,
+                                                                          padding:  EdgeInsets.only(
+                                                                            top: MediaQuery.of(context).size.height*0.03
+                                                                          ),
+                                                                          child: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    course.usedLuggageBigSize.toString()+
+                                                                                        "/"+course.luggageBigSize.toString(),
+                                                                                    style: TextStyle(
+                                                                                        color: Colors.white
+                                                                                    ),
+                                                                                  ),
+                                                                                  Icon(
+                                                                                      Icons.luggage_outlined,
+                                                                                      color: Colors.white
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    course.usedLuggageMediumSize.toString()
+                                                                                        +"/"+course.luggageMediumSize.toString(),
+                                                                                    style: TextStyle(
+                                                                                        color: Colors.white
+                                                                                    ),),
+                                                                                  Icon(Icons.luggage,size: 20,color: Colors.white
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    course.usedCollie.toString()
+                                                                                        +"/"+course.collie.toString(),
+
+                                                                                    style: TextStyle(
+                                                                                        color: Colors.white
+                                                                                    ),),
+                                                                                  Icon(
+                                                                                      Icons.mark_email_unread_sharp,
+                                                                                      color: Colors.white
+                                                                                  ),
+                                                                                ],
                                                                               )
                                                                             ],
                                                                           ),
@@ -2318,8 +3276,14 @@ Future download(String url)async{
                                                                                   )
                                                                                 ]
                                                                               ),
-                                                                              // if(course.carListDetails!.length>0)
-                                                                              IconButton(
+                                                                              if(
+                                                                              course.carImage1URL!=null
+                                                                              &&course.carImage2URL!=null
+                                                                              &&course.carImage3URL!=null
+                                                                              &&course.carImage4URL!=null
+                                                                              &&course.carListDetails!.length>0
+                                                                              )
+                                                                                IconButton(
                                                                                   onPressed:(){
                                                                                     print(course.carListDetails!.length);
                                                                                     showModalBottomSheet(
@@ -2768,7 +3732,6 @@ Future download(String url)async{
                                                                                 size: 25,
                                                                               )
                                                                               )
-
                                                                             ],
                                                                           ),
                                                                         ),
@@ -2821,10 +3784,48 @@ Future download(String url)async{
                                                                   ],
                                                                 ),
                                                               ),
+                                                              if(course.dropOffDate!=null)
                                                               SizedBox(
                                                                 height:MediaQuery.of(context).size.height*0.02,
                                                               ),
-                                                              if(course.check=="car")
+                                                              if(course.dropOffDate!=null)
+                                                                Container(
+                                                                padding: EdgeInsets.only(
+                                                                  left: MediaQuery.of(context).size.width*0.01,
+                                                                  right: MediaQuery.of(context).size.width*0.05,
+                                                                ),
+                                                                height:MediaQuery.of(context).size.height*0.05,
+                                                                width: MediaQuery.of(context).size.width*0.77,
+                                                                decoration:BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(15),
+                                                                    color: Color(0xFF0F5CA0).withOpacity(0.6)
+                                                                ),
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Text('Drop off Date',
+                                                                    style:TextStyle(
+                                                                      fontFamily: "Gidugu",
+                                                                      fontSize: 14,
+                                                                      color: Colors.white
+                                                                    ),),
+                                                                    Center(
+                                                                      child: Text(
+                                                                          DateFormat("d MMM y 'At' h:mm a").format(course.dropOffDate!),
+                                                                          style:TextStyle(
+                                                                              fontFamily: "Gidugu",
+                                                                              fontSize: 13,
+                                                                              color: Colors.white
+                                                                          )
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height:MediaQuery.of(context).size.height*0.02,
+                                                              ),
+                                                              if(course.check=="car" )
                                                               Container(
                                                                 padding: EdgeInsets.only(
                                                                   left: MediaQuery.of(context).size.width*0.01,
@@ -2847,8 +3848,7 @@ Future download(String url)async{
                                                                     ),
                                                                     IconButton(
                                                                         onPressed: ()async{
-
-
+                                                                          print(course.orderUrl);
                                                                           try{
                                                                             String pdfUrl = course.orderUrl!;
                                                                             download(pdfUrl);
@@ -2856,7 +3856,6 @@ Future download(String url)async{
                                                                         catch(e){
                                                                             print(e.toString());
                                                                         }
-
                                                                           } ,
                                                                         icon: Icon(
                                                                             Icons.file_download_outlined,

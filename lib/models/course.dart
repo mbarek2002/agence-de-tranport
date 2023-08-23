@@ -28,19 +28,20 @@ class Course {
   int? collie;
   int? usedCollie;
 
-  int? identityNum;
+  int identityNum;
   bool? seen;
+  bool? finished;
   String check;
 
 
 
 
-      Course({this.id,this.adminId,required  this.pickUpLocation,required this.dropOffLocation,this.dropOffDate,
+      Course({this.id,this.finished,this.adminId,required  this.pickUpLocation,required this.dropOffLocation,this.dropOffDate,
     required this.pickUpDate, required this.passengersNum, required this.seatingCapacity, required this.regNumber
     ,required this.driverName, this.orderUrl,this.passengersDetails,this.carListDetails,this.carImage1URL,
         this.carImage2URL,this.carImage3URL,this.carImage4URL, this.seen, this.luggageBigSize, this.luggageMediumSize,
         this.usedLuggageBigSize,this.usedLuggageMediumSize,this.collie,this.usedCollie,required this.check,
-    this.identityNum});
+    required this.identityNum});
 
 
 }

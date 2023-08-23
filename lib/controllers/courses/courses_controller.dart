@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -93,10 +94,10 @@ class CoursesController extends GetxController{
     validLicenceType.value=false;
     passengerCarDetails=RxList<rowdata>([]);
     passengerDetails=RxList<rowdata>([]);
+
     isReturn.value = false;
     checkBox1.value = false;
     checkBox2.value = false;
-
 
      usedLuggageBigSize.value=0;
      usedLuggageMediumSize.value=0;
@@ -139,9 +140,9 @@ class CoursesController extends GetxController{
     if (result != null) {
       image.value = result.files.single.path!;
     }
-
   }
   /////////////////////////////////
+  var coursesAll = <Course>[].obs;
   var coursesListAdmin = <Course>[].obs;
   var coursesListDriver = <Course>[].obs;
 
@@ -153,52 +154,192 @@ class CoursesController extends GetxController{
   var coursesListDrivers = <Course>[].obs;
   var coursesListTodayDrivers = <Course>[].obs;
   var coursesListTomorrowDrivers = <Course>[].obs;
+  ///////////////////history//////////////////////////
+  var coursesListTodayHistory = <Course>[].obs;
+  var coursesListYesterDayHistory = <Course>[].obs;
+  var coursesListOlderHistory = <Course>[].obs;
 
-  List<Course> mergedList =<Course>[].obs;
-///////////////////////////////////////
-  String readTimestamp(int timestamp) {
-    var now = new DateTime.now();
-    var format = new DateFormat('HH:mm a');
-    var date = new DateTime.fromMicrosecondsSinceEpoch(timestamp);
-    var diff = date.difference(now);
-    var time = '';
+///////////////////function upload  car images && order mission file/////////////////////////
+  var orderImageURL="".obs;
+  Future<void> uploadOrderImage()async {
+    final driverUploadTask = FirebaseStorage
+        .instance
+        .ref('order/' +
+        DateTime.now().difference(
+            DateTime(2022, 1, 1)).inSeconds.toString() +
+        '${image.value?.split('/').last}')
+        .putFile(File(image.value));
+    final driverSnapshot =
+    await driverUploadTask.whenComplete(() => null);
+    orderImageURL.value =
+    await driverSnapshot.ref
+        .getDownloadURL();
+  }
 
-    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
-      time = format.format(date); // Doesn't get called when it should be
-    } else {
-      time = diff.inDays.toString() + 'DAYS AGO'; // Gets call and it's wrong date
+  Future<void> uploadCarImages() async {
+    try {
+//       final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
+//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+//           '${imageCar1.value?.split('/').last}').putFile(File(imageCar1.value));
+//       final car1Snapshot = await car1UploadTask.whenComplete(() => null);
+//       carImage1URL.value =
+//       await car1Snapshot.ref.getDownloadURL();
+// /////////////////////////////////
+//       final car2UploadTask = FirebaseStorage.instance.ref('carImages/' +
+//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+//           '${imageCar2.value?.split('/').last}').putFile(File(imageCar2.value));
+//       final car2Snapshot = await car2UploadTask.whenComplete(() => null);
+//       carImage2URL.value =
+//       await car2Snapshot.ref.getDownloadURL();
+// /////////////////////////////
+//       final car3UploadTask = FirebaseStorage.instance.ref('carImages/' +
+//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+//           '${imageCar3.value?.split('/').last}').putFile(File(imageCar3.value));
+//       final car3Snapshot = await car3UploadTask.whenComplete(() => null);
+//       carImage3URL.value =
+//       await car3Snapshot.ref.getDownloadURL();
+// ///////////////////////////////
+//       final car4UploadTask = FirebaseStorage.instance.ref('carImages/' +
+//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+//           '${imageCar4.value?.split('/').last}').putFile(File(imageCar4.value));
+//       final car4Snapshot = await car4UploadTask.whenComplete(() => null);
+//       carImage4URL.value =
+//       await car4Snapshot.ref.getDownloadURL();
+// /////////////////////////////
+    /////////
+      final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar1.value?.split('/').last}').putFile(File(imageCar1.value));
+      final car1Snapshot = await car1UploadTask.whenComplete(() => null);
+      carImage1URL.value =
+      await car1Snapshot.ref.getDownloadURL();
+      print("car1"+carImage1URL.value);
+      /////////////////////////////
+      final car2UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar2.value?.split('/').last}').putFile(File(imageCar2.value));
+      final car2Snapshot = await car2UploadTask.whenComplete(() => null);
+      carImage2URL.value =
+      await car2Snapshot.ref.getDownloadURL();
+      print("car2"+carImage2URL.value);
+///////////////////////////////////
+      final car3UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar3.value?.split('/').last}').putFile(File(imageCar3.value));
+      final car3Snapshot = await car3UploadTask.whenComplete(() => null);
+      carImage3URL.value =
+      await car3Snapshot.ref.getDownloadURL();
+      print("car3"+carImage3URL.value);
+      ///////////////////////////////////////
+      final car4UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar4.value?.split('/').last}').putFile(File(imageCar4.value));
+      final car4Snapshot = await car4UploadTask.whenComplete(() => null);
+      carImage4URL.value =
+      await car4Snapshot.ref.getDownloadURL();
+      print("car4"+carImage4URL.value);
     }
+    catch(e)
+    {
+      print(e.toString());
+    }
+  }
+  Future<void> uploadCar1Image() async {
+    try {
+      final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar1.value?.split('/').last}').putFile(File(imageCar1.value));
+      final car1Snapshot = await car1UploadTask.whenComplete(() => null);
+      carImage1URL.value =
+      await car1Snapshot.ref.getDownloadURL();
+      print("car1"+carImage1URL.value);
+    }
+    catch(e)
+    {
+      print(e.toString());
+    }
+  }
+  Future<void> uploadCar2Image() async {
+    try {
+      final car2UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar2.value?.split('/').last}').putFile(File(imageCar2.value));
+      final car2Snapshot = await car2UploadTask.whenComplete(() => null);
+      carImage2URL.value =
+      await car2Snapshot.ref.getDownloadURL();
+      print("car2"+carImage2URL.value);
 
-    return time;
+    }
+    catch(e)
+    {
+      print(e.toString());
+    }
+  }
+  Future<void> uploadCar3Image() async {
+    try {
+      final car3UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar3.value?.split('/').last}').putFile(File(imageCar3.value));
+      final car3Snapshot = await car3UploadTask.whenComplete(() => null);
+      carImage3URL.value =
+      await car3Snapshot.ref.getDownloadURL();
+      print("car3"+carImage3URL.value);
+
+    }
+    catch(e)
+    {
+      print(e.toString());
+    }
+  }
+  Future<void> uploadCar4Image() async {
+    try {
+      final car4UploadTask = FirebaseStorage.instance.ref('carImages/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${imageCar4.value?.split('/').last}').putFile(File(imageCar4.value));
+      final car4Snapshot = await car4UploadTask.whenComplete(() => null);
+      carImage4URL.value =
+      await car4Snapshot.ref.getDownloadURL();
+      print("car4"+carImage4URL.value);
+
+    }
+    catch(e)
+    {
+      print(e.toString());
+    }
   }
 
 /////////////////crud opertion///////////////////////
-  List<rowdata>? passengersDetailsFetch;
-  List<checklistData>? carDetailsFetch;
-
-  int? collie;
-  int? luggageBigSize;
-  int? luggageMediumSize;
-  String? carImg1Url;
-  String? carImg2Url;
-  String? carImg3Url;
-  String? carImg4Url;
 
   Future<void> fetchCourses() async {
     try {
       isLoading.value=true;
-    Timestamp? dropOffDate;
       String? orderUrl;
-      QuerySnapshot courses =await FirebaseFirestore.instance.collection('courses').orderBy('pickUpDate', descending: true).get();
+      QuerySnapshot courses =
+      await FirebaseFirestore.instance.collection('courses').orderBy('pickUpDate', descending: true).get();
       coursesListAdmin.clear();
       coursesListDriver.clear();
+      coursesAll.clear();
 
       for (var course in courses.docs) {
+        Timestamp? dropOffDate;
+        List<rowdata>? passengersDetailsFetch;
+        List<checklistData>? carDetailsFetch;
+        //
+        // int? collie;
+        // int? luggageBigSize;
+        // int? luggageMediumSize;
+        // int? usedCollieFetch;
+        // int? usedLuggageBigSizeFetch;
+        // int? usedLuggageMediumSizeFetch;
+        print(course.id);
+        String? carImg1Url;
+        String? carImg2Url;
+        String? carImg3Url;
+        String? carImg4Url;
+
         var courseData = course.data() as Map<String, dynamic>;
-          print(course.id);
-        try {
-        //   passengersDetailsFetch?.clear();
-        //   carDetailsFetch?.clear();
+
+        // try {
           if (courseData.containsKey('passengersDetails')) {
             List<dynamic>? passengersDetailsData = courseData['passengersDetails'];
             passengersDetailsFetch = passengersDetailsData?.map(
@@ -207,6 +348,7 @@ class CoursesController extends GetxController{
                     firstname: passengerData['firstname'],
                     lastName: passengerData['lastName'],
                     identityNum: passengerData['identityNum'],
+                    state: passengerData['state'] ?? false
                   ),
             ).toList();
           }
@@ -219,13 +361,15 @@ class CoursesController extends GetxController{
                     state: carData['state'],
                   ),
             ).toList();
-
           }
           if(courseData.containsKey('dropOffDate')){
              dropOffDate = course['dropOffDate'];
           }
           if(courseData.containsKey('orderUrl')){
              orderUrl = course['orderUrl'];
+          }
+          else{
+            orderUrl="";
           }
 
           if(courseData.containsKey('carImage1URL')){
@@ -241,39 +385,35 @@ class CoursesController extends GetxController{
             carImg4Url = course['carImage4URL'];
           }
 
-          if(courseData.containsKey('collie')){
-            collie = course['collie'];
-          }
-          if(courseData.containsKey('luggageBigSize')){
-            luggageBigSize = course['luggageBigSize'];
-          }
-          if(courseData.containsKey('luggageMediumSize')){
-            luggageMediumSize = course['luggageMediumSize'];
-          }
-
-          if(courseData.containsKey('usedCollie')){
-            usedCollie.value = course['usedCollie'];
-          }
-          if(courseData.containsKey('usedLuggageBigSize')){
-            usedLuggageBigSize.value = course['usedLuggageBigSize'];
-          }
-          if(courseData.containsKey('usedLuggageMediumSize')){
-            usedLuggageMediumSize.value = course['usedLuggageMediumSize'];
-          }
-
-
+          // if(courseData.containsKey('collie')){
+          //   collie = course['collie'];
+          // }
+          // if(courseData.containsKey('luggageBigSize')){
+          //   luggageBigSize = course['luggageBigSize'];
+          // }
+          // if(courseData.containsKey('luggageMediumSize')){
+          //   luggageMediumSize = course['luggageMediumSize'];
+          // }
+          //
+          // if(courseData.containsKey('usedCollie')){
+          //   usedCollieFetch = course['usedCollie'];
+          // }
+          // if(courseData.containsKey('usedLuggageBigSize')){
+          //   usedLuggageBigSizeFetch = course['usedLuggageBigSize'];
+          // }
+          // if(courseData.containsKey('usedLuggageMediumSize')){
+          //   usedLuggageMediumSizeFetch = course['usedLuggageMediumSize'];
+          // }
 
           Timestamp date = course['pickUpDate'];
-
-
           if(courseData.containsKey('idAdmin')) {
             if (course['idAdmin'] == loginController.idAdmin.value) {
-
               coursesListAdmin.add(
                   Course(
                     check: course['check'],
                     adminId: course['idAdmin'],
                     id: course.id,
+                    finished:course['finished'],
                     pickUpLocation: course['pickUpLocation'],
                     dropOffLocation: course['dropOffLocation'],
                     pickUpDate: date.toDate(),
@@ -291,21 +431,56 @@ class CoursesController extends GetxController{
                     carImage2URL: carImg2Url,
                     carImage3URL: carImg3Url,
                     carImage4URL: carImg4Url,
-                    collie: collie,
-                    usedCollie: usedCollie.value,
-                    luggageBigSize: luggageBigSize,
-                    usedLuggageBigSize: usedLuggageBigSize.value,
-                    luggageMediumSize: luggageMediumSize,
-                    usedLuggageMediumSize: usedLuggageMediumSize.value
+                    collie: course['collie'] ?? 0,
+                    usedCollie: course['usedCollie'] ?? 0,
+                    luggageBigSize: course['luggageBigSize'] ?? 0,
+                    usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                    luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                    usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+                  )
+              );
+              coursesAll.add(
+                  Course(
+                      check: course['check'],
+                      adminId: course['idAdmin'],
+                      id: course.id,
+                      finished:course['finished'],
+                      pickUpLocation: course['pickUpLocation'],
+                      dropOffLocation: course['dropOffLocation'],
+                      pickUpDate: date.toDate(),
+                      passengersNum: course['passengersNum'],
+                      seatingCapacity: course['seatingCapacity'],
+                      regNumber: course['regNumber'],
+                      driverName: course['driverName'],
+                      seen: course['seen'],
+                      identityNum: course['identityNum'],
+                      passengersDetails: passengersDetailsFetch,
+                      carListDetails: carDetailsFetch,
+                      orderUrl: orderUrl,
+                      dropOffDate: dropOffDate?.toDate(),
+                      carImage1URL: carImg1Url,
+                      carImage2URL: carImg2Url,
+                      carImage3URL: carImg3Url,
+                      carImage4URL: carImg4Url,
+                      collie: course['collie'] ?? 0,
+                      usedCollie: course['usedCollie'] ?? 0,
+                      luggageBigSize: course['luggageBigSize'] ?? 0,
+                      usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                      luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                      usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
                   )
               );
             }
           }
-          else{
+          else if(!courseData.containsKey('idAdmin')) {
+            print('/////////////////////////////////////');
+            print(!courseData.containsKey('idAdmin'));
+            print(course.id);
             coursesListDriver.add(
                 Course(
                   check: course['check'],
                   id: course.id,
+                  finished:course['finished'],
                   pickUpLocation: course['pickUpLocation'],
                   dropOffLocation: course['dropOffLocation'],
                   pickUpDate: date.toDate(),
@@ -317,26 +492,69 @@ class CoursesController extends GetxController{
                   passengersDetails: passengersDetailsFetch,
                   orderUrl: orderUrl,
                   dropOffDate: dropOffDate?.toDate(),
+                  carImage1URL: carImg1Url,
+                  carImage2URL: carImg2Url,
+                  carImage3URL: carImg3Url,
+                  carImage4URL: carImg4Url,
+                  collie: course['collie'] ?? 0,
+                  usedCollie: course['usedCollie'] ?? 0,
+                  luggageBigSize: course['luggageBigSize'] ?? 0,
+                  usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                  luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                  usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+
+                )
+            );
+            coursesAll.add(
+                Course(
+                    check: course['check'],
+                    id: course.id,
+                    finished:course['finished'],
+                    pickUpLocation: course['pickUpLocation'],
+                    dropOffLocation: course['dropOffLocation'],
+                    pickUpDate: date.toDate(),
+                    passengersNum: course['passengersNum'],
+                    seatingCapacity: course['seatingCapacity'],
+                    regNumber: course['regNumber'],
+                    driverName: course['driverName'],
+                    identityNum: course['identityNum'],
+                    passengersDetails: passengersDetailsFetch,
+                    orderUrl: orderUrl,
+                    dropOffDate: dropOffDate?.toDate(),
+                    carImage1URL: carImg1Url,
+                    carImage2URL: carImg2Url,
+                    carImage3URL: carImg3Url,
+                    carImage4URL: carImg4Url,
+                    collie: course['collie'] ?? 0,
+                    usedCollie: course['usedCollie'] ?? 0,
+                    luggageBigSize: course['luggageBigSize'] ?? 0,
+                    usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                    luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                    usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+
                 )
             );
           }
 
-
-        }catch(e){
-          print(e.toString());
-        }
+        // }catch(e){
+        //   print(e.toString());
+        // }
       }
-
 
 
     filterCoursesTodayAdmin();
     filterCoursesTomorrowAdmin();
     filterCoursesOthersAdmin();
 
-////////////////////////
+    ////////////////////////
     filterCoursesTodayDriver();
     filterCoursesTomorrowDriver();
     filterCoursesOthersDriver();
+
+      //////////////////////////////////////
+      filterCoursesTodayHistory();
+      filterCoursesYesterdayHistory();
+      filterCoursesOlderHistory();
 
       isLoading.value=false;
 
@@ -345,39 +563,488 @@ class CoursesController extends GetxController{
     }
   }
 
-  Future add_course(CourseModel d)async{
-    courses.add({
-      "type":d.type,
-      "pickUpLocation":d.pickUpLocation,
-      "dropOffLocation":d.dropOffLocation,
-      "pickUpDate":Timestamp.fromDate(d.pickUpDate),
-      if(d.dropOffDate!=null)"dropOffDate":Timestamp.fromDate(d.dropOffDate!),
-      "driverName":d.driverName,
-      "identityNum":d.identityNum,
-      if(d.orderUrl!=null)"orderUrl":d.orderUrl,
-      if(d.passengersNum!=null)"passengersNum":d.passengersNum,
-      if(d.passengersDetails!=null)"passengersDetails": d.passengersDetails?.map((passenger) => passenger.toJson()).toList(),
-    });
+  Future add_course(Course course)async{
+
+    // courses.add({
+    //   "type":d.type,
+    //   "pickUpLocation":d.pickUpLocation,
+    //   "dropOffLocation":d.dropOffLocation,
+    //   "pickUpDate":Timestamp.fromDate(d.pickUpDate),
+    //   if(d.dropOffDate!=null)"dropOffDate":Timestamp.fromDate(d.dropOffDate!),
+    //   "driverName":d.driverName,
+    //   "identityNum":d.identityNum,
+    //   if(d.orderUrl!=null)"orderUrl":d.orderUrl,
+    //   if(d.passengersNum!=null)"passengersNum":d.passengersNum,
+    //   if(d.passengersDetails!=null)"passengersDetails": d.passengersDetails?.map((passenger) => passenger.toJson()).toList(),
+    // });
+    print(course.luggageBigSize);
+    print(course.luggageMediumSize);
+    print(course.collie);
+    print(course.usedLuggageBigSize);
+    print(course.usedLuggageBigSize);
+    print(course.usedCollie);
+
+
+    if (course.check == "passengers" && checkBox1.value == true) {
+      courses.add({
+        "seen": false,
+        "finished":false,
+        "pickUpLocation": course.pickUpLocation,
+        "dropOffLocation": course.dropOffLocation,
+        "pickUpDate": course.pickUpDate,
+        if (course.dropOffDate!=null)
+          "dropOffDate": course.dropOffDate,
+        "driverName": course.driverName,
+        "identityNum": course.identityNum,
+        "passengersNum": course.passengersNum,
+        "passengersDetails":
+        passengerDetails.value
+            ?.map((passenger) =>
+            passenger.toJson())
+            .toList(),
+        "regNumber": course.regNumber,
+        "seatingCapacity": course.seatingCapacity,
+        "check": course.check,
+        "idAdmin": loginController.idAdmin.value,
+        "luggageBigSize":course.luggageBigSize,
+        "luggageMediumSize":course.luggageMediumSize,
+        "collie":course.collie,
+        "usedLuggageBigSize":course.usedLuggageBigSize,
+        "usedLuggageMediumSize":course.usedLuggageMediumSize,
+        "usedCollie":course.usedCollie,
+      }).then((value) {
+        init();
+        fetchCourses();
+        Get.back();
+      });
+    }
+    else if (course.check == "car" && checkBox2.value == true) {
+      final orderImageURL;
+      final driverUploadTask = FirebaseStorage.instance.ref('order/' +
+          DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
+          '${image.value?.split('/').last}')
+          .putFile(File(image.value));
+      final driverSnapshot = await driverUploadTask.whenComplete(() => null);
+      orderImageURL = await driverSnapshot.ref.getDownloadURL();
+      if(checkList.value==false)
+      {courses.add({
+        "seen": false,
+        "finished":false,
+        "pickUpLocation": course.pickUpLocation,
+        "dropOffLocation": course.dropOffLocation,
+        "pickUpDate": course.pickUpDate,
+        if (course.dropOffDate!=null)
+          "dropOffDate": course.dropOffDate,
+        "driverName": course.driverName,
+        "identityNum": course.identityNum,
+        "passengersNum": course.passengersNum,
+        "orderUrl": orderImageURL,
+        "passengersDetails":
+        passengerCarDetails.value
+            ?.map((passenger) =>
+            passenger.toJson())
+            .toList(),
+        "regNumber": course.regNumber,
+        "seatingCapacity": course.seatingCapacity,
+        "check": course.check,
+        "idAdmin": loginController.idAdmin.value,
+        "luggageBigSize":course.luggageBigSize,
+        "luggageMediumSize":course.luggageMediumSize,
+        "collie":course.collie,
+        "usedLuggageBigSize":course.usedLuggageBigSize,
+        "usedLuggageMediumSize":course.usedLuggageMediumSize,
+        "usedCollie":course.usedCollie,
+      })
+        // ({
+        //   "seen": false,
+        //   "finished":false,
+        //   "pickUpLocation": coursesController
+        //       .pickUpLocationConroller.text,
+        //   "dropOffLocation": coursesController
+        //       .dropOffLocationConroller.text,
+        //   "pickUpDate": dateTimePickUp,
+        //   "driverName": coursesController
+        //       .selectedItem.value,
+        //   "identityNum": coursesController
+        //       .selectedItemId.value,
+        //   "orderUrl": orderImageURL,
+        //   "passengersNum": int.tryParse(
+        //       coursesController
+        //           .passagersConroller
+        //           .text) ??
+        //       0,
+        //   "passengersDetails": coursesController
+        //       .passengerCarDetails.value
+        //       ?.map((passenger) =>
+        //       passenger.toJson())
+        //       .toList(),
+        //   "regNumber": coursesController
+        //       .regNumberController.text,
+        //   "seatingCapacity": int.tryParse(
+        //       coursesController
+        //           .seatingCapacityController
+        //           .text) ??
+        //       0,
+        //   "check": "car",
+        //   "idAdmin":
+        //   loginController.idAdmin.value
+        // })
+          .then((value) {
+          init();
+          fetchCourses();
+          Get.back();
+        });}
+      else{
+        await uploadCarImages();
+            // .whenComplete(() {
+          print("imagess url");
+        print(carImage1URL.value);
+            print(carImage2URL.value);
+        print(carImage3URL.value);
+        print(carImage4URL.value);
+        courses.add({
+          "seen": false,
+          "finished":false,
+          "pickUpLocation": course.pickUpLocation,
+          "dropOffLocation": course.dropOffLocation,
+          "pickUpDate": course.pickUpDate,
+          if (course.dropOffDate!=null)
+            "dropOffDate": course.dropOffDate,
+          "passengersNum": course.passengersNum,
+          "seatingCapacity": course.seatingCapacity,
+          "driverName": course.driverName,
+          "identityNum": course.identityNum,
+          "regNumber": course.regNumber,
+          "orderUrl": orderImageURL,
+          "passengersDetails":
+          passengerCarDetails.value
+              ?.map((passenger) =>
+              passenger.toJson())
+              .toList(),
+          "check": course.check,
+          "idAdmin": loginController.idAdmin.value,
+          "luggageBigSize":course.luggageBigSize,
+          "luggageMediumSize":course.luggageMediumSize,
+          "collie":course.collie,
+          "usedLuggageBigSize":course.usedLuggageBigSize,
+          "usedLuggageMediumSize":course.usedLuggageMediumSize,
+          "usedCollie":course.usedCollie,
+          "checkCarDetails":
+          checkListTable.value
+              ?.map((checklistData) =>
+              checklistData.toJson())
+              .toList(),
+          "carImage1URL":carImage1URL.value,
+          "carImage2URL":carImage2URL.value,
+          "carImage3URL":carImage3URL.value,
+          "carImage4URL":carImage4URL.value,
+        });
+        //   ({
+        //   "seen": false,
+        //   "finished":false,
+        //   "pickUpLocation": coursesController
+        //       .pickUpLocationConroller.text,
+        //   "dropOffLocation": coursesController
+        //       .dropOffLocationConroller.text,
+        //   "pickUpDate": dateTimePickUp,
+        //   "driverName": coursesController
+        //       .selectedItem.value,
+        //   "identityNum": coursesController
+        //       .selectedItemId.value,
+        //   "orderUrl": orderImageURL,
+        //   "passengersNum": int.tryParse(
+        //       coursesController
+        //           .passagersConroller
+        //           .text) ?? 0,
+        //   "passengersDetails": coursesController
+        //       .passengerCarDetails.value
+        //       ?.map((passenger) =>
+        //       passenger.toJson())
+        //       .toList(),
+        //   "checkCarDetails": coursesController
+        //       .checkListTable.value
+        //       ?.map((checklistData) =>
+        //       checklistData.toJson())
+        //       .toList(),
+        //   "regNumber": coursesController
+        //       .regNumberController.text,
+        //   "seatingCapacity": int.tryParse(
+        //       coursesController
+        //           .seatingCapacityController
+        //           .text) ??
+        //       0,
+        //   "check": "car",
+        //   "idAdmin":
+        //   loginController.idAdmin.value,
+        //   "carImage1URL":coursesController.carImage1URL.value,
+        //   "carImage2URL":coursesController.carImage2URL.value,
+        //   "carImage3URL":coursesController.carImage3URL.value,
+        //   "carImage4URL":coursesController.carImage4URL.value,
+        //   "luggageBigSize":int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
+        //   "usedLuggageBigSize":coursesController.usedLuggageBigSize.value,
+        //   "luggageMediumSize":int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
+        //   "usedLuggageMediumSize":coursesController.usedLuggageMediumSize.value,
+        //   "collie":int.tryParse(coursesController.collieController.text) ?? 0,
+        //   "usedCollie":coursesController.usedCollie.value,
+        // })
+        // });
+        //     .then((value){
+        //
+        // }
+        // );
+
+      }
+
+    }
+
   }
 
-  Future update_course(CourseModel d)async{
-    courses.doc(d.id).update({
-        "type":d.type,
-        "pickUpLocation":d.pickUpLocation,
-        "dropOffLocation":d.dropOffLocation,
-        "pickUpDate":Timestamp.fromDate(d.pickUpDate),
-        if(d.dropOffDate!=null)"dropOffDate":Timestamp.fromDate(d.dropOffDate!),
-        "driverName":d.driverName,
-        if(d.orderUrl!=null)"orderUrl":d.orderUrl,
-        if(d.passengersNum!=null)"passengersNum":d.passengersNum,
-        if(d.passengersDetails!=null)"passengersDetails": d.passengersDetails?.map((passenger) => passenger.toJson()).toList(),
-        "identityNum":d.identityNum
-  }
-    );
+  Future update_course(Course course)async{
+
+    if (checkBox1.value == true) {
+    //   print("passengers");
+    //
+    //   print(course.seen);
+    //       print(pickUpLocationConroller.text);
+    //           print(dropOffLocationConroller.text);
+    //               print(course.pickUpDate);
+    // if (isReturn.value == true)
+    //               print(course.dropOffDate);
+    //               print(int.parse(passagersConroller.text));
+    //                   print(int.parse(seatingCapacityController.text));
+    //                       print(selectedItem.value);
+    //                           print(selectedItemId.value);
+    //                               print( regNumberController.text);
+    //                               print('passengers details');
+    // if(passengerDetails.value.length>0)
+    //   print(passengerDetails.value.length);
+    // else
+    //   print(course.passengersDetails?.length);
+    // // ?passengerDetails.value
+    // //     ?.map((passenger) =>
+    // // passenger.toJson()).toList()
+    // //     :course.passengersDetails
+    // //     ?.map((passenger) =>
+    // // passenger.toJson()).toList(),
+    // if(course.adminId!=null)print(course.adminId);
+    // print(course.luggageBigSize);
+    // print(course.luggageMediumSize);
+    // print(course.collie);
+    // print(course.usedLuggageBigSize);
+    // print(course.usedLuggageMediumSize);
+    // print(course.usedCollie);
+        courses.doc(course.id).update(
+            {
+              "seen": course.seen,
+              "pickUpLocation":pickUpLocationConroller.text,
+              "dropOffLocation": dropOffLocationConroller.text,
+              "pickUpDate": course.pickUpDate,
+              if (isReturn.value == true)
+                "dropOffDate": course.dropOffDate,
+              "passengersNum": int.tryParse(passagersConroller.text) ?? 0,
+              "seatingCapacity": int.tryParse(seatingCapacityController.text) ?? 0,
+              "driverName":selectedItem.value,
+              "identityNum":selectedItemId.value,
+              "regNumber": regNumberController.text,
+              "passengersDetails":passengerDetails.value.length>0
+                  ?passengerDetails.value
+                  ?.map((passenger) =>
+                  passenger.toJson()).toList()
+                  :course.passengersDetails
+                  ?.map((passenger) =>
+                  passenger.toJson()).toList(),
+              "check": "passengers",
+              if(course.adminId!=null)"idAdmin": course.adminId,
+              "luggageBigSize":course.luggageBigSize,
+              "luggageMediumSize":course.luggageMediumSize,
+              "collie":course.collie,
+              "usedLuggageBigSize":course.usedLuggageBigSize,
+              "usedLuggageMediumSize":course.usedLuggageMediumSize,
+              "usedCollie":course.usedCollie,
+            }
+        ).then((value) {
+          init();
+          fetchCourses();
+          Get.back();
+        });
+    }
+    else
+    if (checkBox2.value == true) {
+      print(course.orderUrl);
+      if (image.value != "") {
+        try{
+          await uploadOrderImage();
+          FirebaseStorage.instance.refFromURL(course.orderUrl!).delete();
+        }catch(e){
+          print(e.toString());
+        }
+      }
+      if(imageCar1.value != ""){
+        try{
+          await uploadCar1Image();
+          FirebaseStorage.instance.refFromURL(course.carImage1URL!).delete();
+        }catch(e){
+          print(e.toString());
+        }
+      }
+      if(imageCar2.value != ""){
+        try{
+          await uploadCar2Image();
+          FirebaseStorage.instance.refFromURL(course.carImage2URL!).delete();
+        }catch(e){
+          print(e.toString());
+        }
+      }
+      if(imageCar3.value != "") {
+        try{
+          await uploadCar3Image();
+          FirebaseStorage.instance.refFromURL(course.carImage3URL!).delete();
+        }catch(e){
+          print(e.toString());
+        }
+      }
+      if(imageCar4.value != "") {
+        try{
+          await uploadCar4Image();
+              // .then(
+              //     (value) {
+              //   print(course.seen);
+              //   print(pickUpLocationConroller.text);
+              //   print(dropOffLocationConroller.text);
+              //   print(course.pickUpDate);
+              //   if (isReturn.value == true)
+              //     print(course.dropOffDate);
+              //   print(int.parse(passagersConroller.text));
+              //   print(int.tryParse(seatingCapacityController.text));
+              //   print(selectedItem.value);
+              //   print(selectedItemId.value);
+              //   print(regNumberController.text);
+              //   if (image.value == "")
+              //     print(course.orderUrl);
+              //   else
+              //     print(orderImageURL.value);
+              //   if (passengerCarDetails.value.length > 0)
+              //     print(passengerCarDetails);
+              //   else
+              //     print(course.passengersDetails?.length);
+              //   // passengerCarDetails.value
+              //   //     ?.map((passenger) =>
+              //   // passenger.toJson()).toList()
+              //   //     :course.passengersDetails
+              //   //     ?.map((passenger) =>
+              //   // passenger.toJson()).toList(),
+              //   print("car");
+              //   if (course.adminId != null) print(course.adminId);
+              //   print(course.luggageBigSize);
+              //   print(course.luggageMediumSize);
+              //   print(course.collie);
+              //   print(course.usedLuggageBigSize);
+              //   print(course.usedLuggageMediumSize);
+              //   print(course.usedCollie);
+              //
+              //   if (carImage1URL.value == "")
+              //     print(course.carImage1URL);
+              //   else
+              //     print(carImage1URL.value);
+              //
+              //   if (carImage2URL.value == "")
+              //     print(course.carImage2URL);
+              //   else
+              //     print(carImage2URL.value);
+              //
+              //   if (carImage3URL.value == "")
+              //     print(course.carImage3URL);
+              //   else
+              //     print(carImage3URL.value);
+              //
+              //   if (carImage4URL.value == "")
+              //     print(course.carImage4URL);
+              //   else
+              //     print(carImage4URL.value);
+              // });
+          FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
+        }catch(e){
+          print(e.toString());
+        }
+      }
+
+          courses.doc(course.id).update(
+              {
+                "seen": course.seen,
+                "pickUpLocation":pickUpLocationConroller.text,
+                "dropOffLocation": dropOffLocationConroller.text,
+                "pickUpDate": course.pickUpDate,
+                if (isReturn.value == true)
+                  "dropOffDate": course.dropOffDate,
+                "passengersNum": int.tryParse(passagersConroller.text) ?? 0,
+                "seatingCapacity": int.tryParse(seatingCapacityController.text) ?? 0,
+                "driverName":selectedItem.value,
+                "identityNum":selectedItemId.value,
+                "regNumber": regNumberController.text,
+                "orderUrl" : image.value ==""
+                ? course.orderUrl
+                :orderImageURL.value,
+                "passengersDetails": passengerCarDetails.value.length>0
+                ?passengerCarDetails.value
+                    ?.map((passenger) =>
+                    passenger.toJson()).toList()
+                :course.passengersDetails
+                    ?.map((passenger) =>
+                    passenger.toJson()).toList(),
+                "check": "car",
+                if(course.adminId!=null)"idAdmin": course.adminId,
+                "luggageBigSize":course.luggageBigSize,
+                "luggageMediumSize":course.luggageMediumSize,
+                "collie":course.collie,
+                "usedLuggageBigSize":course.usedLuggageBigSize,
+                "usedLuggageMediumSize":course.usedLuggageMediumSize,
+                "usedCollie":course.usedCollie,
+                "checkCarDetails":
+                checkListTable.value
+                    ?.map((checklistData) =>
+                    checklistData.toJson())
+                    .toList(),
+                "carImage1URL":
+                carImage1URL.value==""
+                ?course.carImage1URL
+                :carImage1URL.value,
+                "carImage2URL":carImage2URL.value==""
+                    ?course.carImage2URL
+                    :carImage2URL.value,
+                "carImage3URL":carImage3URL.value==""
+                    ?course.carImage3URL
+                    :carImage3URL.value,
+                "carImage4URL":carImage4URL.value==""
+                    ?course.carImage4URL
+                    :carImage4URL.value,
+              }
+          ).then((value) {
+            init();
+            fetchCourses();
+            Get.back();
+          });
+    }
   }
 
-  Future delete_course(String id )async{
-    await courses.doc(id).delete();
+  Future delete_course(Course course)async{
+
+    if(course.orderUrl!=null)
+      FirebaseStorage.instance.refFromURL(course.orderUrl!).delete();
+
+    if(course.carImage1URL!=null)
+      FirebaseStorage.instance.refFromURL(course.carImage1URL!).delete();
+
+    if(course.carImage2URL!=null)
+      FirebaseStorage.instance.refFromURL(course.carImage2URL!).delete();
+
+    if(course.carImage3URL!=null)
+      FirebaseStorage.instance.refFromURL(course.carImage3URL!).delete();
+
+    if(course.carImage4URL!=null)
+      FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
+
+
+    await courses.doc(course.id).delete();
   }
   ///////////////admin/////////////////////////
   void filterCoursesTodayAdmin() {
@@ -385,6 +1052,7 @@ class CoursesController extends GetxController{
     course.pickUpDate.year == DateTime.now().year
     && course.pickUpDate.month == DateTime.now().month
     && course.pickUpDate.day == DateTime.now().day
+        &&course.finished==false
     ));
   }
   void filterCoursesTomorrowAdmin() {
@@ -393,10 +1061,6 @@ class CoursesController extends GetxController{
     && course.pickUpDate.month == DateTime.now().add(Duration(days: 1)).month
     && course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day
     ));
-    print("///////////////");
-    print(coursesListTomorrow[0].carListDetails!.length);
-    print(coursesListTomorrow[0].carImage1URL);
-
   }
   void filterCoursesOthersAdmin() {
     coursesList.assignAll(coursesListAdmin.where((course) =>
@@ -427,9 +1091,34 @@ class CoursesController extends GetxController{
         && course.pickUpDate.day > DateTime.now().add(Duration(days: 1)).day
     ));
   }
+/////////////////history/////////////////////////////
+  void filterCoursesTodayHistory() {
+    coursesListTodayHistory.assignAll(coursesAll.where((course) =>
+    course.pickUpDate.year == DateTime.now().year
+        && course.pickUpDate.month == DateTime.now().month
+        && course.pickUpDate.day == DateTime.now().day
+    ));
 
+  }
+  void filterCoursesYesterdayHistory() {
+    coursesListYesterDayHistory.assignAll(coursesAll.where((course) =>
+    course.pickUpDate.year == DateTime.now().add(Duration(days: -1)).year
+        && course.pickUpDate.month == DateTime.now().add(Duration(days: -1)).month
+        && course.pickUpDate.day == DateTime.now().add(Duration(days: -1)).day
+    ));
 
+  }
+  void filterCoursesOlderHistory() {
+    coursesListOlderHistory.assignAll(coursesAll.where((course) =>
+    course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year
+        && course.pickUpDate.month <= DateTime.now().add(Duration(days: -1)).month
+        && course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day
+    ));
+
+  }
+//////////////////////////////////////////////
   void filter(String prefix){
+    /////////////////admin//////////////////////////
     coursesListToday.assignAll(coursesListAdmin.where((course) =>
     course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && course.pickUpDate.year == DateTime.now().year
@@ -449,6 +1138,7 @@ class CoursesController extends GetxController{
         && !coursesListTomorrow.contains(course)
     ));
 
+    /////////////////driver//////////////////////////
 
     coursesListTodayDrivers.assignAll(coursesListDriver.where((course) =>
     course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
@@ -467,6 +1157,25 @@ class CoursesController extends GetxController{
     course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
         && !coursesListToday.contains(course)
         && !coursesListTomorrow.contains(course)
+    ));
+    /////////////////history////////////////////////////
+    coursesListTodayHistory.assignAll(coursesAll.where((course) =>
+    course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        &&course.pickUpDate.year == DateTime.now().year
+        && course.pickUpDate.month == DateTime.now().month
+        && course.pickUpDate.day == DateTime.now().day
+    ));
+    coursesListYesterDayHistory.assignAll(coursesAll.where((course) =>
+        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        &&course.pickUpDate.year == DateTime.now().add(Duration(days: -1)).year
+        && course.pickUpDate.month == DateTime.now().add(Duration(days: -1)).month
+        && course.pickUpDate.day == DateTime.now().add(Duration(days: -1)).day
+    ));
+    coursesListOlderHistory.assignAll(coursesAll.where((course) =>
+        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        &&course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year
+        && course.pickUpDate.month <= DateTime.now().add(Duration(days: -1)).month
+        && course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day
     ));
 
   }
@@ -500,6 +1209,8 @@ class CoursesController extends GetxController{
                 firstname: row[0]?.value ?? "",
                 lastName: row[1]?.value ?? "",
                 identityNum: row[2]?.value.toString() ?? "",
+                // state:row[3]?.value ??false
+                state:false
               )
           );
       }
@@ -512,7 +1223,6 @@ class CoursesController extends GetxController{
 
   String? filePassenger;
   Future importFromExcelForPassenger() async {
-
 
     FilePickerResult? pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -531,12 +1241,13 @@ class CoursesController extends GetxController{
           isFirstRow = false;
           continue;
         }
-
         passengerDetails.add(
             rowdata(
               firstname: row[0]?.value ?? "",
               lastName: row[1]?.value ?? "",
               identityNum: row[2]?.value.toString() ?? "",
+              // state:row[3]?.value ?? false
+               state:false
             )
         );
       }
@@ -551,15 +1262,17 @@ class rowdata {
   final String firstname;
   final String lastName;
   final String identityNum;
+  final bool state;
 
   rowdata(
-      {required this.firstname, required this.lastName, required this.identityNum});
+      {required this.firstname, required this.lastName, required this.identityNum,required this.state});
 
   Map<String, dynamic> toJson() {
     return {
       'firstname': firstname,
       'lastName': lastName,
       'identityNum': identityNum,
+      "state":state
     };
   }
 }

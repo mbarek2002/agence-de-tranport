@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:admin_citygo/controllers/courses/courses_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
+import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -31,7 +32,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
   XFile? pickedFile;
   final picker = ImagePicker();
-
+  String image='';
 
   List<String> errorList = [];
 
@@ -189,777 +190,779 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   )),
                               height: MediaQuery.of(context).size.height * 0.74,
                               width: MediaQuery.of(context).size.width * 0.9,
-                              child: Form(
-                                  key: coursesController.formKey,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20.0),
-                                            child: TextFormField(
-                                              controller: coursesController
-                                                  .pickUpLocationConroller,
-                                              decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Pick-up location',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'Georgia',
-                                                      color: Color(0xFF0F5CA0))),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20.0),
-                                            child: TextFormField(
-                                              controller: coursesController
-                                                  .dropOffLocationConroller,
-                                              decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Drop off location',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'Georgia',
-                                                      color: Color(0xFF0F5CA0))),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      pickDateTime();
-                                                    },
-                                                    child: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.4,
-                                                      height: 60,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white
-                                                              .withOpacity(0.7),
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    5),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    5),
-                                                          )),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "Pick-up Date",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Georgia',
-                                                                fontSize: 18,
-                                                                color: Color(
-                                                                    0xFF0F5CA0)),
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            children: [
-                                                              Text(
-                                                                  '${dateTimePickUp.year}/${dateTimePickUp.month}/${dateTimePickUp.day}'),
-                                                              Text(
-                                                                  '$hours:$minutes'),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      if (coursesController
-                                                              .isReturn.value ==
-                                                          false) {
-                                                        coursesController.isReturn
-                                                            .value = true;
-                                                      }
-
-                                                      if (coursesController
-                                                          .isReturn
-                                                          .value) dropDateTime();
-                                                    },
-                                                    child: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.4,
-                                                      height: 60,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white
-                                                              .withOpacity(0.7),
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    5),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    5),
-                                                          )),
-                                                      child: coursesController
-                                                              .isReturn.value
-                                                          ? Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  "Drop off Date",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          'Georgia',
-                                                                      fontSize:
-                                                                          18,
-                                                                      color: Color(
-                                                                          0xFF0F5CA0)),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceAround,
-                                                                  children: [
-                                                                    Text(
-                                                                        '${dateTimeDropOff.year}/${dateTimeDropOff.month}/${dateTimeDropOff.day}'),
-                                                                    Text(
-                                                                        '$hoursDrop:$minutesDrop'),
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10,
-                                                                )
-                                                              ],
-                                                            )
-                                                          : Container(
-                                                              height: 60,
-                                                              width: 100,
-                                                              child: Center(
-                                                                  child: Text(
-                                                                'Return Date',
-                                                                style: TextStyle(
-                                                                  color: Color(
-                                                                      0xFF0F5CA0),
-                                                                  fontSize: 15,
-                                                                  fontFamily:
-                                                                      'Georgia',
-                                                                ),
-                                                              ))),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              if (coursesController
-                                                  .isReturn.value)
-                                                Container(
-                                                  padding:
-                                                      EdgeInsets.only(top: 5),
-                                                  height: 25,
-                                                  width: 100,
-                                                  child: ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(Colors
-                                                                    .transparent)),
-                                                    onPressed: () {
-                                                      coursesController
-                                                          .isReturn.value = false;
-
-                                                    },
-                                                    child: Container(
-                                                        child: Text('cancel',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white))),
-                                                  ),
-                                                )
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(height: 7),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: TextFormField(
-                                            controller: coursesController
-                                                .passagersConroller,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              labelStyle: TextStyle(
-                                                  fontFamily: 'Georgia',
-                                                  color: Color(0xFF0F5CA0)),
-                                              labelText: 'Passengers',
-                                              prefixIcon: Icon(Icons.person),
-                                              border: InputBorder.none,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        Container(
-                                          width:
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Container(
+                                      width:
                                           MediaQuery.of(context).size.width *
                                               0.85,
-                                          decoration: BoxDecoration(
-                                              color:
+                                      decoration: BoxDecoration(
+                                          color:
                                               Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: TextFormField(
-                                            controller: coursesController
-                                                .seatingCapacityController,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              labelStyle: TextStyle(
-                                                  fontFamily: 'Georgia',
-                                                  color: Color(0xFF0F5CA0)),
-                                              labelText: 'Seating capacity',
-                                              prefixIcon: Icon(Icons.person),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20.0),
+                                        child: TextFormField(
+                                          controller: coursesController
+                                              .pickUpLocationConroller,
+                                          decoration: InputDecoration(
                                               border: InputBorder.none,
-                                            ),
-                                          ),
+                                              hintText: 'Pick-up location',
+                                              hintStyle: TextStyle(
+                                                  fontFamily: 'Georgia',
+                                                  color: Color(0xFF0F5CA0))),
                                         ),
-                                        SizedBox(height: 15),
-                                        GestureDetector(
-                                          onTap: (){
-                                            showModalBottomSheet(
-                                                context: context,
-                                                builder: (BuildContext context){
-                                                  return Container(
-                                                    height: MediaQuery.of(context).size.height*0.8,
-                                                    width: MediaQuery.of(context).size.width*0.8,
-                                                    child: Obx(()=>Column(
-                                                      children: [
-                                                        Text(
-                                                            'Luggage Capacity',
-                                                          style:TextStyle(
-                                                              fontSize: 20,
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0)),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.85,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Colors.white.withOpacity(0.7),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20.0),
+                                        child: TextFormField(
+                                          controller: coursesController
+                                              .dropOffLocationConroller,
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Drop off location',
+                                              hintStyle: TextStyle(
+                                                  fontFamily: 'Georgia',
+                                                  color: Color(0xFF0F5CA0))),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.85,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  pickDateTime();
+                                                },
+                                                child: Container(
+                                                  width:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.4,
+                                                  height: 60,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white
+                                                          .withOpacity(0.7),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(
+                                                                5),
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                5),
+                                                      )),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Pick-up Date",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Georgia',
+                                                            fontSize: 18,
+                                                            color: Color(
+                                                                0xFF0F5CA0)),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Text(
+                                                              '${dateTimePickUp.year}/${dateTimePickUp.month}/${dateTimePickUp.day}'),
+                                                          Text(
+                                                              '$hours:$minutes'),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  if (coursesController
+                                                          .isReturn.value ==
+                                                      false) {
+                                                    coursesController.isReturn
+                                                        .value = true;
+                                                  }
+
+                                                  if (coursesController
+                                                      .isReturn
+                                                      .value) dropDateTime();
+                                                },
+                                                child: Container(
+                                                  width:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.4,
+                                                  height: 60,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white
+                                                          .withOpacity(0.7),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(
+                                                                5),
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                5),
+                                                      )),
+                                                  child: coursesController
+                                                          .isReturn.value
+                                                      ? Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "Drop off Date",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Georgia',
+                                                                  fontSize:
+                                                                      18,
+                                                                  color: Color(
+                                                                      0xFF0F5CA0)),
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                Text(
+                                                                    '${dateTimeDropOff.year}/${dateTimeDropOff.month}/${dateTimeDropOff.day}'),
+                                                                Text(
+                                                                    '$hoursDrop:$minutesDrop'),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            )
+                                                          ],
+                                                        )
+                                                      : Container(
+                                                          height: 60,
+                                                          width: 100,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Return Date',
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFF0F5CA0),
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  'Georgia',
+                                                            ),
+                                                          ))),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          if (coursesController
+                                              .isReturn.value)
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(top: 5),
+                                              height: 25,
+                                              width: 100,
+                                              child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors
+                                                                .transparent)),
+                                                onPressed: () {
+                                                  coursesController
+                                                      .isReturn.value = false;
+
+                                                },
+                                                child: Container(
+                                                    child: Text('cancel',
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .white))),
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 7),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.85,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Colors.white.withOpacity(0.7),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: TextFormField(
+                                        controller: coursesController
+                                            .passagersConroller,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          labelStyle: TextStyle(
+                                              fontFamily: 'Georgia',
+                                              color: Color(0xFF0F5CA0)),
+                                          labelText: 'Passengers',
+                                          prefixIcon: Icon(Icons.person),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Container(
+                                      width:
+                                      MediaQuery.of(context).size.width *
+                                          0.85,
+                                      decoration: BoxDecoration(
+                                          color:
+                                          Colors.white.withOpacity(0.7),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: TextFormField(
+                                        controller: coursesController
+                                            .seatingCapacityController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          labelStyle: TextStyle(
+                                              fontFamily: 'Georgia',
+                                              color: Color(0xFF0F5CA0)),
+                                          labelText: 'Seating capacity',
+                                          prefixIcon: Icon(Icons.person),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    GestureDetector(
+                                      onTap: (){
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext context){
+                                              return Container(
+                                                height: MediaQuery.of(context).size.height*0.8,
+                                                width: MediaQuery.of(context).size.width*0.8,
+                                                child: Obx(()=>Column(
+                                                  children: [
+                                                    Text(
+                                                        'Luggage Capacity',
+                                                      style:TextStyle(
+                                                          fontSize: 20,
+                                                          fontFamily: 'Georgia',
+                                                          color: Color(0xFF0F5CA0)),
+                                                    ),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
                                                         ),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: TextFormField(
-                                                              controller: coursesController.luggageBigSizeController,
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(
-                                                                color: Colors.white
-                                                              ),
-                                                              decoration: InputDecoration(
-                                                                prefixIcon: Icon(Icons.luggage)
-                                                              ),
-                                                            )),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: TextFormField(
-                                                              controller: coursesController.luggageMediumSizeController,
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(
-                                                                  color: Colors.white
-                                                              ),
-                                                              decoration: InputDecoration(
-                                                                  prefixIcon: Icon(Icons.luggage)
-                                                              ),
-                                                            )),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: TextFormField(
-                                                              controller: coursesController.collieController,
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(
-                                                                  color: Colors.white
-                                                              ),
-                                                              decoration: InputDecoration(
-                                                                  prefixIcon: Icon(Icons.luggage)
-                                                              ),
-                                                            )),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                        Text('Used Luggage Capacity',
-                                                            style:TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily: 'Georgia',
-                                                            color: Color(0xFF0F5CA0))),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons.luggage
-                                                                ),
-                                                                DropdownButton<int>(
-                                                                  value: coursesController.usedLuggageBigSize.value,
-                                                                  onChanged: (int? newValue) {
-                                                                    coursesController.usedLuggageBigSize.value = newValue!;
-                                                                  },
-                                                                  items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
-                                                                    return DropdownMenuItem<int>(
-                                                                      value: index,
-                                                                      child: Text('$index'),
-                                                                    );
-                                                                  }),
-                                                                ),
-                                                              ],
-                                                            )
+                                                        child: TextFormField(
+                                                          controller: coursesController.luggageBigSizeController,
+                                                          keyboardType: TextInputType.number,
+                                                          style: TextStyle(
+                                                            color: Colors.white
                                                           ),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons.luggage,
-                                                                  size: 20,
-                                                                ),
-                                                                DropdownButton<int>(
-                                                                  value: coursesController.usedLuggageMediumSize.value,
-                                                                  onChanged: (int? newValue) {
-                                                                    coursesController.usedLuggageMediumSize.value = newValue!;
-                                                                  },
-                                                                  items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
-                                                                    return DropdownMenuItem<int>(
-                                                                      value: index,
-                                                                      child: Text('$index'),
-                                                                    );
-                                                                  }),
-                                                                ),
-                                                              ],
-                                                            )
+                                                          decoration: InputDecoration(
+                                                            prefixIcon: Icon(Icons.luggage)
                                                           ),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
+                                                        )),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
+                                                        ),
+                                                        child: TextFormField(
+                                                          controller: coursesController.luggageMediumSizeController,
+                                                          keyboardType: TextInputType.number,
+                                                          style: TextStyle(
+                                                              color: Colors.white
+                                                          ),
+                                                          decoration: InputDecoration(
+                                                              prefixIcon: Icon(
+                                                                Icons.luggage,
+                                                                size: 20,
                                                               ),
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Icon(
+                                                          ),
+                                                        )),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
+                                                        ),
+                                                        child: TextFormField(
+                                                          controller: coursesController.collieController,
+                                                          keyboardType: TextInputType.number,
+                                                          style: TextStyle(
+                                                              color: Colors.white
+                                                          ),
+                                                          decoration: InputDecoration(
+                                                              prefixIcon: Icon(
                                                                   Icons.mark_email_unread_outlined
-                                                                ),
-                                                                DropdownButton<int>(
-                                                                  value: coursesController.usedCollie.value,
-                                                                  onChanged: (int? newValue) {
-                                                                      coursesController.usedCollie.value = newValue!;
-                                                                  },
-                                                                  items: List.generate((int.tryParse(coursesController.collieController.text)  ?? 0)+1, (index) {
-                                                                    return DropdownMenuItem<int>(
-                                                                      value: index,
-                                                                      child: Text('$index'),
-                                                                    );
-                                                                  }),
-                                                                ),
-                                                              ],
-                                                            )
+                                                              ),
                                                           ),
-                                                      ],
-                                                    )),
-                                                  );
-                                                }
-                                            );
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.only(
-                                              left: 5,
-                                              right: 5
-                                            ),
-                                            height: 55,
-                                            width:
-                                            MediaQuery.of(context).size.width *
-                                                0.85,
-                                            decoration: BoxDecoration(
-                                                color:
-                                                Colors.white.withOpacity(0.7),
-                                                borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(5),
-                                                  topLeft: Radius.circular(5),
+                                                        )),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                    Text('Used Luggage Capacity',
+                                                        style:TextStyle(
+                                                        fontSize: 20,
+                                                        fontFamily: 'Georgia',
+                                                        color: Color(0xFF0F5CA0))),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.luggage
+                                                            ),
+                                                            DropdownButton<int>(
+                                                              value: coursesController.usedLuggageBigSize.value,
+                                                              onChanged: (int? newValue) {
+                                                                coursesController.usedLuggageBigSize.value = newValue!;
+                                                              },
+                                                              items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
+                                                                return DropdownMenuItem<int>(
+                                                                  value: index,
+                                                                  child: Text('$index'),
+                                                                );
+                                                              }),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.luggage,
+                                                              size: 20,
+                                                            ),
+                                                            DropdownButton<int>(
+                                                              value: coursesController.usedLuggageMediumSize.value,
+                                                              onChanged: (int? newValue) {
+                                                                coursesController.usedLuggageMediumSize.value = newValue!;
+                                                              },
+                                                              items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
+                                                                return DropdownMenuItem<int>(
+                                                                  value: index,
+                                                                  child: Text('$index'),
+                                                                );
+                                                              }),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    Container(
+                                                        width:MediaQuery.of(context).size.width*0.3,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                            begin: Alignment.centerLeft,
+                                                            end: Alignment.centerRight,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.mark_email_unread_outlined
+                                                            ),
+                                                            DropdownButton<int>(
+                                                              value: coursesController.usedCollie.value,
+                                                              onChanged: (int? newValue) {
+                                                                  coursesController.usedCollie.value = newValue!;
+                                                              },
+                                                              items: List.generate((int.tryParse(coursesController.collieController.text)  ?? 0)+1, (index) {
+                                                                return DropdownMenuItem<int>(
+                                                                  value: index,
+                                                                  child: Text('$index'),
+                                                                );
+                                                              }),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ),
+                                                  ],
                                                 )),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              );
+                                            }
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                          left: 5,
+                                          right: 5
+                                        ),
+                                        height: 55,
+                                        width:
+                                        MediaQuery.of(context).size.width *
+                                            0.85,
+                                        decoration: BoxDecoration(
+                                            color:
+                                            Colors.white.withOpacity(0.7),
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                            )),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Luggage',
+                                              style: TextStyle(
+                                                fontFamily: "Georgia",
+                                                  fontSize: 20,
+                                                  color: Color(0xFF0F5CA0)
+                                              ),
+                                            ),
+                                            Row(
                                               children: [
-                                                Text('Luggage',
+                                                Text(
+                                                    coursesController.usedLuggageBigSize.toString()+
+                                                  "/"+coursesController.luggageBigSizeController.text,
                                                   style: TextStyle(
-                                                    fontFamily: "Georgia",
-                                                      fontSize: 20,
                                                       color: Color(0xFF0F5CA0)
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        coursesController.usedLuggageBigSize.toString()+
-                                                      "/"+coursesController.luggageBigSizeController.text,
-                                                      style: TextStyle(
-                                                          color: Color(0xFF0F5CA0)
-                                                      ),
-                                                    ),
-                                                    Icon(
-                                                        Icons.luggage_outlined,
-                                                        color: Color(0xFF0F5CA0)
-                                                    ),
-                                                  ],
+                                                Icon(
+                                                    Icons.luggage_outlined,
+                                                    color: Color(0xFF0F5CA0)
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        coursesController.usedLuggageMediumSize.toString()
-                                                      +"/"+coursesController.luggageMediumSizeController.text,
-                                                      style: TextStyle(
-                                                          color: Color(0xFF0F5CA0)
-                                                      ),),
-                                                    Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
-                                                    ),
-                                                  ],
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    coursesController.usedLuggageMediumSize.toString()
+                                                  +"/"+coursesController.luggageMediumSizeController.text,
+                                                  style: TextStyle(
+                                                      color: Color(0xFF0F5CA0)
+                                                  ),),
+                                                Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                        coursesController.usedCollie.toString()
-                                                        +"/"+coursesController.collieController.text,
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    coursesController.usedCollie.toString()
+                                                    +"/"+coursesController.collieController.text,
 
-                                                      style: TextStyle(
-                                                          color: Color(0xFF0F5CA0)
-                                                      ),),
-                                                    Icon(
-                                                        Icons.mark_email_unread_sharp,
-                                                        color: Color(0xFF0F5CA0)
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: DropdownButton<DriverModel>(
-                                            dropdownColor: Color(0xFF0F5CA0),
-                                            // value: _selectedItem,
-                                            hint: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 18.0),
-                                              child: Text(
-                                                coursesController
-                                                    .selectedItem.value,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: 'Georgia',
-                                                    color: Color(0xFF0F5CA0)),
-                                              ),
-                                            ),
-                                            elevation: 16,
-                                            items: driversController.driverList
-                                                .map((DriverModel item) {
-                                              return DropdownMenuItem<
-                                                  DriverModel>(
-                                                value: item,
-                                                child: Text(
-                                                  item.firstName +
-                                                      " " +
-                                                      item.lastName,
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Color(0xFF0F5CA0)
+                                                  ),),
+                                                Icon(
+                                                    Icons.mark_email_unread_sharp,
+                                                    color: Color(0xFF0F5CA0)
                                                 ),
-                                              );
-                                            }).toList(),
-                                            isExpanded: true,
-                                            onChanged: (DriverModel? newValue) {
-                                              if (newValue != null)
-                                                coursesController
-                                                        .selectedItem!.value =
-                                                    newValue!.firstName +
-                                                        " " +
-                                                        newValue!.lastName;
-                                              print(newValue?.id);
-                                              print(newValue?.identityNumber);
-                                              coursesController
-                                                      .selectedItemId!.value =
-                                                  newValue!.identityNumber;
-                                              print(coursesController
-                                                  .selectedItem!.value);
-                                              print(coursesController
-                                                  .selectedItemId!.value);
-                                            },
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.85,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Colors.white.withOpacity(0.7),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: DropdownButton<DriverModel>(
+                                        dropdownColor: Color(0xFF0F5CA0),
+                                        // value: _selectedItem,
+                                        hint: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 18.0),
+                                          child: Text(
+                                            coursesController
+                                                .selectedItem.value,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'Georgia',
+                                                color: Color(0xFF0F5CA0)),
                                           ),
                                         ),
-                                        SizedBox(height: 15),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width *
-                                                  0.85,
-                                          height: 65,
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                              )),
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20.0),
-                                            child: TextFormField(
-                                              controller: coursesController
-                                                  .regNumberController,
-                                              // keyboardType:TextInputType.number,
-                                              decoration: InputDecoration(
-                                                labelStyle: TextStyle(
-                                                    fontFamily: 'Georgia',
-                                                    color: Color(0xFF0F5CA0)),
-                                                labelText: 'Reg n°',
-                                                // prefixIcon: Icon(Icons.car_rental),
-                                                border: InputBorder.none,
-                                                  hintText:"xxxxTNxxxx"
-                                              ),
+                                        elevation: 16,
+                                        items: driversController.driverList
+                                            .map((DriverModel item) {
+                                          return DropdownMenuItem<
+                                              DriverModel>(
+                                            value: item,
+                                            child: Text(
+                                              item.firstName +
+                                                  " " +
+                                                  item.lastName,
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
+                                          );
+                                        }).toList(),
+                                        isExpanded: true,
+                                        onChanged: (DriverModel? newValue) {
+                                          if (newValue != null)
+                                            coursesController
+                                                    .selectedItem!.value =
+                                                newValue!.firstName +
+                                                    " " +
+                                                    newValue!.lastName;
+                                          print(newValue?.id);
+                                          print(newValue?.identityNumber);
+                                          coursesController
+                                                  .selectedItemId!.value =
+                                              newValue!.identityNumber;
+                                          print(coursesController
+                                              .selectedItem!.value);
+                                          print(coursesController
+                                              .selectedItemId!.value);
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.85,
+                                      height: 65,
+                                      decoration: BoxDecoration(
+                                          color:
+                                              Colors.white.withOpacity(0.7),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5),
+                                          )),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20.0),
+                                        child: TextFormField(
+                                          controller: coursesController
+                                              .regNumberController,
+                                          // keyboardType:TextInputType.number,
+                                          decoration: InputDecoration(
+                                            labelStyle: TextStyle(
+                                                fontFamily: 'Georgia',
+                                                color: Color(0xFF0F5CA0)),
+                                            labelText: 'Reg n°',
+                                            // prefixIcon: Icon(Icons.car_rental),
+                                            border: InputBorder.none,
+                                              hintText:"xxxxTNxxxx"
                                           ),
                                         ),
-                                        SizedBox(height: 20),
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Row(
-                                              children: [
-                                                GFCheckbox(
-                                                  inactiveBgColor:
-                                                      Colors.transparent,
-                                                  size: 20,
-                                                  activeBgColor:
-                                                      Colors.transparent,
-                                                  inactiveBorderColor:
-                                                      Colors.white,
-                                                  type: GFCheckboxType.square,
-                                                  onChanged: (value) {
-                                                    if (coursesController
-                                                            .checkBox1.value == false) {
-                                                      coursesController
-                                                          .importFromExcelForPassenger()
-                                                          .then((value) {
-                                                        {
-                                                          if (coursesController
-                                                                  .checkBox2.value ==
-                                                              true) {
-                                                            coursesController
-                                                                    .checkBox1
-                                                                    .value =
-                                                                !coursesController
-                                                                    .checkBox1
-                                                                    .value;
-                                                            coursesController
-                                                                    .checkBox2
-                                                                    .value =
-                                                                !coursesController
-                                                                    .checkBox2
-                                                                    .value;
-                                                          } else {
-                                                            coursesController
-                                                                    .checkBox1
-                                                                    .value =
-                                                                !coursesController
-                                                                    .checkBox1
-                                                                    .value;
-                                                          }
-                                                        }
-                                                      });
-                                                    } else {
-                                                      coursesController
-                                                              .checkBox1.value =
-                                                          !coursesController
-                                                              .checkBox1.value;
-                                                      coursesController
-                                                          .passengerDetails
-                                                          .value = [];
+                                            GFCheckbox(
+                                              inactiveBgColor:
+                                                  Colors.transparent,
+                                              size: 20,
+                                              activeBgColor:
+                                                  Colors.transparent,
+                                              inactiveBorderColor:
+                                                  Colors.white,
+                                              type: GFCheckboxType.square,
+                                              onChanged: (value) {
+                                                if (coursesController
+                                                        .checkBox1.value == false) {
+                                                  coursesController
+                                                      .importFromExcelForPassenger()
+                                                      .then((value) {
+                                                    {
+                                                      if (coursesController
+                                                              .checkBox2.value ==
+                                                          true) {
+                                                        coursesController
+                                                                .checkBox1
+                                                                .value =
+                                                            !coursesController
+                                                                .checkBox1
+                                                                .value;
+                                                        coursesController
+                                                                .checkBox2
+                                                                .value =
+                                                            !coursesController
+                                                                .checkBox2
+                                                                .value;
+                                                      } else {
+                                                        coursesController
+                                                                .checkBox1
+                                                                .value =
+                                                            !coursesController
+                                                                .checkBox1
+                                                                .value;
+                                                      }
                                                     }
-                                                  },
-                                                  value: coursesController
-                                                      .checkBox1.value,
-                                                  inactiveIcon: null,
-                                                ),
-                                                Text(
-                                                  'Check passengers',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
+                                                  });
+                                                } else {
+                                                  coursesController
+                                                          .checkBox1.value =
+                                                      !coursesController
+                                                          .checkBox1.value;
+                                                  coursesController
+                                                      .passengerDetails
+                                                      .value = [];
+                                                }
+                                              },
+                                              value: coursesController
+                                                  .checkBox1.value,
+                                              inactiveIcon: null,
                                             ),
-                                            Row(
-                                              children: [
-                                                GFCheckbox(
-                                                  inactiveBgColor:
-                                                      Colors.transparent,
-                                                  size: 20,
-                                                  activeBgColor:
-                                                      Colors.transparent,
-                                                  inactiveBorderColor:
-                                                      Colors.white,
-                                                  type: GFCheckboxType.square,
-                                                  onChanged: (value) {
-                                                    if (coursesController
-                                                            .checkBox2.value ==
-                                                        false) {
-                                                      showDialog(
-                                                          barrierDismissible:
-                                                              false,
-                                                          context: context,
-                                                          builder:
-                                                              (builder) =>checkCarDialog()
-                                                      );
-                                                    } else {
-                                                      coursesController
-                                                              .checkBox2.value =
-                                                          !coursesController
-                                                              .checkBox2.value;
-                                                      coursesController
-                                                          .image.value = "";
-                                                      coursesController
-                                                          .passengerCarDetails
-                                                          .value = [];
-                                                    }
-                                                  },
-                                                  value: coursesController
-                                                      .checkBox2.value,
-                                                  inactiveIcon: null,
-                                                ),
-                                                Text(
-                                                  'Check car',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
+                                            Text(
+                                              'Check passengers',
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height:150)
+                                        Row(
+                                          children: [
+                                            GFCheckbox(
+                                              inactiveBgColor:
+                                                  Colors.transparent,
+                                              size: 20,
+                                              activeBgColor:
+                                                  Colors.transparent,
+                                              inactiveBorderColor:
+                                                  Colors.white,
+                                              type: GFCheckboxType.square,
+                                              onChanged: (value) {
+                                                if (coursesController
+                                                        .checkBox2.value ==
+                                                    false) {
+                                                  showDialog(
+                                                      barrierDismissible:
+                                                          false,
+                                                      context: context,
+                                                      builder:
+                                                          (builder) =>checkCarDialog()
+                                                  );
+                                                } else {
+                                                  coursesController
+                                                          .checkBox2.value =
+                                                      !coursesController
+                                                          .checkBox2.value;
+                                                  coursesController
+                                                      .image.value = "";
+                                                  coursesController
+                                                      .passengerCarDetails
+                                                      .value = [];
+                                                }
+                                              },
+                                              value: coursesController
+                                                  .checkBox2.value,
+                                              inactiveIcon: null,
+                                            ),
+                                            Text(
+                                              'Check car',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  )
+                                    SizedBox(height:150)
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -967,6 +970,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                             ),
                             GestureDetector(
                               onTap: () async {
+
                                 errorList = [];
 
                                 if (coursesController
@@ -988,158 +992,39 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     "") errorList.add("seating capacity");
 
                                 if (errorList.isEmpty) {
-                                  if (coursesController.checkBox1.value == true) {
-                                      coursesController.courses.add({
-                                        "seen": false,
-                                        "pickUpLocation": coursesController
-                                            .pickUpLocationConroller.text,
-                                        "dropOffLocation": coursesController
-                                            .dropOffLocationConroller.text,
-                                        "pickUpDate": dateTimePickUp,
-                                        if (coursesController.isReturn.value ==
-                                            true)
-                                          "dropOffDate": dateTimeDropOff,
-                                        "driverName": coursesController
-                                            .selectedItem.value,
-                                        "identityNum": coursesController
-                                            .selectedItemId.value,
-                                        "passengersNum": int.tryParse(
-                                                coursesController
-                                                    .passagersConroller.text) ??
-                                            0,
-                                        "passengersDetails": coursesController
-                                            .passengerDetails.value
-                                            ?.map((passenger) =>
-                                                passenger.toJson())
-                                            .toList(),
-                                        "regNumber": coursesController
-                                            .regNumberController.text,
-                                        "seatingCapacity": int.tryParse(
-                                                coursesController
-                                                    .seatingCapacityController
-                                                    .text) ?? 0,
-                                        "check": "passengers",
-                                        "idAdmin": loginController.idAdmin.value
-                                      }).then((value) {
-                                        coursesController.init();
-                                        Get.back();
-                                      });
-                                  }
-                                  else if (coursesController
-                                          .checkBox2.value == true) {
-
-                                        final orderImageURL;
-                                        final driverUploadTask = FirebaseStorage
-                                            .instance
-                                            .ref('order/' +
-                                                DateTime.now()
-                                                    .difference(
-                                                        DateTime(2022, 1, 1))
-                                                    .inSeconds
-                                                    .toString() +
-                                                '${coursesController.image.value?.split('/').last}')
-                                            .putFile(File(
-                                                coursesController.image.value));
-                                        final driverSnapshot =
-                                            await driverUploadTask
-                                                .whenComplete(() => null);
-                                        orderImageURL = await driverSnapshot.ref
-                                            .getDownloadURL();
-                                        if(coursesController.checkList.value==false){
-                                        coursesController.courses.add({
-                                          "seen": false,
-                                          "pickUpLocation": coursesController
-                                              .pickUpLocationConroller.text,
-                                          "dropOffLocation": coursesController
-                                              .dropOffLocationConroller.text,
-                                          "pickUpDate": dateTimePickUp,
-                                          "driverName": coursesController
-                                              .selectedItem.value,
-                                          "identityNum": coursesController
-                                              .selectedItemId.value,
-                                          "orderUrl": orderImageURL,
-                                          "passengersNum": int.tryParse(
-                                                  coursesController
-                                                      .passagersConroller
-                                                      .text) ??
-                                              0,
-                                          "passengersDetails": coursesController
-                                              .passengerCarDetails.value
-                                              ?.map((passenger) =>
-                                                  passenger.toJson())
-                                              .toList(),
-                                          "regNumber": coursesController
-                                              .regNumberController.text,
-                                          "seatingCapacity": int.tryParse(
-                                                  coursesController
-                                                      .seatingCapacityController
-                                                      .text) ??
-                                              0,
-                                          "check": "car",
-                                          "idAdmin":
-                                              loginController.idAdmin.value
-                                        }).then((value) {
-                                          coursesController.init();
-                                          Get.back();
-                                        });}
-                                        else{
-                                          showDialog(
-                                              context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
-                                          await uploadCarImages(driverSnapshot);
-                                          coursesController.courses.add({
-                                            "seen": false,
-                                            "finished":false,
-                                            "pickUpLocation": coursesController
-                                                .pickUpLocationConroller.text,
-                                            "dropOffLocation": coursesController
-                                                .dropOffLocationConroller.text,
-                                            "pickUpDate": dateTimePickUp,
-                                            "driverName": coursesController
-                                                .selectedItem.value,
-                                            "identityNum": coursesController
-                                                .selectedItemId.value,
-                                            "orderUrl": orderImageURL,
-                                            "passengersNum": int.tryParse(
-                                                coursesController
-                                                    .passagersConroller
-                                                    .text) ?? 0,
-                                            "passengersDetails": coursesController
-                                                .passengerCarDetails.value
-                                                ?.map((passenger) =>
-                                                passenger.toJson())
-                                                .toList(),
-                                            "checkCarDetails": coursesController
-                                                .checkListTable.value
-                                                ?.map((checklistData) =>
-                                                checklistData.toJson())
-                                                .toList(),
-                                            "regNumber": coursesController
-                                                .regNumberController.text,
-                                            "seatingCapacity": int.tryParse(
-                                                coursesController
-                                                    .seatingCapacityController
-                                                    .text) ??
-                                                0,
-                                            "check": "car",
-                                            "idAdmin":
-                                            loginController.idAdmin.value,
-                                            "carImage1URL":coursesController.carImage1URL.value,
-                                            "carImage2URL":coursesController.carImage2URL.value,
-                                            "carImage3URL":coursesController.carImage3URL.value,
-                                            "carImage4URL":coursesController.carImage4URL.value,
-                                            "luggageBigSize":int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
-                                            "usedLuggageBigSize":coursesController.usedLuggageBigSize.value,
-                                            "luggageMediumSize":int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
-                                            "usedLuggageMediumSize":coursesController.usedLuggageMediumSize.value,
-                                            "collie":int.tryParse(coursesController.collieController.text) ?? 0,
-                                            "usedCollie":coursesController.usedCollie.value,
-                                          }).then((value) {
-                                            coursesController.init();
-                                            Navigator.pop(context);
-                                            Get.back();
-                                          });
-                                        }
-
+                                  if(coursesController.checkBox1==true || coursesController.checkBox2==true){
+                                    showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
+                                  coursesController.add_course(
+                                    Course(
+                                        pickUpLocation: coursesController.pickUpLocationConroller.text,
+                                        dropOffLocation: coursesController.dropOffLocationConroller.text,
+                                        pickUpDate: dateTimePickUp,
+                                        dropOffDate:
+                                        coursesController.isReturn.value == true
+                                            ? dateTimeDropOff
+                                            :null,
+                                        driverName:  coursesController.selectedItem.value,
+                                        identityNum: coursesController.selectedItemId.value,
+                                        passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
+                                        seatingCapacity: int.tryParse(coursesController.seatingCapacityController.text) ?? 0,
+                                        regNumber: coursesController.regNumberController.text,
+                                        check: coursesController.checkBox1.value == true
+                                        ?"passengers"
+                                        :  coursesController.checkBox2.value == true
+                                        ?"car"
+                                        :"",
+                                        luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
+                                        luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
+                                        collie: int.tryParse(coursesController.collieController.text) ?? 0,
+                                        usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
+                                        usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
+                                        usedCollie: coursesController.usedCollie.value
+                                    )
+                                  ).then((value) {
+                                    Navigator.pop(context);
+                                    coursesController.init();
+                                    Get.back();
+                                  });
                                   }
                                   else
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -1148,6 +1033,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         duration: Duration(seconds: 3),
                                       ),
                                     );
+
                                 }
                                 else {
                                   showDialog(
@@ -1214,65 +1100,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
         ));
   }
 
-  Future<void> uploadCarImages(TaskSnapshot driverSnapshot) async {
-    try {
-      final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
-          DateTime
-              .now()
-              .difference(DateTime(2022, 1, 1))
-              .inSeconds
-              .toString() +
-          '${coursesController.carImage1URL.value
-              ?.split('/')
-              .last}').putFile(File(coursesController.carImage1URL.value));
-      final car1Snapshot = await car1UploadTask.whenComplete(() => null);
-      coursesController.carImage1URL.value =
-      await driverSnapshot.ref.getDownloadURL();
-
-      final car2UploadTask = FirebaseStorage.instance.ref('carImages/' +
-          DateTime
-              .now()
-              .difference(DateTime(2022, 1, 1))
-              .inSeconds
-              .toString() +
-          '${coursesController.carImage2URL.value
-              ?.split('/')
-              .last}').putFile(File(coursesController.carImage2URL.value));
-      final car2Snapshot = await car1UploadTask.whenComplete(() => null);
-      coursesController.carImage2URL.value =
-      await driverSnapshot.ref.getDownloadURL();
-
-      final car3UploadTask = FirebaseStorage.instance.ref('carImages/' +
-          DateTime
-              .now()
-              .difference(DateTime(2022, 1, 1))
-              .inSeconds
-              .toString() +
-          '${coursesController.carImage3URL.value
-              ?.split('/')
-              .last}').putFile(File(coursesController.carImage3URL.value));
-      final car3Snapshot = await car1UploadTask.whenComplete(() => null);
-      coursesController.carImage3URL.value =
-      await driverSnapshot.ref.getDownloadURL();
-
-      final car4UploadTask = FirebaseStorage.instance.ref('carImages/' +
-          DateTime
-              .now()
-              .difference(DateTime(2022, 1, 1))
-              .inSeconds
-              .toString() +
-          '${coursesController.carImage4URL.value
-              ?.split('/')
-              .last}').putFile(File(coursesController.carImage4URL.value));
-      final car4Snapshot = await car1UploadTask.whenComplete(() => null);
-      coursesController.carImage4URL.value =
-      await driverSnapshot.ref.getDownloadURL();
-    }
-    catch(e)
-    {
-      print(e.toString());
-    }
-  }
 
   Widget bottomSheet() {
     return Container(
@@ -1494,34 +1321,35 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
   }
 
   Future<String> getImage() async {
-    pickedFile = await picker.pickImage(source: ImageSource.camera);
-    String image='';
-    setState(() {
-      if (pickedFile != null) {
-        image = pickedFile!.path;
-      } else {
-        print('No image selected.');
-      }
-    });
-    print(image);
-    print(coursesController.image.value);
-    return image;
-    // Navigator.pop(context);
-  }
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
+      setState(() {
+        if (pickedFile != null) {
+          image = pickedFile!.path;
+        } else {
+          print('No image selected.');
+        }
+      });
+      print("///////////////////////////////");
+      print(image);
+      print(coursesController.image.value);
+      print("///////////////////////////////");
+      return image;
+      // Navigator.pop(context);
+    }
 
   Future<String> getImageFromGallery() async {
-    pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    String image="";
-    setState(() {
-      if (pickedFile != null) {
-        image = pickedFile!.path;
-      } else {
-        print('No image selected.');
-      }
-    });
-    // Navigator.pop(context);
-    return image;
-  }
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        if (pickedFile != null) {
+          image = pickedFile!.path;
+        } else {
+          print('No image selected.');
+        }
+      });
+      print("///////////////////////////");
+      print(coursesController.imageCar1.value);
+      return image;
+    }
 
   Widget checkListDialog(){
     return AlertDialog(
@@ -2046,12 +1874,10 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                     ),
                     onTap: (){
-                      print("dlfknkdfn"+coursesController.imageCar1.value);
                       showModalBottomSheet(
                           context: context,
                           builder: (builder)=>bottomSheetCar1()
                       );
-                      print("dlfknkdfn"+coursesController.imageCar1.value);
                     },
                   ),
                   GestureDetector(
