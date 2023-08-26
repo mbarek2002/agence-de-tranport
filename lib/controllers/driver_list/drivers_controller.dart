@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -124,30 +125,36 @@ class DriversController extends GetxController{
 
 //////////////cud operation///////////////////
   Future delete_driver(String id )async{
-    await driversList.doc(id).delete();
+    await driversList.doc(id).delete().then((value) {
+      fetchDrivers();
+      init();
+    });
   }
 
   Future add_driver(DriverModel d)async{
-    driversList.add({
-      "driverImage":d.driverImage,
-      "firstName":d.firstName,
-      "lastName":d.lastName,
-      "birthDate":d.birthDate,
-      "identityNumber":d.identityNumber,
-      "identityCardImageFace1":d.identityCardImageFace1,
-      "identityCardImageFace2":d.identityCardImageFace2,
-      "phoneNumber":d.phoneNumber,
-      "licenceType":d.licenceType,
-      "licenceImageFace1":d.licenceImageFace1,
-      "licenceImageFace2":d.licenceImageFace2,
-      "email":d.email,
-      "password":d.password,
-      "contractType":d.contractType,
-      "more1":d.moreImage1,
-      "more2":d.moreImage2,
-      "more3":d.moreImage3,
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: d.email, password: d.password).then((value) {
+      driversList.add({
+        "driverImage":d.driverImage,
+        "firstName":d.firstName,
+        "lastName":d.lastName,
+        "birthDate":d.birthDate,
+        "identityNumber":d.identityNumber,
+        "identityCardImageFace1":d.identityCardImageFace1,
+        "identityCardImageFace2":d.identityCardImageFace2,
+        "phoneNumber":d.phoneNumber,
+        "licenceType":d.licenceType,
+        "licenceImageFace1":d.licenceImageFace1,
+        "licenceImageFace2":d.licenceImageFace2,
+        "email":d.email,
+        "password":d.password,
+        "contractType":d.contractType,
+        "more1":d.moreImage1,
+        "more2":d.moreImage2,
+        "more3":d.moreImage3,
+      });
+      fetchDrivers();
+      init();
     });
-    init();
   }
 
   Future update_driver(DriverModel d)async{
@@ -171,7 +178,10 @@ class DriversController extends GetxController{
           "more2":d.moreImage2,
           "more3":d.moreImage3,
         }
-    );
+    ).then((value){
+      fetchDrivers();
+      init();
+    });
   }
 
 

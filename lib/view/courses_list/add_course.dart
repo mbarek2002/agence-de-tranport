@@ -42,7 +42,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     driversController.fetchDrivers();
     coursesController.pickUpLocationConroller.text = "";
     coursesController.dropOffLocationConroller.text = "";
-    coursesController.passagersConroller.text = "";
     coursesController.seatingCapacityController.text = "";
     coursesController.regNumberController.text = "";
     coursesController.luggageBigSizeController.text="0";
@@ -50,6 +49,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     coursesController.collieController.text="0";
     coursesController.selectedItem.value = "Driver name";
     coursesController.init();
+    coursesController.passagersConroller.text='0';
+
   }
 
 /////////////////pick up date //////////////////////
@@ -490,7 +491,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                             context: context,
                                             builder: (BuildContext context){
                                               return Container(
-                                                height: MediaQuery.of(context).size.height*0.8,
+                                                height: MediaQuery.of(context).size.height*0.35,
                                                 width: MediaQuery.of(context).size.width*0.8,
                                                 child: Obx(()=>Column(
                                                   children: [
@@ -501,52 +502,52 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                           fontFamily: 'Georgia',
                                                           color: Color(0xFF0F5CA0)),
                                                     ),
-                                                    SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                    Container(
-                                                        width:MediaQuery.of(context).size.width*0.3,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                            begin: Alignment.centerLeft,
-                                                            end: Alignment.centerRight,
-                                                          ),
-                                                        ),
-                                                        child: TextFormField(
-                                                          controller: coursesController.luggageBigSizeController,
-                                                          keyboardType: TextInputType.number,
-                                                          style: TextStyle(
-                                                            color: Colors.white
-                                                          ),
-                                                          decoration: InputDecoration(
-                                                            prefixIcon: Icon(Icons.luggage)
-                                                          ),
-                                                        )),
-                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                    Container(
-                                                        width:MediaQuery.of(context).size.width*0.3,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                            begin: Alignment.centerLeft,
-                                                            end: Alignment.centerRight,
-                                                          ),
-                                                        ),
-                                                        child: TextFormField(
-                                                          controller: coursesController.luggageMediumSizeController,
-                                                          keyboardType: TextInputType.number,
-                                                          style: TextStyle(
-                                                              color: Colors.white
-                                                          ),
-                                                          decoration: InputDecoration(
-                                                              prefixIcon: Icon(
-                                                                Icons.luggage,
-                                                                size: 20,
-                                                              ),
-                                                          ),
-                                                        )),
-                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    // SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                    // Container(
+                                                    //     width:MediaQuery.of(context).size.width*0.3,
+                                                    //     height: 30,
+                                                    //     decoration: BoxDecoration(
+                                                    //       gradient: LinearGradient(
+                                                    //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                    //         begin: Alignment.centerLeft,
+                                                    //         end: Alignment.centerRight,
+                                                    //       ),
+                                                    //     ),
+                                                    //     child: TextFormField(
+                                                    //       controller: coursesController.luggageBigSizeController,
+                                                    //       keyboardType: TextInputType.number,
+                                                    //       style: TextStyle(
+                                                    //         color: Colors.white
+                                                    //       ),
+                                                    //       decoration: InputDecoration(
+                                                    //         prefixIcon: Icon(Icons.luggage)
+                                                    //       ),
+                                                    //     )),
+                                                    // SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    // Container(
+                                                    //     width:MediaQuery.of(context).size.width*0.3,
+                                                    //     height: 30,
+                                                    //     decoration: BoxDecoration(
+                                                    //       gradient: LinearGradient(
+                                                    //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                    //         begin: Alignment.centerLeft,
+                                                    //         end: Alignment.centerRight,
+                                                    //       ),
+                                                    //     ),
+                                                    //     child: TextFormField(
+                                                    //       controller: coursesController.luggageMediumSizeController,
+                                                    //       keyboardType: TextInputType.number,
+                                                    //       style: TextStyle(
+                                                    //           color: Colors.white
+                                                    //       ),
+                                                    //       decoration: InputDecoration(
+                                                    //           prefixIcon: Icon(
+                                                    //             Icons.luggage,
+                                                    //             size: 20,
+                                                    //           ),
+                                                    //       ),
+                                                    //     )),
+                                                    SizedBox(height: MediaQuery.of(context).size.height*0.04),
                                                     Container(
                                                         width:MediaQuery.of(context).size.width*0.3,
                                                         height: 30,
@@ -575,71 +576,71 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                         fontSize: 20,
                                                         fontFamily: 'Georgia',
                                                         color: Color(0xFF0F5CA0))),
-                                                    SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                    Container(
-                                                        width:MediaQuery.of(context).size.width*0.3,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                            begin: Alignment.centerLeft,
-                                                            end: Alignment.centerRight,
-                                                          ),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.luggage
-                                                            ),
-                                                            DropdownButton<int>(
-                                                              value: coursesController.usedLuggageBigSize.value,
-                                                              onChanged: (int? newValue) {
-                                                                coursesController.usedLuggageBigSize.value = newValue!;
-                                                              },
-                                                              items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
-                                                                return DropdownMenuItem<int>(
-                                                                  value: index,
-                                                                  child: Text('$index'),
-                                                                );
-                                                              }),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ),
-                                                    SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                    Container(
-                                                        width:MediaQuery.of(context).size.width*0.3,
-                                                        height: 30,
-                                                        decoration: BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                            begin: Alignment.centerLeft,
-                                                            end: Alignment.centerRight,
-                                                          ),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Icon(
-                                                              Icons.luggage,
-                                                              size: 20,
-                                                            ),
-                                                            DropdownButton<int>(
-                                                              value: coursesController.usedLuggageMediumSize.value,
-                                                              onChanged: (int? newValue) {
-                                                                coursesController.usedLuggageMediumSize.value = newValue!;
-                                                              },
-                                                              items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
-                                                                return DropdownMenuItem<int>(
-                                                                  value: index,
-                                                                  child: Text('$index'),
-                                                                );
-                                                              }),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ),
+                                                    // SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                    // Container(
+                                                    //     width:MediaQuery.of(context).size.width*0.3,
+                                                    //     height: 30,
+                                                    //     decoration: BoxDecoration(
+                                                    //       gradient: LinearGradient(
+                                                    //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                    //         begin: Alignment.centerLeft,
+                                                    //         end: Alignment.centerRight,
+                                                    //       ),
+                                                    //     ),
+                                                    //     child: Row(
+                                                    //       mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                    //       children: [
+                                                    //         Icon(
+                                                    //           Icons.luggage
+                                                    //         ),
+                                                    //         DropdownButton<int>(
+                                                    //           value: coursesController.usedLuggageBigSize.value,
+                                                    //           onChanged: (int? newValue) {
+                                                    //             coursesController.usedLuggageBigSize.value = newValue!;
+                                                    //           },
+                                                    //           items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
+                                                    //             return DropdownMenuItem<int>(
+                                                    //               value: index,
+                                                    //               child: Text('$index'),
+                                                    //             );
+                                                    //           }),
+                                                    //         ),
+                                                    //       ],
+                                                    //     )
+                                                    //   ),
+                                                    // SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                    // Container(
+                                                    //     width:MediaQuery.of(context).size.width*0.3,
+                                                    //     height: 30,
+                                                    //     decoration: BoxDecoration(
+                                                    //       gradient: LinearGradient(
+                                                    //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                    //         begin: Alignment.centerLeft,
+                                                    //         end: Alignment.centerRight,
+                                                    //       ),
+                                                    //     ),
+                                                    //     child: Row(
+                                                    //       mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                    //       children: [
+                                                    //         Icon(
+                                                    //           Icons.luggage,
+                                                    //           size: 20,
+                                                    //         ),
+                                                    //         DropdownButton<int>(
+                                                    //           value: coursesController.usedLuggageMediumSize.value,
+                                                    //           onChanged: (int? newValue) {
+                                                    //             coursesController.usedLuggageMediumSize.value = newValue!;
+                                                    //           },
+                                                    //           items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
+                                                    //             return DropdownMenuItem<int>(
+                                                    //               value: index,
+                                                    //               child: Text('$index'),
+                                                    //             );
+                                                    //           }),
+                                                    //         ),
+                                                    //       ],
+                                                    //     )
+                                                    //   ),
                                                     SizedBox(height: MediaQuery.of(context).size.height*0.05),
                                                     Container(
                                                         width:MediaQuery.of(context).size.width*0.3,
@@ -695,7 +696,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                               topLeft: Radius.circular(5),
                                             )),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             Text('Luggage',
                                               style: TextStyle(
@@ -704,33 +705,33 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   color: Color(0xFF0F5CA0)
                                               ),
                                             ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    coursesController.usedLuggageBigSize.toString()+
-                                                  "/"+coursesController.luggageBigSizeController.text,
-                                                  style: TextStyle(
-                                                      color: Color(0xFF0F5CA0)
-                                                  ),
-                                                ),
-                                                Icon(
-                                                    Icons.luggage_outlined,
-                                                    color: Color(0xFF0F5CA0)
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    coursesController.usedLuggageMediumSize.toString()
-                                                  +"/"+coursesController.luggageMediumSizeController.text,
-                                                  style: TextStyle(
-                                                      color: Color(0xFF0F5CA0)
-                                                  ),),
-                                                Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
-                                                ),
-                                              ],
-                                            ),
+                                            // Row(
+                                            //   children: [
+                                            //     Text(
+                                            //         coursesController.usedLuggageBigSize.toString()+
+                                            //       "/"+coursesController.luggageBigSizeController.text,
+                                            //       style: TextStyle(
+                                            //           color: Color(0xFF0F5CA0)
+                                            //       ),
+                                            //     ),
+                                            //     Icon(
+                                            //         Icons.luggage_outlined,
+                                            //         color: Color(0xFF0F5CA0)
+                                            //     ),
+                                            //   ],
+                                            // ),
+                                            // Row(
+                                            //   children: [
+                                            //     Text(
+                                            //         coursesController.usedLuggageMediumSize.toString()
+                                            //       +"/"+coursesController.luggageMediumSizeController.text,
+                                            //       style: TextStyle(
+                                            //           color: Color(0xFF0F5CA0)
+                                            //       ),),
+                                            //     Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
+                                            //     ),
+                                            //   ],
+                                            // ),
                                             Row(
                                               children: [
                                                 Text(
@@ -740,10 +741,10 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   style: TextStyle(
                                                       color: Color(0xFF0F5CA0)
                                                   ),),
-                                                Icon(
-                                                    Icons.mark_email_unread_sharp,
-                                                    color: Color(0xFF0F5CA0)
-                                                ),
+                                                // Icon(
+                                                //     Icons.mark_email_unread_sharp,
+                                                //     color: Color(0xFF0F5CA0)
+                                                // ),
                                               ],
                                             )
                                           ],
@@ -867,6 +868,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                       .importFromExcelForPassenger()
                                                       .then((value) {
                                                     {
+                                                      coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
                                                       if (coursesController
                                                               .checkBox2.value ==
                                                           true) {
@@ -990,6 +992,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 if (coursesController
                                         .seatingCapacityController.text ==
                                     "") errorList.add("seating capacity");
+                                if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
+                                  errorList.add("luggage capacity");
 
                                 if (errorList.isEmpty) {
                                   if(coursesController.checkBox1==true || coursesController.checkBox2==true){
@@ -1013,11 +1017,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         :  coursesController.checkBox2.value == true
                                         ?"car"
                                         :"",
-                                        luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
-                                        luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
+                                        // luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
+                                        // luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
                                         collie: int.tryParse(coursesController.collieController.text) ?? 0,
-                                        usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
-                                        usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
+                                        // usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
+                                        // usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
                                         usedCollie: coursesController.usedCollie.value
                                     )
                                   ).then((value) {
@@ -1040,8 +1044,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                       context: context,
                                       builder: ((builder) => AlertDialog(
                                             content: Container(
-                                              height: 110,
-                                              width: 100,
+                                              height: MediaQuery.of(context).size.height*0.2,
+                                              width: MediaQuery.of(context).size.width,
                                               child: Column(
                                                 children: [
                                                   const Icon(IconData(0xe6cb,
@@ -1329,10 +1333,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           print('No image selected.');
         }
       });
-      print("///////////////////////////////");
-      print(image);
-      print(coursesController.image.value);
-      print("///////////////////////////////");
+
       return image;
       // Navigator.pop(context);
     }
@@ -1346,8 +1347,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           print('No image selected.');
         }
       });
-      print("///////////////////////////");
-      print(coursesController.imageCar1.value);
+
       return image;
     }
 
@@ -1364,6 +1364,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
         ),
       ),
       content: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height*0.7,
         child: SingleChildScrollView(
           child: Obx(()=>Column(
@@ -1859,15 +1860,21 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 children: [
                   GestureDetector(
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      width:MediaQuery.of(context).size.width*0.3,
+                      height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
 
                       ),
                       child:coursesController.imageCar1.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('Front car picture'),
+                              FaIcon(FontAwesomeIcons.image),
+                            ],
+                          )
                           :Image.file(
                         File(coursesController.imageCar1.value),
                         fit: BoxFit.fill,
@@ -1888,14 +1895,20 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      width:MediaQuery.of(context).size.width*0.3,
+                      height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
                       ),
                       child: coursesController.imageCar2.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('back car picture'),
+                          FaIcon(FontAwesomeIcons.image),
+                        ],
+                      )
                           :Image.file(
                         File(coursesController.imageCar2.value),
                         fit: BoxFit.cover,
@@ -1916,15 +1929,26 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      width:MediaQuery.of(context).size.width*0.3,
+                      height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
 
                       ),
                       child: coursesController.imageCar3.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    left:MediaQuery.of(context).size.width*0.04
+                                ),
+                                child: Text('right side car picture'),
+                              ),
+                              FaIcon(FontAwesomeIcons.image),
+                            ],
+                          )
                           :Image.file(
                         File(coursesController.imageCar3.value),
                         fit: BoxFit.cover,
@@ -1939,14 +1963,25 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      width:MediaQuery.of(context).size.width*0.3,
+                      height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
                       ),
                       child: coursesController.imageCar4.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    left:MediaQuery.of(context).size.width*0.04
+                                ),
+                                child: Text('left side car picture'),
+                              ),
+                              FaIcon(FontAwesomeIcons.image),
+                            ],
+                          )
                           :Image.file(
                         File(coursesController.imageCar4.value),
                         fit: BoxFit.cover,
@@ -2035,7 +2070,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                         style: TextStyle(color: Colors.white, fontFamily: 'Georgia'),
                       ),
                       onPressed: () {
-                        coursesController.importFromExcel();
+                        coursesController.importFromExcel().then((value) {
+                          coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
+                        });
                       },
                     ),
                   ),
@@ -2055,7 +2092,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           if (coursesController.checkList.value == false)
                           {
                             showDialog(
-
                                 barrierDismissible: false,
                                 context: context,
                                 builder: (builder)=>checkListDialog()
@@ -2091,19 +2127,21 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                     style: TextStyle(color: Colors.white, fontFamily: 'Georgia'),
                   ),
                   onPressed: () {
-                    if (coursesController.image.value != "" && coursesController.passengerCarDetails.value != []) {
+                    if (coursesController.image.value != "") {
                       if (coursesController.checkBox1.value == true) {
                         coursesController.checkBox1.value = !coursesController.checkBox1.value;
                         coursesController.checkBox2.value = !coursesController.checkBox2.value;
                       } else {
                         coursesController.checkBox2.value = !coursesController.checkBox2.value;
                       }
+                      print(coursesController.image.value);
+                      print(coursesController.passengerCarDetails.value);
                       Navigator.pop(context);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                              'choose an order picture and a passengers list'
+                              'choose an order picture'
                           ),
                           duration: Duration(seconds: 2),
                         ),

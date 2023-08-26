@@ -84,7 +84,7 @@ class LoginController extends GetxController{
               context: context,
               builder: (context){
                 return const  AlertDialog(
-                  title: Text("some things go wrong",style: TextStyle(fontSize: 20),),
+                  title: Text("Sorry,somethings went wrong,Please try again",style: TextStyle(fontSize: 20),),
                 );
               }
           );

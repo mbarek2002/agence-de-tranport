@@ -1,18 +1,12 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/course.dart';
-import 'package:admin_citygo/models/course_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_excel/excel.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CoursesController extends GetxController{
 
@@ -94,6 +88,7 @@ class CoursesController extends GetxController{
     validLicenceType.value=false;
     passengerCarDetails=RxList<rowdata>([]);
     passengerDetails=RxList<rowdata>([]);
+    checkListTable=RxList<checklistData>([]);
 
     isReturn.value = false;
     checkBox1.value = false;
@@ -178,35 +173,7 @@ class CoursesController extends GetxController{
 
   Future<void> uploadCarImages() async {
     try {
-//       final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
-//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
-//           '${imageCar1.value?.split('/').last}').putFile(File(imageCar1.value));
-//       final car1Snapshot = await car1UploadTask.whenComplete(() => null);
-//       carImage1URL.value =
-//       await car1Snapshot.ref.getDownloadURL();
-// /////////////////////////////////
-//       final car2UploadTask = FirebaseStorage.instance.ref('carImages/' +
-//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
-//           '${imageCar2.value?.split('/').last}').putFile(File(imageCar2.value));
-//       final car2Snapshot = await car2UploadTask.whenComplete(() => null);
-//       carImage2URL.value =
-//       await car2Snapshot.ref.getDownloadURL();
-// /////////////////////////////
-//       final car3UploadTask = FirebaseStorage.instance.ref('carImages/' +
-//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
-//           '${imageCar3.value?.split('/').last}').putFile(File(imageCar3.value));
-//       final car3Snapshot = await car3UploadTask.whenComplete(() => null);
-//       carImage3URL.value =
-//       await car3Snapshot.ref.getDownloadURL();
-// ///////////////////////////////
-//       final car4UploadTask = FirebaseStorage.instance.ref('carImages/' +
-//           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
-//           '${imageCar4.value?.split('/').last}').putFile(File(imageCar4.value));
-//       final car4Snapshot = await car4UploadTask.whenComplete(() => null);
-//       carImage4URL.value =
-//       await car4Snapshot.ref.getDownloadURL();
-// /////////////////////////////
-    /////////
+      /////////
       final car1UploadTask = FirebaseStorage.instance.ref('carImages/' +
           DateTime.now().difference(DateTime(2022, 1, 1)).inSeconds.toString() +
           '${imageCar1.value?.split('/').last}').putFile(File(imageCar1.value));
@@ -311,7 +278,7 @@ class CoursesController extends GetxController{
 /////////////////crud opertion///////////////////////
 
   Future<void> fetchCourses() async {
-    try {
+    // try {
       isLoading.value=true;
       String? orderUrl;
       QuerySnapshot courses =
@@ -321,9 +288,10 @@ class CoursesController extends GetxController{
       coursesAll.clear();
 
       for (var course in courses.docs) {
+        print(course.id);
         Timestamp? dropOffDate;
         List<rowdata>? passengersDetailsFetch;
-        List<checklistData>? carDetailsFetch;
+        List<checklistData>? carDetailsFetch=<checklistData>[];
         //
         // int? collie;
         // int? luggageBigSize;
@@ -331,7 +299,6 @@ class CoursesController extends GetxController{
         // int? usedCollieFetch;
         // int? usedLuggageBigSizeFetch;
         // int? usedLuggageMediumSizeFetch;
-        print(course.id);
         String? carImg1Url;
         String? carImg2Url;
         String? carImg3Url;
@@ -385,25 +352,6 @@ class CoursesController extends GetxController{
             carImg4Url = course['carImage4URL'];
           }
 
-          // if(courseData.containsKey('collie')){
-          //   collie = course['collie'];
-          // }
-          // if(courseData.containsKey('luggageBigSize')){
-          //   luggageBigSize = course['luggageBigSize'];
-          // }
-          // if(courseData.containsKey('luggageMediumSize')){
-          //   luggageMediumSize = course['luggageMediumSize'];
-          // }
-          //
-          // if(courseData.containsKey('usedCollie')){
-          //   usedCollieFetch = course['usedCollie'];
-          // }
-          // if(courseData.containsKey('usedLuggageBigSize')){
-          //   usedLuggageBigSizeFetch = course['usedLuggageBigSize'];
-          // }
-          // if(courseData.containsKey('usedLuggageMediumSize')){
-          //   usedLuggageMediumSizeFetch = course['usedLuggageMediumSize'];
-          // }
 
           Timestamp date = course['pickUpDate'];
           if(courseData.containsKey('idAdmin')) {
@@ -433,10 +381,10 @@ class CoursesController extends GetxController{
                     carImage4URL: carImg4Url,
                     collie: course['collie'] ?? 0,
                     usedCollie: course['usedCollie'] ?? 0,
-                    luggageBigSize: course['luggageBigSize'] ?? 0,
-                    usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-                    luggageMediumSize: course['luggageMediumSize'] ?? 0,
-                    usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+                    // luggageBigSize: course['luggageBigSize'] ?? 0,
+                    // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                    // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                    // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
                   )
               );
               coursesAll.add(
@@ -464,18 +412,15 @@ class CoursesController extends GetxController{
                       carImage4URL: carImg4Url,
                       collie: course['collie'] ?? 0,
                       usedCollie: course['usedCollie'] ?? 0,
-                      luggageBigSize: course['luggageBigSize'] ?? 0,
-                      usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-                      luggageMediumSize: course['luggageMediumSize'] ?? 0,
-                      usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+                      // luggageBigSize: course['luggageBigSize'] ?? 0,
+                      // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                      // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                      // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
                   )
               );
             }
           }
           else if(!courseData.containsKey('idAdmin')) {
-            print('/////////////////////////////////////');
-            print(!courseData.containsKey('idAdmin'));
-            print(course.id);
             coursesListDriver.add(
                 Course(
                   check: course['check'],
@@ -498,10 +443,10 @@ class CoursesController extends GetxController{
                   carImage4URL: carImg4Url,
                   collie: course['collie'] ?? 0,
                   usedCollie: course['usedCollie'] ?? 0,
-                  luggageBigSize: course['luggageBigSize'] ?? 0,
-                  usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-                  luggageMediumSize: course['luggageMediumSize'] ?? 0,
-                  usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+                  // luggageBigSize: course['luggageBigSize'] ?? 0,
+                  // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                  // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                  // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
 
                 )
             );
@@ -527,10 +472,10 @@ class CoursesController extends GetxController{
                     carImage4URL: carImg4Url,
                     collie: course['collie'] ?? 0,
                     usedCollie: course['usedCollie'] ?? 0,
-                    luggageBigSize: course['luggageBigSize'] ?? 0,
-                    usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-                    luggageMediumSize: course['luggageMediumSize'] ?? 0,
-                    usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+                    // luggageBigSize: course['luggageBigSize'] ?? 0,
+                    // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+                    // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+                    // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
 
                 )
             );
@@ -558,32 +503,12 @@ class CoursesController extends GetxController{
 
       isLoading.value=false;
 
-    } catch (e) {
-      print('Error '+ e.toString());
-    }
+    // } catch (e) {
+    //   print('Error '+ e.toString());
+    // }
   }
 
   Future add_course(Course course)async{
-
-    // courses.add({
-    //   "type":d.type,
-    //   "pickUpLocation":d.pickUpLocation,
-    //   "dropOffLocation":d.dropOffLocation,
-    //   "pickUpDate":Timestamp.fromDate(d.pickUpDate),
-    //   if(d.dropOffDate!=null)"dropOffDate":Timestamp.fromDate(d.dropOffDate!),
-    //   "driverName":d.driverName,
-    //   "identityNum":d.identityNum,
-    //   if(d.orderUrl!=null)"orderUrl":d.orderUrl,
-    //   if(d.passengersNum!=null)"passengersNum":d.passengersNum,
-    //   if(d.passengersDetails!=null)"passengersDetails": d.passengersDetails?.map((passenger) => passenger.toJson()).toList(),
-    // });
-    print(course.luggageBigSize);
-    print(course.luggageMediumSize);
-    print(course.collie);
-    print(course.usedLuggageBigSize);
-    print(course.usedLuggageBigSize);
-    print(course.usedCollie);
-
 
     if (course.check == "passengers" && checkBox1.value == true) {
       courses.add({
@@ -606,11 +531,11 @@ class CoursesController extends GetxController{
         "seatingCapacity": course.seatingCapacity,
         "check": course.check,
         "idAdmin": loginController.idAdmin.value,
-        "luggageBigSize":course.luggageBigSize,
-        "luggageMediumSize":course.luggageMediumSize,
+        // "luggageBigSize":course.luggageBigSize,
+        // "luggageMediumSize":course.luggageMediumSize,
         "collie":course.collie,
-        "usedLuggageBigSize":course.usedLuggageBigSize,
-        "usedLuggageMediumSize":course.usedLuggageMediumSize,
+        // "usedLuggageBigSize":course.usedLuggageBigSize,
+        // "usedLuggageMediumSize":course.usedLuggageMediumSize,
         "usedCollie":course.usedCollie,
       }).then((value) {
         init();
@@ -648,47 +573,14 @@ class CoursesController extends GetxController{
         "seatingCapacity": course.seatingCapacity,
         "check": course.check,
         "idAdmin": loginController.idAdmin.value,
-        "luggageBigSize":course.luggageBigSize,
-        "luggageMediumSize":course.luggageMediumSize,
+        // "luggageBigSize":course.luggageBigSize,
+        // "luggageMediumSize":course.luggageMediumSize,
         "collie":course.collie,
-        "usedLuggageBigSize":course.usedLuggageBigSize,
-        "usedLuggageMediumSize":course.usedLuggageMediumSize,
+        // "usedLuggageBigSize":course.usedLuggageBigSize,
+        // "usedLuggageMediumSize":course.usedLuggageMediumSize,
         "usedCollie":course.usedCollie,
       })
-        // ({
-        //   "seen": false,
-        //   "finished":false,
-        //   "pickUpLocation": coursesController
-        //       .pickUpLocationConroller.text,
-        //   "dropOffLocation": coursesController
-        //       .dropOffLocationConroller.text,
-        //   "pickUpDate": dateTimePickUp,
-        //   "driverName": coursesController
-        //       .selectedItem.value,
-        //   "identityNum": coursesController
-        //       .selectedItemId.value,
-        //   "orderUrl": orderImageURL,
-        //   "passengersNum": int.tryParse(
-        //       coursesController
-        //           .passagersConroller
-        //           .text) ??
-        //       0,
-        //   "passengersDetails": coursesController
-        //       .passengerCarDetails.value
-        //       ?.map((passenger) =>
-        //       passenger.toJson())
-        //       .toList(),
-        //   "regNumber": coursesController
-        //       .regNumberController.text,
-        //   "seatingCapacity": int.tryParse(
-        //       coursesController
-        //           .seatingCapacityController
-        //           .text) ??
-        //       0,
-        //   "check": "car",
-        //   "idAdmin":
-        //   loginController.idAdmin.value
-        // })
+
           .then((value) {
           init();
           fetchCourses();
@@ -723,11 +615,11 @@ class CoursesController extends GetxController{
               .toList(),
           "check": course.check,
           "idAdmin": loginController.idAdmin.value,
-          "luggageBigSize":course.luggageBigSize,
-          "luggageMediumSize":course.luggageMediumSize,
+          // "luggageBigSize":course.luggageBigSize,
+          // "luggageMediumSize":course.luggageMediumSize,
           "collie":course.collie,
-          "usedLuggageBigSize":course.usedLuggageBigSize,
-          "usedLuggageMediumSize":course.usedLuggageMediumSize,
+          // "usedLuggageBigSize":course.usedLuggageBigSize,
+          // "usedLuggageMediumSize":course.usedLuggageMediumSize,
           "usedCollie":course.usedCollie,
           "checkCarDetails":
           checkListTable.value
@@ -739,60 +631,6 @@ class CoursesController extends GetxController{
           "carImage3URL":carImage3URL.value,
           "carImage4URL":carImage4URL.value,
         });
-        //   ({
-        //   "seen": false,
-        //   "finished":false,
-        //   "pickUpLocation": coursesController
-        //       .pickUpLocationConroller.text,
-        //   "dropOffLocation": coursesController
-        //       .dropOffLocationConroller.text,
-        //   "pickUpDate": dateTimePickUp,
-        //   "driverName": coursesController
-        //       .selectedItem.value,
-        //   "identityNum": coursesController
-        //       .selectedItemId.value,
-        //   "orderUrl": orderImageURL,
-        //   "passengersNum": int.tryParse(
-        //       coursesController
-        //           .passagersConroller
-        //           .text) ?? 0,
-        //   "passengersDetails": coursesController
-        //       .passengerCarDetails.value
-        //       ?.map((passenger) =>
-        //       passenger.toJson())
-        //       .toList(),
-        //   "checkCarDetails": coursesController
-        //       .checkListTable.value
-        //       ?.map((checklistData) =>
-        //       checklistData.toJson())
-        //       .toList(),
-        //   "regNumber": coursesController
-        //       .regNumberController.text,
-        //   "seatingCapacity": int.tryParse(
-        //       coursesController
-        //           .seatingCapacityController
-        //           .text) ??
-        //       0,
-        //   "check": "car",
-        //   "idAdmin":
-        //   loginController.idAdmin.value,
-        //   "carImage1URL":coursesController.carImage1URL.value,
-        //   "carImage2URL":coursesController.carImage2URL.value,
-        //   "carImage3URL":coursesController.carImage3URL.value,
-        //   "carImage4URL":coursesController.carImage4URL.value,
-        //   "luggageBigSize":int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
-        //   "usedLuggageBigSize":coursesController.usedLuggageBigSize.value,
-        //   "luggageMediumSize":int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
-        //   "usedLuggageMediumSize":coursesController.usedLuggageMediumSize.value,
-        //   "collie":int.tryParse(coursesController.collieController.text) ?? 0,
-        //   "usedCollie":coursesController.usedCollie.value,
-        // })
-        // });
-        //     .then((value){
-        //
-        // }
-        // );
-
       }
 
     }
@@ -802,37 +640,6 @@ class CoursesController extends GetxController{
   Future update_course(Course course)async{
 
     if (checkBox1.value == true) {
-    //   print("passengers");
-    //
-    //   print(course.seen);
-    //       print(pickUpLocationConroller.text);
-    //           print(dropOffLocationConroller.text);
-    //               print(course.pickUpDate);
-    // if (isReturn.value == true)
-    //               print(course.dropOffDate);
-    //               print(int.parse(passagersConroller.text));
-    //                   print(int.parse(seatingCapacityController.text));
-    //                       print(selectedItem.value);
-    //                           print(selectedItemId.value);
-    //                               print( regNumberController.text);
-    //                               print('passengers details');
-    // if(passengerDetails.value.length>0)
-    //   print(passengerDetails.value.length);
-    // else
-    //   print(course.passengersDetails?.length);
-    // // ?passengerDetails.value
-    // //     ?.map((passenger) =>
-    // // passenger.toJson()).toList()
-    // //     :course.passengersDetails
-    // //     ?.map((passenger) =>
-    // // passenger.toJson()).toList(),
-    // if(course.adminId!=null)print(course.adminId);
-    // print(course.luggageBigSize);
-    // print(course.luggageMediumSize);
-    // print(course.collie);
-    // print(course.usedLuggageBigSize);
-    // print(course.usedLuggageMediumSize);
-    // print(course.usedCollie);
         courses.doc(course.id).update(
             {
               "seen": course.seen,
@@ -855,11 +662,11 @@ class CoursesController extends GetxController{
                   passenger.toJson()).toList(),
               "check": "passengers",
               if(course.adminId!=null)"idAdmin": course.adminId,
-              "luggageBigSize":course.luggageBigSize,
-              "luggageMediumSize":course.luggageMediumSize,
+              // "luggageBigSize":course.luggageBigSize,
+              // "luggageMediumSize":course.luggageMediumSize,
               "collie":course.collie,
-              "usedLuggageBigSize":course.usedLuggageBigSize,
-              "usedLuggageMediumSize":course.usedLuggageMediumSize,
+              // "usedLuggageBigSize":course.usedLuggageBigSize,
+              // "usedLuggageMediumSize":course.usedLuggageMediumSize,
               "usedCollie":course.usedCollie,
             }
         ).then((value) {
@@ -906,62 +713,6 @@ class CoursesController extends GetxController{
       if(imageCar4.value != "") {
         try{
           await uploadCar4Image();
-              // .then(
-              //     (value) {
-              //   print(course.seen);
-              //   print(pickUpLocationConroller.text);
-              //   print(dropOffLocationConroller.text);
-              //   print(course.pickUpDate);
-              //   if (isReturn.value == true)
-              //     print(course.dropOffDate);
-              //   print(int.parse(passagersConroller.text));
-              //   print(int.tryParse(seatingCapacityController.text));
-              //   print(selectedItem.value);
-              //   print(selectedItemId.value);
-              //   print(regNumberController.text);
-              //   if (image.value == "")
-              //     print(course.orderUrl);
-              //   else
-              //     print(orderImageURL.value);
-              //   if (passengerCarDetails.value.length > 0)
-              //     print(passengerCarDetails);
-              //   else
-              //     print(course.passengersDetails?.length);
-              //   // passengerCarDetails.value
-              //   //     ?.map((passenger) =>
-              //   // passenger.toJson()).toList()
-              //   //     :course.passengersDetails
-              //   //     ?.map((passenger) =>
-              //   // passenger.toJson()).toList(),
-              //   print("car");
-              //   if (course.adminId != null) print(course.adminId);
-              //   print(course.luggageBigSize);
-              //   print(course.luggageMediumSize);
-              //   print(course.collie);
-              //   print(course.usedLuggageBigSize);
-              //   print(course.usedLuggageMediumSize);
-              //   print(course.usedCollie);
-              //
-              //   if (carImage1URL.value == "")
-              //     print(course.carImage1URL);
-              //   else
-              //     print(carImage1URL.value);
-              //
-              //   if (carImage2URL.value == "")
-              //     print(course.carImage2URL);
-              //   else
-              //     print(carImage2URL.value);
-              //
-              //   if (carImage3URL.value == "")
-              //     print(course.carImage3URL);
-              //   else
-              //     print(carImage3URL.value);
-              //
-              //   if (carImage4URL.value == "")
-              //     print(course.carImage4URL);
-              //   else
-              //     print(carImage4URL.value);
-              // });
           FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
         }catch(e){
           print(e.toString());
@@ -993,28 +744,32 @@ class CoursesController extends GetxController{
                     passenger.toJson()).toList(),
                 "check": "car",
                 if(course.adminId!=null)"idAdmin": course.adminId,
-                "luggageBigSize":course.luggageBigSize,
-                "luggageMediumSize":course.luggageMediumSize,
+                // "luggageBigSize":course.luggageBigSize,
+                // "luggageMediumSize":course.luggageMediumSize,
                 "collie":course.collie,
-                "usedLuggageBigSize":course.usedLuggageBigSize,
-                "usedLuggageMediumSize":course.usedLuggageMediumSize,
+                // "usedLuggageBigSize":course.usedLuggageBigSize,
+                // "usedLuggageMediumSize":course.usedLuggageMediumSize,
                 "usedCollie":course.usedCollie,
                 "checkCarDetails":
                 checkListTable.value
                     ?.map((checklistData) =>
                     checklistData.toJson())
                     .toList(),
-                "carImage1URL":
+                // if(course.carImage1URL!= null || carImage1URL.value != null)
+                  "carImage1URL":
                 carImage1URL.value==""
                 ?course.carImage1URL
                 :carImage1URL.value,
-                "carImage2URL":carImage2URL.value==""
+                // if(course.carImage2URL!= null || carImage2URL.value != null)
+                  "carImage2URL":carImage2URL.value==""
                     ?course.carImage2URL
                     :carImage2URL.value,
-                "carImage3URL":carImage3URL.value==""
+                // if(course.carImage3URL!= null || carImage3URL.value != null)
+                  "carImage3URL":carImage3URL.value==""
                     ?course.carImage3URL
                     :carImage3URL.value,
-                "carImage4URL":carImage4URL.value==""
+                // if(course.carImage4URL!= null || carImage4URL.value != null)
+                  "carImage4URL":carImage4URL.value==""
                     ?course.carImage4URL
                     :carImage4URL.value,
               }
@@ -1180,7 +935,7 @@ class CoursesController extends GetxController{
 
   }
 ///////////////////////////pick excel for car/////////////////////////////////////////
-  RxList<rowdata> passengerCarDetails =RxList<rowdata>([]);
+  RxList<rowdata> passengerCarDetails =<rowdata>[].obs;
 
   String? file;
   Future importFromExcel() async {
@@ -1219,7 +974,8 @@ class CoursesController extends GetxController{
   }
 ////////////////////////////////////////////////////////////////////
 ///////////////////////////pick excel for bus/////////////////////////////////////////
-  RxList<rowdata> passengerDetails =RxList<rowdata>([]);
+  RxList<rowdata> passengerDetails =<rowdata>[].obs;
+
 
   String? filePassenger;
   Future importFromExcelForPassenger() async {
@@ -1262,7 +1018,7 @@ class rowdata {
   final String firstname;
   final String lastName;
   final String identityNum;
-  final bool state;
+  bool state;
 
   rowdata(
       {required this.firstname, required this.lastName, required this.identityNum,required this.state});

@@ -131,279 +131,6 @@ class _DriverDetailsState extends State<DriverDetails> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child:
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     SizedBox(height: 20,),
-                            //     Text("Driver Register",
-                            //       style: TextStyle(
-                            //           fontSize: 20,
-                            //           fontWeight: FontWeight.bold,
-                            //           fontFamily: "Georgia"),
-                            //     ),
-                            //     SizedBox(height: 12,),
-                            //     Padding(
-                            //       padding: const EdgeInsets.only(left:110),
-                            //       child: Container(
-                            //         height: 100,
-                            //         width: 100,
-                            //         decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.circular(50),
-                            //           image: DecorationImage(
-                            //               image: NetworkImage(widget.record.driverImage),
-                            //               fit: BoxFit.cover
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     SizedBox(height: 25,),
-                            //     Padding(
-                            //       padding: const EdgeInsets.only(left:10.0),
-                            //       child: Column(
-                            //         children: [
-                            //           Row(
-                            //             crossAxisAlignment: CrossAxisAlignment.start,
-                            //             children: [
-                            //               Column(
-                            //                 crossAxisAlignment: CrossAxisAlignment.start,
-                            //                 mainAxisAlignment: MainAxisAlignment.center,
-                            //                 children: [
-                            //                   Text("First Name".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Last Name".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Birth Date".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Identity Card".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Phone Number ".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Licence type".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("Email".capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                 ],
-                            //               ),
-                            //               SizedBox(width: 5,),
-                            //               Column(
-                            //                 crossAxisAlignment: CrossAxisAlignment.start,
-                            //                 mainAxisAlignment: MainAxisAlignment.center,
-                            //                 children: [
-                            //                   Text(':'),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(':'),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(':'),
-                            //                   SizedBox(height: 28,),
-                            //                   Text(':'),
-                            //                   SizedBox(height: 28,),
-                            //                   Text(':'),
-                            //                   SizedBox(height: 28,),
-                            //                   Text(':'),
-                            //                   SizedBox(height: 22,),
-                            //                   Text(':'),
-                            //                 ],
-                            //               ),
-                            //               SizedBox(width: 10,),
-                            //               Column(
-                            //                 mainAxisAlignment: MainAxisAlignment.start,
-                            //                 crossAxisAlignment: CrossAxisAlignment.start,
-                            //                 children: [
-                            //                   Text(widget.record.firstName.capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(widget.record.lastName.capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(widget.record.birthDate,style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(widget.record.identityNumber.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text("+216 "+widget.record.phoneNumber.toString(),style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(widget.record.licenceType,style: TextStyle(
-                            //                       fontSize: 15,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //                   SizedBox(height: 25,),
-                            //                   Text(widget.record.email.capitalize.toString(),style: TextStyle(
-                            //                       fontSize: 13,
-                            //                       color: Colors.grey,
-                            //                       fontWeight: FontWeight.bold,
-                            //                       fontFamily: "Georgia"),),
-                            //
-                            //
-                            //
-                            //                 ],
-                            //               ),
-                            //             ],
-                            //           ),
-                            //           SizedBox(height: 25,),
-                            //           Row(
-                            //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            //             children: [
-                            //               Text("Contract type".capitalize.toString(),style: TextStyle(
-                            //                   fontSize: 8,
-                            //                   color: Colors.grey,
-                            //                   fontWeight: FontWeight.bold,
-                            //                   fontFamily: "Georgia"),
-                            //               ),
-                            //               // Row(
-                            //               //   children: [
-                            //               //     Text("seasonal",style: TextStyle(fontSize: 10),),
-                            //               //     Checkbox(value: checkBox1, onChanged: (value){
-                            //               //       if(checkBox2==true){
-                            //               //         setState(() {
-                            //               //           checkBox1=!checkBox1;
-                            //               //           checkBox2=!checkBox2;
-                            //               //         });}
-                            //               //       else{
-                            //               //         setState(() {
-                            //               //           checkBox1=!checkBox1;
-                            //               //         });
-                            //               //       }
-                            //               //     }),
-                            //               //   ],
-                            //               // ),
-                            //
-                            //               // Row(
-                            //               //   children: [
-                            //               //     Text("Full Time Contract",style: TextStyle(fontSize: 10),),
-                            //               //     Checkbox(value: checkBox2, onChanged: (value){
-                            //               //       if(checkBox1==true){
-                            //               //         setState(() {
-                            //               //           checkBox1=!checkBox1;
-                            //               //           checkBox2=!checkBox2;
-                            //               //         });}
-                            //               //       else{
-                            //               //         setState(() {
-                            //               //           checkBox2=!checkBox2;
-                            //               //
-                            //               //         });
-                            //               //       }
-                            //               //     }),
-                            //               //   ],
-                            //               // ),
-                            //
-                            //             ],
-                            //           ),
-                            //           // const Divider(
-                            //           //   height: 10,
-                            //           //   thickness: 2,
-                            //           //   indent: 0,
-                            //           //   endIndent: 20,
-                            //           //   color: Colors.black,
-                            //           // ),
-                            //           SizedBox(height: 50,),
-                            //           Center(
-                            //             child: GestureDetector(
-                            //               onTap: (){
-                            //                 // if(checkBox1 || checkBox2){
-                            //                 //   String contract="";
-                            //                 //   if(checkBox1)
-                            //                 //     contract="seasonal" ;
-                            //                 //   else contract= "Full Time Contract";
-                            //                 //   // Get.to(()=>ConsultNotiNewDriversImages(record: widget.record , contract: contract));
-                            //                 //
-                            //                 //   // driversController.add_driver(
-                            //                 //   //     DriverModel(
-                            //                 //   //         driverImage: widget.record.driverImage,
-                            //                 //   //         firstName: widget.record.firstName.capitalize.toString(),
-                            //                 //   //         lastName: widget.record.lastName.capitalize.toString(),
-                            //                 //   //         birthDate: widget.record.birthDate,
-                            //                 //   //         identityNumber: widget.record.identityNumber,
-                            //                 //   //         identityCardImageFace1: widget.record.identityCardImage,
-                            //                 //   //         identityCardImageFace2: widget.record.identityCardImage,
-                            //                 //   //         phoneNumber: widget.record.phoneNumber,
-                            //                 //   //         licenceType: widget.record.licenceType,
-                            //                 //   //         licenceImageFace1: widget.record.licenceImage,
-                            //                 //   //         licenceImageFace2: widget.record.licenceImage,
-                            //                 //   //         email: widget.record.email,
-                            //                 //   //         contractType: contract,
-                            //                 //   //         password:widget.record.password
-                            //                 //   //     )
-                            //                 //   // );
-                            //                 //   // notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
-                            //                 //
-                            //                 // }
-                            //                 // else{
-                            //                 //   ScaffoldMessenger.of(context).showSnackBar(
-                            //                 //     SnackBar(
-                            //                 //       content: Text("Please select contract type"),
-                            //                 //       duration: Duration(seconds: 5),
-                            //                 //     ),
-                            //                 //   );
-                            //                 // }
-                            //               },
-                            //               child: Container(
-                            //                 width: 120,
-                            //                 height: 40,
-                            //                 decoration: BoxDecoration(
-                            //                     color: Color(0xFF0F5CA0),
-                            //                     borderRadius: BorderRadius.circular(10)
-                            //                 ),
-                            //                 child: Center(
-                            //                   child: Text('Next',
-                            //                     style: TextStyle(
-                            //                         fontWeight: FontWeight.bold,
-                            //                         fontFamily: 'Georgia',
-                            //                         color: Colors.white
-                            //                     ),),
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           )
-                            //         ],
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
                             Center(
                               child: DataTable(
                                 columns:  <DataColumn>[
@@ -478,11 +205,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                                   return Container(
                                     height: MediaQuery.of(context).size.height*0.7,
                                     child: Center(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                      child: ListView(
+                                        // crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           SizedBox(height: 20,),
-                                          Text('Driver Identity',style:TextStyle(fontWeight: FontWeight.bold)),
+                                          Center(child: Text('Driver Identity',style:TextStyle(fontWeight: FontWeight.bold))),
                                           SizedBox(height: 5,),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -793,7 +520,7 @@ class _DriverDetailsState extends State<DriverDetails> {
                                             ],
                                           ),
                                           SizedBox(height: 12,),
-                                          Text('Driver Licence',style:TextStyle(fontWeight: FontWeight.bold)),
+                                          Center(child: Text('Driver Licence',style:TextStyle(fontWeight: FontWeight.bold))),
                                           SizedBox(height: 5,),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1010,8 +737,8 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                               content: Stack(
                                                                                 children: [
                                                                                   Container(
-                                                                                    height:250,
-                                                                                    width: 1800,
+                                                                                    height:MediaQuery.of(context).size.height*0.3,
+                                                                                    width: MediaQuery.of(context).size.width,
                                                                                     child: Padding(
                                                                                       padding: const EdgeInsets.only(
                                                                                         top:20.0,
@@ -1062,10 +789,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                                           ),
                                           SizedBox(height: 12,),
 
-                                          if(widget.record.moreImage1!="")moreWidget1(),
-                                          if(widget.record.moreImage2!="")moreWidget2(),
-                                          if(widget.record.moreImage3!="")moreWidget3(),
-
+                                          if(widget.record.moreImage1!="")Center(child: moreWidget1()),
+                                          if(widget.record.moreImage2!="")Center(child: moreWidget2()),
+                                          if(widget.record.moreImage3!="")Center(child: moreWidget3()),
 
                                         ],
                                       ),

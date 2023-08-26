@@ -339,7 +339,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                               controller: controller.passwordController,
                               obscureText: true,
                               validator: Validators.compose([
-                                Validators.required('Password is required'),
+                                Validators.required('Please Enter your password'),
                                 Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
                               ]),
                               style: TextStyle(color: Colors.black),

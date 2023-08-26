@@ -388,48 +388,148 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 65,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color:Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.people_alt_outlined,
-                                                        size: 20,
-                                                      ),
-                                                      Container(
-                                                        // width:70,
-                                                        child: Text(
-                                                            coursesController
-                                                                    .coursesListTomorrow[i]
-                                                                    .passengersNum
-                                                                    .toString() +
-                                                                '/' +
-                                                                coursesController
-                                                                    .coursesListTomorrow[i]
-                                                                    .seatingCapacity
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                    'Georgia',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                      ),
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 65,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color:Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.people_alt_outlined,
+                                                          size: 20,
+                                                        ),
+                                                        Container(
+                                                          // width:70,
+                                                          child: Text(
+                                                              coursesController
+                                                                      .coursesListTomorrow[i]
+                                                                      .passengersNum
+                                                                      .toString() +
+                                                                  '/' +
+                                                                  coursesController
+                                                                      .coursesListTomorrow[i]
+                                                                      .seatingCapacity
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontFamily:
+                                                                      'Georgia',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
 
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
+                                                  onTap:(){
+                                                    showModalBottomSheet(
+                                                        context: context,
+                                                        builder: (BuildContext ctx){
+                                                          return Container(
+                                                              height: MediaQuery.of(context).size.height*0.53,
+                                                              child: SingleChildScrollView(
+                                                                scrollDirection: Axis.vertical,
+                                                                child: SingleChildScrollView(
+                                                                  scrollDirection: Axis.horizontal,
+                                                                  child:Obx(()=>
+                                                                  Column(
+                                                                    children: [
+                                                                      DataTable(
+                                                                        columnSpacing: 3,
+                                                                        dataRowHeight: 50,
+                                                                        columns: const <DataColumn>[
+                                                                          DataColumn(
+                                                                            label: Expanded(
+                                                                              child: Text(
+                                                                                'First Name',
+                                                                                style: TextStyle(fontStyle: FontStyle.italic),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          DataColumn(
+                                                                            label: Expanded(
+                                                                              child: Text(
+                                                                                'Last Name',
+                                                                                style: TextStyle(fontStyle: FontStyle.italic),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          DataColumn(
+                                                                            label: Expanded(
+                                                                              child: Text(
+                                                                                'Identity Number',
+                                                                                style: TextStyle(fontStyle: FontStyle.italic),
+                                                                              ),
+                                                                            ),
+                                                                            numeric: true,
+                                                                          ),
+                                                                          DataColumn(
+                                                                            label: Expanded(
+                                                                              child: Text(
+                                                                                'State',
+                                                                                style: TextStyle(fontStyle: FontStyle.italic),
+                                                                              ),
+                                                                            ),
+                                                                            numeric: true,
+                                                                          ),
+                                                                        ],
+
+                                                                        rows: List<DataRow>.generate(coursesController.coursesListTomorrow[i].passengersDetails!.length, (int index) =>
+                                                                            DataRow(
+                                                                                cells:<DataCell>[
+                                                                                  DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].firstname)),
+                                                                                  DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].lastName)),
+                                                                                  (coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.contains('.')
+                                                                                      && coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.endsWith('.0'))
+                                                                                  ?DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.substring(0, coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.indexOf('.'))))
+                                                                                      :
+                                                                                  DataCell(Text(coursesController.passengerDetails[index].identityNum)),
+                                                                                  DataCell(
+                                                                                      Checkbox(
+                                                                                        value: coursesController.coursesListTomorrow[i].passengersDetails![index].state,
+                                                                                        onChanged: (bool? value) {
+                                                                                          print("///////////////////");
+                                                                                          print(coursesController.coursesListTomorrow[i].passengersDetails![index].state);
+                                                                                          print("///////////////////");
+                                                                                          setState(() {
+                                                                                            coursesController.coursesListTomorrow[i].passengersDetails![index].state
+                                                                                            =!coursesController.coursesListTomorrow[i].passengersDetails![index].state;
+                                                                                          });
+
+                                                                                          print(coursesController.coursesListTomorrow[i].passengersDetails![index].state);
+                                                                                          print("**********************");
+                                                                                        },
+                                                                                      ))
+
+                                                                                ]
+                                                                            )
+                                                                        ),
+                                                                      ),
+                                                                      Center(
+                                                                          child:ElevatedButton(
+                                                                            onPressed:(){},
+                                                                            child:Text('save'),
+                                                                          )
+                                                                      )
+                                                                    ],
+                                                                  )),
+                                                                ),
+                                                              )
+                                                          );
+                                                        }
+                                                    );
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -2822,15 +2922,12 @@ Future download(String url)async{
   }
 
   Future<dynamic> courseDetails(BuildContext context,Course course) {
-    print('ooooooooooooorrrrrrrrrrrrrrrrrrrrrrrr');
     print(course.id);
-    print(course.orderUrl);
-    print('ooooooooooooorrrrrrrrrrrrrrrrrrrrrrrr');
     return showDialog(
                                                       context: context,
                                                       builder: (builder)=>AlertDialog(
                                                         content: Container(
-                                                          height: MediaQuery.of(context).size.height*0.7,
+                                                          height: MediaQuery.of(context).size.height*0.6,
                                                           width: MediaQuery.of(context).size.width*0.8,
                                                           child:ListView(
                                                             children: [
@@ -2838,7 +2935,9 @@ Future download(String url)async{
                                                                 height:MediaQuery.of(context).size.height*0.02,
                                                               ),
                                                               Container(
-                                                                height:MediaQuery.of(context).size.height*0.6,
+                                                                height:coursesController.formNum.value==2
+                                                                  ?MediaQuery.of(context).size.height*0.6
+                                                                  :MediaQuery.of(context).size.height*0.4,
                                                                 width: MediaQuery.of(context).size.width*0.77,
                                                                 decoration:BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(15),
@@ -2950,6 +3049,7 @@ Future download(String url)async{
                                                                         )
                                                                       ],
                                                                     ),
+                                                                    if(coursesController.formNum.value==2)
                                                                     Column(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
@@ -2993,75 +3093,97 @@ Future download(String url)async{
                                                                                   onPressed:(){
                                                                                     showModalBottomSheet(
                                                                                       context: context,
-                                                                                      builder: (BuildContext context){
+                                                                                      builder: (BuildContext ctx){
                                                                                         return Container(
-                                                                height: MediaQuery.of(context).size.height*0.53,
-                                                                child: SingleChildScrollView(
-                                                                  scrollDirection: Axis.vertical,
-                                                                  child: SingleChildScrollView(
-                                                                    scrollDirection: Axis.horizontal,
-                                                                    child: DataTable(
-                                                                      columnSpacing: 3,
-                                                                      dataRowHeight: 50,
-                                                                      columns: const <DataColumn>[
-                                                                        DataColumn(
-                                                                          label: Expanded(
-                                                                            child: Text(
-                                                                              'First Name',
-                                                                              style: TextStyle(fontStyle: FontStyle.italic),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        DataColumn(
-                                                                          label: Expanded(
-                                                                            child: Text(
-                                                                              'Last Name',
-                                                                              style: TextStyle(fontStyle: FontStyle.italic),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        DataColumn(
-                                                                          label: Expanded(
-                                                                            child: Text(
-                                                                              'Identity Number',
-                                                                              style: TextStyle(fontStyle: FontStyle.italic),
-                                                                            ),
-                                                                          ),
-                                                                          numeric: true,
-                                                                        ),
-                                                                        DataColumn(
-                                                                          label: Expanded(
-                                                                            child: Text(
-                                                                              'State',
-                                                                              style: TextStyle(fontStyle: FontStyle.italic),
-                                                                            ),
-                                                                          ),
-                                                                          numeric: true,
-                                                                        ),
-                                                                      ],
+                                                                                          height: MediaQuery.of(context).size.height*0.53,
+                                                                                          child: SingleChildScrollView(
+                                                                                            scrollDirection: Axis.vertical,
+                                                                                            child: SingleChildScrollView(
+                                                                                              scrollDirection: Axis.horizontal,
+                                                                                              child:
+                                                                                                  Column(
+                                                                                                  children: [
+                                                                                                    DataTable(
+                                                                                                    columnSpacing: 3,
+                                                                                                    dataRowHeight: 50,
+                                                                                                    columns: const <DataColumn>[
+                                                                                                      DataColumn(
+                                                                                                        label: Expanded(
+                                                                                                          child: Text(
+                                                                                                            'First Name',
+                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                      DataColumn(
+                                                                                                        label: Expanded(
+                                                                                                          child: Text(
+                                                                                                            'Last Name',
+                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                      DataColumn(
+                                                                                                        label: Expanded(
+                                                                                                          child: Text(
+                                                                                                            'Identity Number',
+                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        numeric: true,
+                                                                                                      ),
+                                                                                                      DataColumn(
+                                                                                                        label: Expanded(
+                                                                                                          child: Text(
+                                                                                                            'State',
+                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        numeric: true,
+                                                                                                      ),
+                                                                                                    ],
 
-                                                                      rows: List<DataRow>.generate(course.passengersDetails!.length, (int index) =>
-                                                                          DataRow(
-                                                                              cells:<DataCell>[
-                                                                                DataCell(Text(course.passengersDetails![index].firstname)),
-                                                                                DataCell(Text(course.passengersDetails![index].lastName)),
-                                                                                (course.passengersDetails![index].identityNum.contains('.') && course.passengersDetails![index].identityNum.endsWith('.0'))?
-                                                                                DataCell(Text(course.passengersDetails![index].identityNum.substring(0, course.passengersDetails![index].identityNum.indexOf('.'))))
-                                                                                    :
-                                                                                DataCell(Text(coursesController.passengerDetails[index].identityNum)),
-                                                                                DataCell(Checkbox(
-                                                                                  value: course.passengersDetails![index].state, onChanged: (bool? value) {},
-                                                                                ))
+                                                                                                    rows: List<DataRow>.generate(course.passengersDetails!.length, (int index) =>
+                                                                                                        DataRow(
+                                                                                                            cells:<DataCell>[
+                                                                                                              DataCell(Text(course.passengersDetails![index].firstname)),
+                                                                                                              DataCell(Text(course.passengersDetails![index].lastName)),
+                                                                                                              (course.passengersDetails![index].identityNum.contains('.') && course.passengersDetails![index].identityNum.endsWith('.0'))?
+                                                                                                              DataCell(Text(course.passengersDetails![index].identityNum.substring(0, course.passengersDetails![index].identityNum.indexOf('.'))))
+                                                                                                                  :
+                                                                                                              DataCell(Text(coursesController.passengerDetails[index].identityNum)),
+                                                                                                              DataCell(
+                                                                                                                  Checkbox(
+                                                                                                                value: course.passengersDetails![index].state,
+                                                                                                                    onChanged: (bool? value) {
+                                                                                                                  print("///////////////////");
+                                                                                                                  print(course.passengersDetails![index].state);
+                                                                                                                  print("///////////////////");
+                                                                                                                  setState(() {
+                                                                                                                    course.passengersDetails![index].state=!course.passengersDetails![index].state;
+                                                                                                                  });
 
-                                                                              ]
-                                                                          )
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                            );
+                                                                                                                    print(course.passengersDetails![index].state);
+                                                                                                                    print("**********************");
+                                                                                                              },
+                                                                                                              ))
+
+                                                                                                            ]
+                                                                                                        )
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                    Center(
+                                                                                                      child:ElevatedButton(
+                                                                                                        onPressed:(){},
+                                                                                                        child:Text('save'),
+                                                                                                      )
+                                                                                                  )
+                                                                                                ],
+                                                                                              ),
+                                                                                            ),
+                                                                                          )
+                                                                                      );
                                                                                       }
-
                                                                                       );
 
                                                                                   }
@@ -3081,7 +3203,8 @@ Future download(String url)async{
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    Column(
+                                                                    if(coursesController.formNum.value==2)
+                                                                      Column(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
                                                                         Padding(
@@ -3138,33 +3261,34 @@ Future download(String url)async{
                                                                           child: Row(
                                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                             children: [
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    course.usedLuggageBigSize.toString()+
-                                                                                        "/"+course.luggageBigSize.toString(),
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),
-                                                                                  ),
-                                                                                  Icon(
-                                                                                      Icons.luggage_outlined,
-                                                                                      color: Colors.white
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    course.usedLuggageMediumSize.toString()
-                                                                                        +"/"+course.luggageMediumSize.toString(),
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),),
-                                                                                  Icon(Icons.luggage,size: 20,color: Colors.white
-                                                                                  ),
-                                                                                ],
-                                                                              ),
+                                                                              // Row(
+                                                                              //   children: [
+                                                                              //     Text(
+                                                                              //       course.usedLuggageBigSize.toString()+
+                                                                              //           "/"+course.luggageBigSize.toString(),
+                                                                              //       style: TextStyle(
+                                                                              //           color: Colors.white
+                                                                              //       ),
+                                                                              //     ),
+                                                                              //     Icon(
+                                                                              //         Icons.luggage_outlined,
+                                                                              //         color: Colors.white
+                                                                              //     ),
+                                                                              //   ],
+                                                                              // ),
+                                                                              // Row(
+                                                                              //   children: [
+                                                                              //     Text(
+                                                                              //       course.usedLuggageMediumSize.toString()
+                                                                              //           +"/"+course.luggageMediumSize.toString(),
+                                                                              //       style: TextStyle(
+                                                                              //           color: Colors.white
+                                                                              //       ),),
+                                                                              //     Icon(Icons.luggage,size: 20,color: Colors.white
+                                                                              //     ),
+                                                                              //   ],
+                                                                              // ),
+                                                                              Text('luggage',style:TextStyle(color:Colors.white)),
                                                                               Row(
                                                                                 children: [
                                                                                   Text(
@@ -3174,10 +3298,10 @@ Future download(String url)async{
                                                                                     style: TextStyle(
                                                                                         color: Colors.white
                                                                                     ),),
-                                                                                  Icon(
-                                                                                      Icons.mark_email_unread_sharp,
-                                                                                      color: Colors.white
-                                                                                  ),
+                                                                                  // Icon(
+                                                                                  //     Icons.mark_email_unread_sharp,
+                                                                                  //     color: Colors.white
+                                                                                  // ),
                                                                                 ],
                                                                               )
                                                                             ],
@@ -3277,11 +3401,11 @@ Future download(String url)async{
                                                                                 ]
                                                                               ),
                                                                               if(
-                                                                              course.carImage1URL!=null
-                                                                              &&course.carImage2URL!=null
-                                                                              &&course.carImage3URL!=null
-                                                                              &&course.carImage4URL!=null
-                                                                              &&course.carListDetails!.length>0
+                                                                              (course.carImage1URL!=null && course.carImage1URL!="")
+                                                                              ||(course.carImage2URL!=null && course.carImage2URL!="")
+                                                                              ||(course.carImage3URL!=null && course.carImage3URL!="")
+                                                                              ||(course.carImage4URL!=null && course.carImage1URL!="")
+                                                                              ||course.carListDetails!.length>0
                                                                               )
                                                                                 IconButton(
                                                                                   onPressed:(){
@@ -3622,7 +3746,7 @@ Future download(String url)async{
                                                                                                       Row(
                                                                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                         children: [
-                                                                                                          if(course.carImage1URL!=null)
+                                                                                                          if(course.carImage1URL!=null && course.carImage1URL!="")
                                                                                                           Container(
                                                                                                             width:MediaQuery.of(context).size.width*0.27,
                                                                                                             height:MediaQuery.of(context).size.height*0.05,
@@ -3636,7 +3760,7 @@ Future download(String url)async{
                                                                                                               fit: BoxFit.fill,
                                                                                                             ),
                                                                                                           ),
-                                                                                                          if(course.carImage2URL!=null)
+                                                                                                          if(course.carImage2URL!=null && course.carImage2URL!="")
                                                                                                           Container(
                                                                                                             width:MediaQuery.of(context).size.width*0.27,
                                                                                                             height:MediaQuery.of(context).size.height*0.05,
@@ -3656,7 +3780,7 @@ Future download(String url)async{
                                                                                                       Row(
                                                                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                         children: [
-                                                                                                          if(course.carImage3URL!=null)
+                                                                                                          if(course.carImage3URL!=null && course.carImage3URL!="")
                                                                                                             Container(
                                                                                                               width:MediaQuery.of(context).size.width*0.27,
                                                                                                               height:MediaQuery.of(context).size.height*0.05,
@@ -3670,7 +3794,7 @@ Future download(String url)async{
                                                                                                                 fit: BoxFit.fill,
                                                                                                               ),
                                                                                                             ),
-                                                                                                          if(course.carImage4URL!=null)
+                                                                                                          if(course.carImage4URL!=null && course.carImage4URL!="")
                                                                                                             Container(
                                                                                                               width:MediaQuery.of(context).size.width*0.27,
                                                                                                               height:MediaQuery.of(context).size.height*0.05,
@@ -3687,29 +3811,6 @@ Future download(String url)async{
                                                                                                         ],
                                                                                                       ),
                                                                                                       SizedBox(height: 5,),
-                                                                                                      ElevatedButton(onPressed: (){
-                                                                                                        coursesController.checkList.value=true;
-                                                                                                        // coursesController.checkListTable.value=[
-                                                                                                        //   checklistData(name: "Deep Scratches", state: coursesController.checkList1.value),
-                                                                                                        //   checklistData(name: "Light Scratches", state: coursesController.checkList2.value),
-                                                                                                        //   checklistData(name: "Body Rast", state: coursesController.checkList3.value),
-                                                                                                        //   checklistData(name: "Cracked Windshield", state: coursesController.checkList4.value),
-                                                                                                        //   checklistData(name: "Cracked headlight", state: coursesController.checkList5.value),
-                                                                                                        //   checklistData(name: "Tire Pressure", state: coursesController.checkList6.value),
-                                                                                                        //   checklistData(name: "Battery Condition", state: coursesController.checkList7.value),
-                                                                                                        //   checklistData(name: "Oil/Water/fluid levels", state: coursesController.checkList8.value),
-                                                                                                        //   checklistData(name: "Brake Noise/feel", state: coursesController.checkList9.value),
-                                                                                                        //   checklistData(name: "Condition/Temperature", state: coursesController.checkList10.value),
-                                                                                                        //   checklistData(name: "Weel Damage", state: coursesController.checkList11.value),
-                                                                                                        //   checklistData(name: "Nearside front", state: coursesController.checkList12.value),
-                                                                                                        //   checklistData(name: "offside front", state: coursesController.checkList13.value),
-                                                                                                        //   checklistData(name: "offside rear", state: coursesController.checkList14.value),
-                                                                                                        //   checklistData(name: "Nearside rear", state: coursesController.checkList15.value),
-                                                                                                        //   checklistData(name: "soare", state: coursesController.checkList16.value),
-                                                                                                        // ];
-                                                                                                        Navigator.pop(context);
-                                                                                                      },
-                                                                                                          child: Text('Next'))
 
                                                                                                     ],
                                                                                                   )
@@ -3825,7 +3926,7 @@ Future download(String url)async{
                                                               SizedBox(
                                                                 height:MediaQuery.of(context).size.height*0.02,
                                                               ),
-                                                              if(course.check=="car" )
+                                                              if(course.check=="car")
                                                               Container(
                                                                 padding: EdgeInsets.only(
                                                                   left: MediaQuery.of(context).size.width*0.01,

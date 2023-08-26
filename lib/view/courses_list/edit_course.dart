@@ -3,17 +3,14 @@ import 'dart:io';
 import 'package:admin_citygo/controllers/courses/courses_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/course.dart';
-import 'package:admin_citygo/models/course_model.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controllers/driver_list/drivers_controller.dart';
 import 'package:getwidget/getwidget.dart';
 
@@ -72,17 +69,13 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
     coursesController.regNumberController.text =widget.record.regNumber.toString();
     coursesController.selectedItem.value=widget.record.driverName;
     coursesController.selectedItemId.value=widget.record.identityNum!;
-    coursesController.luggageBigSizeController.text=widget.record.luggageBigSize.toString();
-    coursesController.luggageMediumSizeController.text=widget.record.luggageMediumSize.toString();
+    // coursesController.luggageBigSizeController.text=widget.record.luggageBigSize.toString();
+    // coursesController.luggageMediumSizeController.text=widget.record.luggageMediumSize.toString();
     coursesController.collieController.text=widget.record.collie.toString();
-    coursesController.usedLuggageBigSize.value = widget.record.usedLuggageBigSize!;
-    coursesController.usedLuggageMediumSize.value = widget.record.usedLuggageMediumSize!;
+    // coursesController.usedLuggageBigSize.value = widget.record.usedLuggageBigSize!;
+    // coursesController.usedLuggageMediumSize.value = widget.record.usedLuggageMediumSize!;
     coursesController.usedCollie.value = widget.record.usedCollie!;
-    print(coursesController.image.value);
-    print(coursesController.imageCar1.value);
-    print(coursesController.imageCar2.value);
-    print(coursesController.imageCar3.value);
-    print(coursesController.imageCar4.value);
+
 
     if(widget.record.check=="car") {
       coursesController.checkBox2.value = true;
@@ -95,37 +88,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
     }
 
 
-    print('detail///////////////////s');
-    print(widget.record.seen);
-    print(widget.record.pickUpLocation);
-    print(widget.record.dropOffLocation);
-    print(widget.record.pickUpDate);
-    if (coursesController.isReturn.value == true)
-      print(widget.record.dropOffDate);
-    print(widget.record.passengersNum);
-    print(widget.record.seatingCapacity);
-    print(coursesController.selectedItem.value);
-    print(coursesController.selectedItemId.value);
-    print( widget.record.regNumber);
-    if(coursesController.passengerDetails.value.length>0)print(coursesController.passengerDetails.value.length);
-    // ?passengerDetails.value
-    //     ?.map((passenger) =>
-    // passenger.toJson()).toList()
-    //     :course.passengersDetails
-    //     ?.map((passenger) =>
-    // passenger.toJson()).toList(),
-    print("passengers");
-    if(widget.record.adminId!=null)print(widget.record.adminId);
-    print(widget.record.luggageBigSize);
-    print(widget.record.luggageMediumSize);
-    print(widget.record.collie);
-    print(widget.record.usedLuggageBigSize);
-    print(widget.record.usedLuggageMediumSize);
-    print(widget.record.usedCollie);
-    print(widget.record.carImage1URL);
-    print(widget.record.carImage2URL);
-    print(widget.record.carImage3URL);
-    print(widget.record.carImage4URL);
   }
 
 /////////////////pick up date //////////////////////
@@ -199,8 +161,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
     final hoursDrop = dateTimeDropOff.hour.toString().padLeft(2,'0');
     final minutesDrop = dateTimeDropOff.minute.toString().padLeft(2,'0');
 
-    print("////////////////////////////////////////");
-    print(widget.record.orderUrl);
 
     return Scaffold(
         appBar: AppBar(
@@ -500,7 +460,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                     onPressed: () {
                                                       coursesController
                                                           .isReturn.value = false;
-
                                                     },
                                                     child: Container(
                                                         child: Text('cancel',
@@ -574,7 +533,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 context: context,
                                                 builder: (BuildContext context){
                                                   return Container(
-                                                    height: MediaQuery.of(context).size.height*0.8,
+                                                    height: MediaQuery.of(context).size.height*0.35,
                                                     width: MediaQuery.of(context).size.width*0.8,
                                                     child: Obx(()=>Column(
                                                       children: [
@@ -585,51 +544,51 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                               fontFamily: 'Georgia',
                                                               color: Color(0xFF0F5CA0)),
                                                         ),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: TextFormField(
-                                                              controller: coursesController.luggageBigSizeController,
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(
-                                                                  color: Colors.white
-                                                              ),
-                                                              decoration: InputDecoration(
-                                                                  prefixIcon: Icon(Icons.luggage)
-                                                              ),
-                                                            )),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: TextFormField(
-                                                              controller: coursesController.luggageMediumSizeController,
-                                                              keyboardType: TextInputType.number,
-                                                              style: TextStyle(
-                                                                  color: Colors.white
-                                                              ),
-                                                              decoration: InputDecoration(
-                                                                  prefixIcon: Icon(
-                                                                    Icons.luggage,
-                                                                    size: 20,
-                                                                  ),
-                                                              ),
-                                                            )),
+                                                        // SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                        // Container(
+                                                        //     width:MediaQuery.of(context).size.width*0.3,
+                                                        //     height: 30,
+                                                        //     decoration: BoxDecoration(
+                                                        //       gradient: LinearGradient(
+                                                        //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                        //         begin: Alignment.centerLeft,
+                                                        //         end: Alignment.centerRight,
+                                                        //       ),
+                                                        //     ),
+                                                        //     child: TextFormField(
+                                                        //       controller: coursesController.luggageBigSizeController,
+                                                        //       keyboardType: TextInputType.number,
+                                                        //       style: TextStyle(
+                                                        //           color: Colors.white
+                                                        //       ),
+                                                        //       decoration: InputDecoration(
+                                                        //           prefixIcon: Icon(Icons.luggage)
+                                                        //       ),
+                                                        //     )),
+                                                        // SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                        // Container(
+                                                        //     width:MediaQuery.of(context).size.width*0.3,
+                                                        //     height: 30,
+                                                        //     decoration: BoxDecoration(
+                                                        //       gradient: LinearGradient(
+                                                        //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                        //         begin: Alignment.centerLeft,
+                                                        //         end: Alignment.centerRight,
+                                                        //       ),
+                                                        //     ),
+                                                        //     child: TextFormField(
+                                                        //       controller: coursesController.luggageMediumSizeController,
+                                                        //       keyboardType: TextInputType.number,
+                                                        //       style: TextStyle(
+                                                        //           color: Colors.white
+                                                        //       ),
+                                                        //       decoration: InputDecoration(
+                                                        //           prefixIcon: Icon(
+                                                        //             Icons.luggage,
+                                                        //             size: 20,
+                                                        //           ),
+                                                        //       ),
+                                                        //     )),
                                                         SizedBox(height: MediaQuery.of(context).size.height*0.05),
                                                         Container(
                                                             width:MediaQuery.of(context).size.width*0.3,
@@ -652,6 +611,12 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                       Icons.mark_email_unread_outlined
                                                                   ),
                                                               ),
+                                                              onChanged: (value){
+                                                                if(int.parse(coursesController.collieController.text)<coursesController.usedCollie.value)
+                                                                coursesController.usedCollie.value=0;
+                                                                else if(coursesController.collieController.text == "")
+                                                                  coursesController.collieController.text='0';
+                                                              },
                                                             )),
                                                         SizedBox(height: MediaQuery.of(context).size.height*0.02),
                                                         Text('Used Luggage Capacity',
@@ -659,71 +624,71 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                 fontSize: 20,
                                                                 fontFamily: 'Georgia',
                                                                 color: Color(0xFF0F5CA0))),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.02),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Icon(
-                                                                    Icons.luggage
-                                                                ),
-                                                                DropdownButton<int>(
-                                                                  value: coursesController.usedLuggageBigSize.value,
-                                                                  onChanged: (int? newValue) {
-                                                                    coursesController.usedLuggageBigSize.value = newValue!;
-                                                                  },
-                                                                  items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
-                                                                    return DropdownMenuItem<int>(
-                                                                      value: index,
-                                                                      child: Text('$index'),
-                                                                    );
-                                                                  }),
-                                                                ),
-                                                              ],
-                                                            )
-                                                        ),
-                                                        SizedBox(height: MediaQuery.of(context).size.height*0.05),
-                                                        Container(
-                                                            width:MediaQuery.of(context).size.width*0.3,
-                                                            height: 30,
-                                                            decoration: BoxDecoration(
-                                                              gradient: LinearGradient(
-                                                                colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
-                                                                begin: Alignment.centerLeft,
-                                                                end: Alignment.centerRight,
-                                                              ),
-                                                            ),
-                                                            child: Row(
-                                                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons.luggage,
-                                                                  size: 20,
-                                                                ),
-                                                                DropdownButton<int>(
-                                                                  value: coursesController.usedLuggageMediumSize.value,
-                                                                  onChanged: (int? newValue) {
-                                                                    coursesController.usedLuggageMediumSize.value = newValue!;
-                                                                  },
-                                                                  items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
-                                                                    return DropdownMenuItem<int>(
-                                                                      value: index,
-                                                                      child: Text('$index'),
-                                                                    );
-                                                                  }),
-                                                                ),
-                                                              ],
-                                                            )
-                                                        ),
+                                                        // SizedBox(height: MediaQuery.of(context).size.height*0.02),
+                                                        // Container(
+                                                        //     width:MediaQuery.of(context).size.width*0.3,
+                                                        //     height: 30,
+                                                        //     decoration: BoxDecoration(
+                                                        //       gradient: LinearGradient(
+                                                        //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                        //         begin: Alignment.centerLeft,
+                                                        //         end: Alignment.centerRight,
+                                                        //       ),
+                                                        //     ),
+                                                        //     child: Row(
+                                                        //       mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                        //       children: [
+                                                        //         Icon(
+                                                        //             Icons.luggage
+                                                        //         ),
+                                                        //         DropdownButton<int>(
+                                                        //           value: coursesController.usedLuggageBigSize.value,
+                                                        //           onChanged: (int? newValue) {
+                                                        //             coursesController.usedLuggageBigSize.value = newValue!;
+                                                        //           },
+                                                        //           items: List.generate((int.tryParse(coursesController.luggageBigSizeController.text)  ?? 0)+1, (index) {
+                                                        //             return DropdownMenuItem<int>(
+                                                        //               value: index,
+                                                        //               child: Text('$index'),
+                                                        //             );
+                                                        //           }),
+                                                        //         ),
+                                                        //       ],
+                                                        //     )
+                                                        // ),
+                                                        // SizedBox(height: MediaQuery.of(context).size.height*0.05),
+                                                        // Container(
+                                                        //     width:MediaQuery.of(context).size.width*0.3,
+                                                        //     height: 30,
+                                                        //     decoration: BoxDecoration(
+                                                        //       gradient: LinearGradient(
+                                                        //         colors: [Color(0xFF0F5CA0).withOpacity(0.8), Color(0xFF0F5CA0).withOpacity(0.5)],
+                                                        //         begin: Alignment.centerLeft,
+                                                        //         end: Alignment.centerRight,
+                                                        //       ),
+                                                        //     ),
+                                                        //     child: Row(
+                                                        //       mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                        //       children: [
+                                                        //         Icon(
+                                                        //           Icons.luggage,
+                                                        //           size: 20,
+                                                        //         ),
+                                                        //         DropdownButton<int>(
+                                                        //           value: coursesController.usedLuggageMediumSize.value,
+                                                        //           onChanged: (int? newValue) {
+                                                        //             coursesController.usedLuggageMediumSize.value = newValue!;
+                                                        //           },
+                                                        //           items: List.generate((int.tryParse(coursesController.luggageMediumSizeController.text)  ?? 0)+1, (index) {
+                                                        //             return DropdownMenuItem<int>(
+                                                        //               value: index,
+                                                        //               child: Text('$index'),
+                                                        //             );
+                                                        //           }),
+                                                        //         ),
+                                                        //       ],
+                                                        //     )
+                                                        // ),
                                                         SizedBox(height: MediaQuery.of(context).size.height*0.05),
                                                         Container(
                                                             width:MediaQuery.of(context).size.width*0.3,
@@ -779,7 +744,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                   topLeft: Radius.circular(5),
                                                 )),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: [
                                                 Text('Luggage',
                                                   style: TextStyle(
@@ -788,33 +753,33 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                       color: Color(0xFF0F5CA0)
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      coursesController.usedLuggageBigSize.toString()+
-                                                          "/"+coursesController.luggageBigSizeController.text,
-                                                      style: TextStyle(
-                                                          color: Color(0xFF0F5CA0)
-                                                      ),
-                                                    ),
-                                                    Icon(
-                                                        Icons.luggage_outlined,
-                                                        color: Color(0xFF0F5CA0)
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      coursesController.usedLuggageMediumSize.toString()
-                                                          +"/"+coursesController.luggageMediumSizeController.text,
-                                                      style: TextStyle(
-                                                          color: Color(0xFF0F5CA0)
-                                                      ),),
-                                                    Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
-                                                    ),
-                                                  ],
-                                                ),
+                                                // Row(
+                                                //   children: [
+                                                //     Text(
+                                                //       coursesController.usedLuggageBigSize.toString()+
+                                                //           "/"+coursesController.luggageBigSizeController.text,
+                                                //       style: TextStyle(
+                                                //           color: Color(0xFF0F5CA0)
+                                                //       ),
+                                                //     ),
+                                                //     Icon(
+                                                //         Icons.luggage_outlined,
+                                                //         color: Color(0xFF0F5CA0)
+                                                //     ),
+                                                //   ],
+                                                // ),
+                                                // Row(
+                                                //   children: [
+                                                //     Text(
+                                                //       coursesController.usedLuggageMediumSize.toString()
+                                                //           +"/"+coursesController.luggageMediumSizeController.text,
+                                                //       style: TextStyle(
+                                                //           color: Color(0xFF0F5CA0)
+                                                //       ),),
+                                                //     Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
+                                                //     ),
+                                                //   ],
+                                                // ),
                                                 Row(
                                                   children: [
                                                     Text(
@@ -824,10 +789,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                       style: TextStyle(
                                                           color: Color(0xFF0F5CA0)
                                                       ),),
-                                                    Icon(
-                                                        Icons.mark_email_unread_sharp,
-                                                        color: Color(0xFF0F5CA0)
-                                                    ),
+                                                    // Icon(
+                                                    //     Icons.mark_email_unread_sharp,
+                                                    //     color: Color(0xFF0F5CA0)
+                                                    // ),
                                                   ],
                                                 )
                                               ],
@@ -884,15 +849,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                     newValue!.firstName +
                                                         " " +
                                                         newValue!.lastName;
-                                              print(newValue?.id);
-                                              print(newValue?.identityNumber);
+
                                               coursesController
                                                   .selectedItemId!.value =
                                                   newValue!.identityNumber;
-                                              print(coursesController
-                                                  .selectedItem!.value);
-                                              print(coursesController
-                                                  .selectedItemId!.value);
                                             },
                                           ),
                                         ),
@@ -1397,16 +1357,12 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                     if (coursesController
                                         .seatingCapacityController.text ==
                                         "") errorList.add("seating capacity");
+                                    if((int.tryParse(coursesController.collieController.text) ?? 0)<=0 || coursesController.collieController.text=="")
+                                      errorList.add("Luggage capacity");
 
                                     if (errorList.isEmpty) {
                                       showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
-                                      print(coursesController.image.value);
-                                      print(coursesController.imageCar1.value);
-                                      print(coursesController.imageCar1.value);
-                                      print(coursesController.imageCar1.value);
-                                      print(coursesController.imageCar1.value);
-                                      print(widget.record.id);
-                                      coursesController.update_course(
+                                      await coursesController.update_course(
                                           Course(
                                               seen:widget.record.seen,
                                               id:widget.record.id,
@@ -1433,14 +1389,17 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                   ?"car"
                                                   :"",
                                               passengersDetails: widget.record.passengersDetails,
-                                              luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
-                                              luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
+                                              // luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
+                                              // luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
                                               collie: int.tryParse(coursesController.collieController.text) ?? 0,
-                                              usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
-                                              usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
-                                              usedCollie: coursesController.usedCollie.value
+                                              // usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
+                                              // usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
+                                              usedCollie: coursesController.usedCollie.value??0
                                           )
-                                      ).then((value) => Navigator.pop(context));
+                                      ).then((value){
+                                        coursesController.fetchCourses();
+                                        Navigator.pop(context);
+                                    });
                                     }
                                     else {
                                       showDialog(
@@ -2291,8 +2250,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
               InkWell(
                 onTap: () async{
                   coursesController.imageCar2.value=await getImageFromGallery();
-                  print('lsdmfhnnnnnnnnnnnn');
-                  print(coursesController.imageCar2.value);
                 },
                 child: Container(
                   child: Row(
@@ -2335,8 +2292,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
               InkWell(
                 onTap: () async{
                   coursesController.imageCar3.value=await getImageFromGallery();
-                  print('lsdmfhnnnnnnnnnnnn');
-                  print(coursesController.imageCar3.value);
                 },
                 child: Container(
                   child: Row(
@@ -2417,8 +2372,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
         print('No image selected.');
       }
     });
-    print("///////////////////////////");
-    print(coursesController.imageCar1.value);
     return image;
   }
   Widget checkCarDialog(){
@@ -2470,7 +2423,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                       ),
                       onPressed: () async{
                         await coursesController.importFromExcel();
-                        print(coursesController.passengerCarDetails.value);
                       },
                     ),
                   ),
@@ -2494,7 +2446,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                 barrierDismissible: false,
                                 context: context,
                                 builder: (builder)=>checkListDialog()
-
                             );
                           }
                           else {

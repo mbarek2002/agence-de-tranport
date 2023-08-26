@@ -15,8 +15,6 @@ import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:get_storage/get_storage.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
    HomeScreen({Key? key}) : super(key: key);
 
@@ -40,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    print(driversController.driverList.length);
-    print(driversController.filteredList.length);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -104,60 +100,67 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                    width: 80,
-                    height: 80,
-                      child: GestureDetector(
-                        onTap: (){
-                          Get.to(()=>DriversListScreen());
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(tHomeList)
-                          )
-                          ),
-                          child: Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                            image:DecorationImage(
-                              image:
-                          AssetImage("assets/icons/driver.png"))))
-                        ),
-                      ),
-                      ),
-                    badges.Badge(
-                      badgeContent: Text(''),
-                      child: SizedBox(
+                    Column(
+                      children: [
+                        SizedBox(
                         width: 80,
                         height: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white
-                          ),
-                          // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
                           child: GestureDetector(
-                            child: Container(
-                            decoration: BoxDecoration(
-                            image: DecorationImage(
-                            image: AssetImage(
-                              "assets/icons/person-combination.png"
-                            )
-                            )
-                            ),
-                            ),
                             onTap: (){
-                              // notificationNewDriverController.fetchNotifiactionNewDriver();
-                              // print("length :"+notificationNewDriverController.newNotiDriverList.length.toString());
-                              Get.to(()=>NotificationNewDrivers());
+                              Get.to(()=>DriversListScreen());
                             },
+                            child: Container(
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(tHomeList)
+                              )
+                              ),
+                              child: Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                image:DecorationImage(
+                                  image:
+                              AssetImage("assets/icons/driver.png"))))
+                            ),
+                          ),
+                          ),
+                        Text('Drivers List')
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        badges.Badge(
+                          badgeContent: Text(''),
+                          child: SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                color: Colors.white
+                              ),
+                              child: GestureDetector(
+                                child: Container(
+                                decoration: BoxDecoration(
+                                image: DecorationImage(
+                                image: AssetImage(
+                                  "assets/icons/person-combination.png"
+                                )
+                                )
+                                ),
+                                ),
+                                onTap: (){
+                                  Get.to(()=>NotificationNewDrivers());
+                                },
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Text('New Drivers Request')
+                      ],
                     )
                   ],
                 ),
@@ -165,102 +168,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      child: SizedBox(
+                    // GestureDetector(
+                    //   child: SizedBox(
+                    //       width: 80,
+                    //       height: 80,
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //             borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //             color: Colors.white,
+                    //           // image: DecorationImage(
+                    //           //   image: AssetImage("assets/icons/care-request-reviewer.png")
+                    //           // )
+                    //         ),
+                    //         child: Icon(Icons.calendar_month_outlined,size: 60,color: Color(0xFF0F5CA0),),
+                    //       ),
+                    //     ),
+                    // ),
+                    Column(
+                      children: [
+                        SizedBox(
                           width: 80,
                           height: 80,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                color: Colors.white,
-                              // image: DecorationImage(
-                              //   image: AssetImage("assets/icons/care-request-reviewer.png")
-                              // )
-                            ),
-                            child: Icon(Icons.calendar_month_outlined,size: 60,color: Color(0xFF0F5CA0),),
-                          ),
-                        ),
-                    ),
-                    SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: GestureDetector(
-                      onTap: (){
-                        Get.to(()=>CoursesListSceen());
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(tHomeList)
-                              )
-                          ),
-                          // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/icons/care-request-reviewer.png"
-                                )
-                              )
+                          child: GestureDetector(
+                          onTap: (){
+                            Get.to(()=>CoursesListSceen());
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(tHomeList)
+                                  )
+                              ),
+                              // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/icons/care-request-reviewer.png"
+                                    )
+                                  )
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        Text('Courses List')
+                      ],
                     ),
                       ],
                 ),
-                SizedBox(height: 40,),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     SizedBox(
-                //       width: 80,
-                //       height: 80,
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.all(Radius.circular(10)),
-                //         image: DecorationImage(
-                //         fit: BoxFit.cover,
-                //         image: AssetImage(tHomeList)
-                //         )
-                //       ),
-                //         child:  Container(
-                //         decoration: BoxDecoration(
-                //         image:DecorationImage(
-                //           image: AssetImage(
-                //             "assets/icons/care-request-reviewer.png"
-                //           )
-                //         )),
-                //       ),
-                //     ),
-                //     ),
-                //
-                //     badges.Badge(
-                //       badgeContent: Text(''),
-                //       child: SizedBox(
-                //         width: 80,
-                //         height: 80,
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //               borderRadius: BorderRadius.all(Radius.circular(10)),
-                //             color: Colors.white
-                //           ),
-                //           child: Container(
-                //             decoration: BoxDecoration(
-                //                 image:DecorationImage(
-                //                     image: AssetImage(
-                //                         "assets/icons/notification-bell-new.png"
-                //                     )
-                //                 )),
-                //           ),
-                //
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // ),
                   ],
             ),
           ),

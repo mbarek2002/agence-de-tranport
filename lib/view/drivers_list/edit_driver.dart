@@ -434,8 +434,11 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                   });
                                 }
                                 if(_image!=null && _formKey.currentState!.validate()){
+                                  print('/////////////////driver//////////////////');
+                                  print(widget.records.driverImage);
+                                  print('//////////////driverdownloader/////////////////////');
+                                  print(driverDownloadURL);
 
-                                  print(controller.passwordController.text);
                                   Get.to(()=>EditDriverImagesScreen(record:
                                 DriverModel(
                                   id:widget.records.id,
@@ -456,9 +459,9 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                   moreImage1: widget.records.moreImage1,
                                   moreImage2: widget.records.moreImage2,
                                   moreImage3: widget.records.moreImage3,
-                                )
+                                ),
+                                    imageUrl: widget.records.driverImage,
                                 ));
-                                FirebaseStorage.instance.refFromURL(driverDownloadURL).delete();
                                 }
                                 else if(_image==null && _formKey.currentState!.validate()){
                                   Get.to(()=>EditDriverImagesScreen(record:
@@ -485,8 +488,6 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                   )
                                   ));
                                 };
-
-
                               },
                               child: Center(
                                 child: Container(

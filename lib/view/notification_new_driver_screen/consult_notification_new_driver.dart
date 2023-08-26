@@ -94,283 +94,191 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                         topRight: Radius.circular(40)
                       )
                     ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left:18.0),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 20,),
-                          Text("Driver Register",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Georgia"),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20,),
+                      Text("Driver Register",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Georgia"),
+                      ),
+                      SizedBox(height: 12,),
+                      Padding(
+                        padding: const EdgeInsets.only(left:110),
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            image: DecorationImage(
+                                image: NetworkImage(widget.record.driverImage),
+                                fit: BoxFit.cover
+                            ),
                           ),
-                          SizedBox(height: 12,),
+                        ),
+                      ),
+                      SizedBox(height: 25,),
+                      Column(
+                        children: [
                           Padding(
-                            padding: const EdgeInsets.only(left:110),
-                            child: Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                image: DecorationImage(
-                                    image: NetworkImage(widget.record.driverImage),
-                                    fit: BoxFit.cover
+                            padding: const EdgeInsets.only(left:18.0),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:
+                              Center(
+                                child: DataTable(
+                                  columns:  <DataColumn>[
+                                    DataColumn(label: Text(
+                                      'First Name',
+                                      style: TextStyle(
+                                          color:Colors.black,
+                                          fontWeight: FontWeight.w400
+                                      ),
+                                    )),
+                                    DataColumn(label: Text(':',
+                                      style: TextStyle(
+                                          color:Colors.black,
+                                          fontWeight: FontWeight.w400
+                                      ),)),
+                                    DataColumn(label: Text(widget.record.firstName,
+                                      style: TextStyle(
+                                          color:Colors.black,
+                                          fontWeight: FontWeight.w400
+                                      ),)),
+                                  ],
+                                  rows:  <DataRow>[
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Last Name ",
+                                      )),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.lastName)),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Birth Date")),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.birthDate)),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Identity Number")),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.identityNumber.toString())),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Phone Number")),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.phoneNumber.toString())),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Licence type")),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.licenceType)),
+                                    ]),
+                                    DataRow(cells: <DataCell>[
+                                      DataCell(Text("Email")),
+                                      DataCell(Text(':')),
+                                      DataCell(Text(widget.record.email)),
+                                    ]),
+                                    // DataRow(cells: <DataCell>[
+                                    //   DataCell(Text("contract type")),
+                                    //   DataCell(Text(':')),
+                                    //   DataCell(Text(widget.record.contractType)),
+                                    // ]),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(height: 25,),
-                          Padding(
-                            padding: const EdgeInsets.only(left:10.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text("First Name".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Last Name".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Birth Date".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Identity Card".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Phone Number ".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Licence type".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("Email".capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                      ],
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(':'),
-                                        SizedBox(height: 25,),
-                                        Text(':'),
-                                        SizedBox(height: 25,),
-                                        Text(':'),
-                                        SizedBox(height: 28,),
-                                        Text(':'),
-                                        SizedBox(height: 28,),
-                                        Text(':'),
-                                        SizedBox(height: 28,),
-                                        Text(':'),
-                                        SizedBox(height: 22,),
-                                        Text(':'),
-                                      ],
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(widget.record.firstName.capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text(widget.record.lastName.capitalize.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text(widget.record.birthDate,style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text(widget.record.identityNumber.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text("+216 "+widget.record.phoneNumber.toString(),style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text(widget.record.licenceType,style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
-                                        SizedBox(height: 25,),
-                                        Text(widget.record.email.capitalize.toString(),style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Georgia"),),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Contract type".capitalize.toString(),style: TextStyle(
+                                  fontSize: 8,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Georgia"),
+                              ),
+                              Row(
+                                children: [
+                                  Text("seasonal",style: TextStyle(fontSize: 10),),
+                                  Checkbox(value: checkBox1, onChanged: (value){
+                                    if(checkBox2==true){
+                                      setState(() {
+                                        checkBox1=!checkBox1;
+                                        checkBox2=!checkBox2;
+                                      });}
+                                    else{
+                                      setState(() {
+                                        checkBox1=!checkBox1;
+                                      });
+                                    }
+                                  }),
+                                ],
+                              ),
 
+                              Row(
+                                children: [
+                                  Text("Full Time Contract",style: TextStyle(fontSize: 10),),
+                                  Checkbox(value: checkBox2, onChanged: (value){
+                                    if(checkBox1==true){
+                                      setState(() {
+                                        checkBox1=!checkBox1;
+                                        checkBox2=!checkBox2;
+                                      });}
+                                    else{
+                                      setState(() {
+                                        checkBox2=!checkBox2;
 
+                                      });
+                                    }
+                                  }),
+                                ],
+                              ),
 
-                                      ],
+                            ],
+                          ),
+                          SizedBox(height:MediaQuery.of(context).size.height*0.04,),
+                          Center(
+                            child: GestureDetector(
+                              onTap: (){
+                                if(checkBox1 || checkBox2){
+                                  String contract="";
+                                  if(checkBox1)
+                                    contract="seasonal" ;
+                                  else contract= "Full Time Contract";
+                                  Get.to(()=>ConsultNotiNewDriversImages(record: widget.record , contract: contract));
+                                }else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Please select contract type"),
+                                      duration: Duration(seconds: 5),
                                     ),
-                                  ],
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: 120,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF0F5CA0),
+                                    borderRadius: BorderRadius.circular(10)
                                 ),
-                                SizedBox(height: 25,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("Contract type".capitalize.toString(),style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.grey,
+                                child: Center(
+                                  child: Text('Next',
+                                    style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: "Georgia"),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text("seasonal",style: TextStyle(fontSize: 10),),
-                                        Checkbox(value: checkBox1, onChanged: (value){
-                                          if(checkBox2==true){
-                                            setState(() {
-                                              checkBox1=!checkBox1;
-                                              checkBox2=!checkBox2;
-                                            });}
-                                          else{
-                                            setState(() {
-                                              checkBox1=!checkBox1;
-                                            });
-                                          }
-                                        }),
-                                      ],
-                                    ),
-
-                                    Row(
-                                      children: [
-                                        Text("Full Time Contract",style: TextStyle(fontSize: 10),),
-                                        Checkbox(value: checkBox2, onChanged: (value){
-                                          if(checkBox1==true){
-                                            setState(() {
-                                              checkBox1=!checkBox1;
-                                              checkBox2=!checkBox2;
-                                            });}
-                                          else{
-                                            setState(() {
-                                              checkBox2=!checkBox2;
-
-                                            });
-                                          }
-                                        }),
-                                      ],
-                                    ),
-
-                                  ],
+                                        fontFamily: 'Georgia',
+                                        color: Colors.white
+                                    ),),
                                 ),
-                                // const Divider(
-                                //   height: 10,
-                                //   thickness: 2,
-                                //   indent: 0,
-                                //   endIndent: 20,
-                                //   color: Colors.black,
-                                // ),
-                                SizedBox(height: 50,),
-                                Center(
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      if(checkBox1 || checkBox2){
-                                        String contract="";
-                                        if(checkBox1)
-                                          contract="seasonal" ;
-                                        else contract= "Full Time Contract";
-                                        Get.to(()=>ConsultNotiNewDriversImages(record: widget.record , contract: contract));
-
-                                        // driversController.add_driver(
-                                        //     DriverModel(
-                                        //         driverImage: widget.record.driverImage,
-                                        //         firstName: widget.record.firstName.capitalize.toString(),
-                                        //         lastName: widget.record.lastName.capitalize.toString(),
-                                        //         birthDate: widget.record.birthDate,
-                                        //         identityNumber: widget.record.identityNumber,
-                                        //         identityCardImageFace1: widget.record.identityCardImage,
-                                        //         identityCardImageFace2: widget.record.identityCardImage,
-                                        //         phoneNumber: widget.record.phoneNumber,
-                                        //         licenceType: widget.record.licenceType,
-                                        //         licenceImageFace1: widget.record.licenceImage,
-                                        //         licenceImageFace2: widget.record.licenceImage,
-                                        //         email: widget.record.email,
-                                        //         contractType: contract,
-                                        //         password:widget.record.password
-                                        //     )
-                                        // );
-                                        // notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
-
-                                      }else{
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text("Please select contract type"),
-                                            duration: Duration(seconds: 5),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 120,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xFF0F5CA0),
-                                          borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      child: Center(
-                                        child: Text('Next',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Georgia',
-                                              color: Colors.white
-                                          ),),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
                           )
                         ],
-                      ),
-                    ),
+                      )
+                    ],
                   ),
                   )
                 ],
