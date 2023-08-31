@@ -977,7 +977,9 @@ class CoursesController extends GetxController {
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
-        course.pickUpDate.day == DateTime.now().day));
+        course.pickUpDate.day == DateTime.now().day&&
+            course.finished == false));
+
     coursesListTomorrow.assignAll(coursesListAdmin.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year &&
@@ -987,8 +989,11 @@ class CoursesController extends GetxController {
 
     coursesList.assignAll(coursesListAdmin.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
-        !coursesListToday.contains(course) &&
-        !coursesListTomorrow.contains(course)));
+        // !coursesListToday.contains(course) &&
+        // !coursesListTomorrow.contains(course)
+       course.pickUpDate.isAfter(DateTime.now().add(Duration(days: 1,hours: 24-DateTime.now().hour)))
+
+    ));
 
     /////////////////driver//////////////////////////
 
@@ -996,7 +1001,9 @@ class CoursesController extends GetxController {
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
-        course.pickUpDate.day == DateTime.now().day));
+        course.pickUpDate.day == DateTime.now().day&&
+            course.finished == false));
+
     coursesListTomorrowDrivers.assignAll(coursesListDriver.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year &&
@@ -1006,14 +1013,19 @@ class CoursesController extends GetxController {
 
     coursesListDrivers.assignAll(coursesListDriver.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
-        !coursesListToday.contains(course) &&
-        !coursesListTomorrow.contains(course)));
+        // !coursesListToday.contains(course) &&
+        // !coursesListTomorrow.contains(course)
+        course.pickUpDate.isAfter(DateTime.now().add(Duration(days: 1,hours: 24-DateTime.now().hour)))
+
+    ));
+
     /////////////////history////////////////////////////
     coursesListTodayHistory.assignAll(coursesAll.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
         course.pickUpDate.day == DateTime.now().day));
+
     coursesListYesterDayHistory.assignAll(coursesAll.where((course) =>
         course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
         course.pickUpDate.year == DateTime.now().add(Duration(days: -1)).year &&
