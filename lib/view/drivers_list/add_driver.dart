@@ -43,7 +43,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
    String identityDownloadURL='';
    String licenceDownloadURL='';
 
-  DriversController controller =DriversController();
+  DriversController controller =Get.put(DriversController());
   final _formKey = GlobalKey<FormState>();
 
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
@@ -65,6 +65,16 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
   @override
   void initState() {
     super.initState();
+    controller.firstNameController.text="";
+    controller.lastNameController.text="";
+    controller.birthDateController=TextEditingController();
+    controller.identityNumberController.text="";
+    controller.phoneNumberController.text="";
+    controller.emailController.text="";
+    controller.passwordController.text="";
+    _image=null;
+
+
   }
 
   @override
@@ -77,8 +87,8 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
     );
 
     if (picked != null && picked != _selectedDate) {
@@ -251,27 +261,15 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                             TextFormField(
                               controller: controller.identityNumberController,
                               keyboardType: TextInputType.number,
-                              onChanged: (val){
-
-                                print(controller.identityDriverList.contains(val));
-                                print(val);
-                                if(controller.identityDriverList.contains(val)){
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'choose an order picture and a passengers list'
-                                      ),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                }
-                              },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please entre Identity Number';
                                 }
                                 else if(value.length!=8){
                                   return 'invalid identity Number';
+                                }
+                                else if(controller.identityDriverList.contains(int.parse(value))){
+                                  return 'this identity number is already used';
                                 }
                                 return null;
                               },
@@ -316,7 +314,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                 if (value == null || value.isEmpty) {
                                   return 'Please entre Email';
                                 }else if(!GetUtils.isEmail(value)){
-                                  return 'Please entre that contains @ and .';
+                                  return 'invaild email';
                                 }
                                 else if(controller.driverEmailList.contains(value)){
                                   return 'this email is already used';
@@ -484,60 +482,98 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                     validLicenceType=false;
                                   });
                                 }
-                                if(_formKey.currentState!.validate()){
-
-                                  if(!validLicenceType && !validContratType)
-                                    if(_image==null){
-                                      // ScaffoldMessenger.of(context).showSnackBar(
-                                      //   SnackBar(
-                                      //     content: Text("Please choose a profile picture"),
-                                      //     duration: Duration(seconds: 5),
-                                      //   ),
-                                      // );
-                                      // Navigator.pop(context);
-                                      Get.to(AddDriverImagesScreen(
-                                          record:DriverModel(
-                                              driverImage: "",
-                                              firstName: controller.firstNameController.text.capitalize.toString(),
-                                              lastName: controller.lastNameController.text.capitalize.toString(),
-                                              birthDate: controller.birthDateController.text,
-                                              identityNumber:int.tryParse(controller.identityNumberController.text) ?? 0,
-                                              identityCardImageFace1: "",
-                                              identityCardImageFace2: "",
-                                              phoneNumber: int.tryParse(controller.phoneNumberController.text) ?? 0,
-                                              licenceType: _selectedItem,
-                                              licenceImageFace1: "",
-                                              licenceImageFace2: "",
-                                              email: controller.emailController.text,
-                                              contractType: contract,
-                                              password: controller.passwordController.text
-                                          )
-                                      ));
-                                    }
-                                  else
-                                    Get.to(AddDriverImagesScreen(
-                                    record:DriverModel(
-                                        driverImage: _image!.path,
-                                        firstName: controller.firstNameController.text.capitalize.toString(),
-                                        lastName: controller.lastNameController.text.capitalize.toString(),
-                                        birthDate: controller.birthDateController.text,
-                                        identityNumber:int.tryParse(controller.identityNumberController.text) ?? 0,
-                                        identityCardImageFace1: "",
-                                        identityCardImageFace2: "",
-                                    phoneNumber: int.tryParse(controller.phoneNumberController.text) ?? 0,
-                                        licenceType: _selectedItem,
-                                        licenceImageFace1: "",
-                                        licenceImageFace2: "",
-                                    email: controller.emailController.text,
-                                    contractType: contract,
-                                    password: controller.passwordController.text
-                                    )
-                                    ));
+                                if(_formKey.currentState!.validate()) {
+                                  if (!validLicenceType && !validContratType)
+                                    // if (controller.driverEmailList.contains(
+                                    //     controller.emailController.text)
+                                    // || controller.identityDriverList.contains(
+                                    //         controller.identityNumberController.text)) {
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(
+                                    //     SnackBar(
+                                    //       content: Text(
+                                    //           "Email or identity number is already used"
+                                    //       ),
+                                    //       duration: Duration(seconds: 5),
+                                    //     ),
+                                    //   );
+                                    //   Navigator.pop(context);
+                                    // }
+                                    // else {
+                                      if (_image == null) {
+                                        // ScaffoldMessenger.of(context).showSnackBar(
+                                        //   SnackBar(
+                                        //     content: Text("Please choose a profile picture"),
+                                        //     duration: Duration(seconds: 5),
+                                        //   ),
+                                        // );
+                                        // Navigator.pop(context);
+                                        Get.to(AddDriverImagesScreen(
+                                            record: DriverModel(
+                                                driverImage: "",
+                                                firstName: controller
+                                                    .firstNameController.text
+                                                    .capitalize.toString(),
+                                                lastName: controller
+                                                    .lastNameController.text
+                                                    .capitalize.toString(),
+                                                birthDate: controller
+                                                    .birthDateController.text,
+                                                identityNumber: int.tryParse(
+                                                    controller
+                                                        .identityNumberController
+                                                        .text) ?? 0,
+                                                identityCardImageFace1: "",
+                                                identityCardImageFace2: "",
+                                                phoneNumber: int.tryParse(
+                                                    controller
+                                                        .phoneNumberController
+                                                        .text) ?? 0,
+                                                licenceType: _selectedItem,
+                                                licenceImageFace1: "",
+                                                licenceImageFace2: "",
+                                                email: controller
+                                                    .emailController.text,
+                                                contractType: contract,
+                                                password: controller
+                                                    .passwordController.text
+                                            )
+                                        ));
+                                      }
+                                      else
+                                        Get.to(AddDriverImagesScreen(
+                                            record: DriverModel(
+                                                driverImage: _image!.path,
+                                                firstName: controller
+                                                    .firstNameController.text
+                                                    .capitalize.toString(),
+                                                lastName: controller
+                                                    .lastNameController.text
+                                                    .capitalize.toString(),
+                                                birthDate: controller
+                                                    .birthDateController.text,
+                                                identityNumber: int.tryParse(
+                                                    controller
+                                                        .identityNumberController
+                                                        .text) ?? 0,
+                                                identityCardImageFace1: "",
+                                                identityCardImageFace2: "",
+                                                phoneNumber: int.tryParse(
+                                                    controller
+                                                        .phoneNumberController
+                                                        .text) ?? 0,
+                                                licenceType: _selectedItem,
+                                                licenceImageFace1: "",
+                                                licenceImageFace2: "",
+                                                email: controller
+                                                    .emailController.text,
+                                                contractType: contract,
+                                                password: controller
+                                                    .passwordController.text
+                                            )
+                                        ));
+                                    // }
                                 }
-                                // uploadFiles().then((value) => Get.back());
-                                // Get.to(()=>AddDriverImagesScreen());
-
-                                // controller.onInit();
                                 },
                               child: Center(
                                 child: Container(
@@ -586,48 +622,39 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
     );
   }
   Widget imageProfile(){
-     return Column(
-       children: <Widget>[
-         GestureDetector(
-           onTap: (){
-             showModalBottomSheet(
-                 context: context,
-                 builder: ((builder)=>bottomSheet())
-             );
-           },
-           child: Center(
-             child: CircleAvatar(
+     return GestureDetector(
+       onTap: (){
+         showModalBottomSheet(
+             context: context,
+             builder: ((builder)=>bottomSheet())
+         );
+       },
+       child: Center(
+         child: Stack(
+           children: [
+             CircleAvatar(
                backgroundColor: Colors.white10,
                radius: 35.0,
                child:_image == null
                    ? Image(image: AssetImage('assets/images/Exclude.png'),fit: BoxFit.fill,width: 70,)
                      :ClipOval(child: Image.file(_image!,width:70,fit: BoxFit.cover,))
              ),
-           ),
+             Positioned(
+                 bottom: 0,
+                 right: 0,
+                 child: Container(
+                     width: 20,
+                     height: 20,
+                     decoration: BoxDecoration(
+                         borderRadius: BorderRadius.circular(45),
+                         color: Color(0xFF373737)
+                     ),
+                     child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
+                 )
+             )
+           ],
          ),
-
-         // Container(
-         //   // top: MediaQuery.of(context).size.height*0.05,
-         //   //   right: MediaQuery.of(context).size.width*0.25,
-         //     child: InkWell(
-         //       onTap: (){
-         //         showModalBottomSheet(
-         //             context: context,
-         //             builder: ((builder)=>bottomSheet())
-         //         );
-         //       },
-         //       child: Container(
-         //         width: 20,
-         //         height: 20,
-         //         decoration: BoxDecoration(
-         //           borderRadius: BorderRadius.circular(45),
-         //            color: Color(0xFF373737)
-         //         ),
-         //           child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
-         //       ),
-         //     )
-         // )
-       ],
+       ),
      );
   }
 

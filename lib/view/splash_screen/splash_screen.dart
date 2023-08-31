@@ -1,5 +1,7 @@
+import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/utils/common_widget.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
+import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:admin_citygo/view/welcome_screen/welcome_screen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,12 +14,16 @@ class SplashSreeen extends StatefulWidget {
   @override
   State<SplashSreeen> createState() => _SplashSreeenState();
 }
+HomeController homeController =Get.put(HomeController());
 
 class _SplashSreeenState extends State<SplashSreeen> {
 
   @override
   void initState() {
     super.initState();
+    if(homeController.box.read("email")!=null)
+      Get.to(()=>HomeScreen());
+    else
     _navigatetohome();
   }
 

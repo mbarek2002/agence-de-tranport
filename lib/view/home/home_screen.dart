@@ -30,9 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   HomeController homeController = Get.put(HomeController());
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
+     loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
     homeController.box.write("email", FirebaseAuth.instance.currentUser!.email.toString());
   }
@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                          onPressed: (){
                        LoginController().signAdminOut();
                        homeController.box.remove("email");
+
                        Get.offAll(()=>LogInScreen());
                      }
                      ,icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
@@ -236,7 +237,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Obx(() {
                     if (loginController.isLoading.value) {
-                      return Center(child: CircularProgressIndicator());
+                      return SizedBox(
+                        height: 20.0,
+                        width: 20.0,
+                        child: Center(
+                            child: CircularProgressIndicator()
+                        ),
+                      );
                     } else {
                       return Container(
                         decoration: BoxDecoration(

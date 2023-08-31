@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:admin_citygo/controllers/courses/courses_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
+import 'package:admin_citygo/models/checkListData.dart';
 import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
@@ -79,8 +80,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
   Future<DateTime?> pickDate() => showDatePicker(
       context: context,
       initialDate: dateTimePickUp,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100));
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2200)
+  );
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
       context: context,
@@ -569,6 +571,12 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                                   Icons.mark_email_unread_outlined
                                                               ),
                                                           ),
+                                                          onChanged: (value){
+                                                            if(int.parse(coursesController.collieController.text)<coursesController.usedCollie.value)
+                                                              coursesController.usedCollie.value=0;
+                                                            else if(coursesController.collieController.text == "")
+                                                              coursesController.collieController.text='0';
+                                                          },
                                                         )),
                                                     SizedBox(height: MediaQuery.of(context).size.height*0.02),
                                                     Text('Used Luggage Capacity',
@@ -661,6 +669,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                             DropdownButton<int>(
                                                               value: coursesController.usedCollie.value,
                                                               onChanged: (int? newValue) {
+
                                                                   coursesController.usedCollie.value = newValue!;
                                                               },
                                                               items: List.generate((int.tryParse(coursesController.collieController.text)  ?? 0)+1, (index) {
@@ -974,7 +983,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               onTap: () async {
 
                                 errorList = [];
-
                                 if (coursesController
                                         .pickUpLocationConroller.text ==
                                     "") errorList.add("pick-up location");
@@ -996,7 +1004,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   errorList.add("luggage capacity");
 
                                 if (errorList.isEmpty) {
-                                  if(coursesController.checkBox1==true || coursesController.checkBox2==true){
+                                  // if(coursesController.checkBox1==true || coursesController.checkBox2==true){
+
                                     showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
                                   coursesController.add_course(
                                     Course(
@@ -1029,14 +1038,14 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     coursesController.init();
                                     Get.back();
                                   });
-                                  }
-                                  else
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text("select a check type"),
-                                        duration: Duration(seconds: 3),
-                                      ),
-                                    );
+                                  // }
+                                  // else
+                                  //   ScaffoldMessenger.of(context).showSnackBar(
+                                  //     SnackBar(
+                                  //       content: Text("select a check type"),
+                                  //       duration: Duration(seconds: 3),
+                                  //     ),
+                                  //   );
 
                                 }
                                 else {

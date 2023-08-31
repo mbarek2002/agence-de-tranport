@@ -1,3 +1,6 @@
+import 'package:admin_citygo/models/checkListData.dart';
+import 'package:admin_citygo/models/rowData.dart';
+
 import '../controllers/courses/courses_controller.dart';
 
 class Course {

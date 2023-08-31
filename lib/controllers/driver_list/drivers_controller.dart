@@ -184,7 +184,6 @@ class DriversController extends GetxController{
     });
   }
 
-
   RxBool isLoading = false.obs;
   var driverList = <DriverModel>[].obs;
   var filteredList = <DriverModel>[].obs;

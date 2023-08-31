@@ -35,12 +35,16 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
   String driverDownloadURL="";
   final _formKey = GlobalKey<FormState>();
 
+  var driverEmails = <String>[];
+
+  var driverIdentityNumber = <int>[];
+
 
   LoginController loginController =Get.put(LoginController());
 
   DriversController controller =DriversController();
 @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     _selectedItem = widget.records.licenceType;
@@ -50,20 +54,19 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
     controller.birthDateController.text= widget.records.birthDate;
     controller.identityNumberController.text= widget.records.identityNumber.toString();
     controller.phoneNumberController.text= widget.records.phoneNumber.toString();
-    print(widget.records.phoneNumber.toString());
     controller.emailController.text= widget.records.email;
     controller.passwordController.text= widget.records.password;
     if(widget.records.contractType=="Full Time Contract") checkBox2=true;
         else checkBox1=true;
 
-  }
+}
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
     );
 
     if (pickedDate != null && pickedDate != DateTime.now()) {
@@ -254,16 +257,13 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                 if (value == null || value.isEmpty) {
                                   return 'Please entre Identity Number';
                                 }
+                                else if(driverIdentityNumber.contains(int.parse(value))){
+                                  return 'this identity Number is already used';
+                                }
                                 return null;
                               },
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
-                                // suffixIcon: IconButton(
-                                //   onPressed: (){
-                                //     getIdentityImage();
-                                //   },
-                                //   icon: Icon(Icons.file_download),
-                                // ),
                                 label: Text('Identity Card'),
                                 labelStyle: TextStyle(color: Color(0xFF373737),fontSize: 10),
                                 enabledBorder: UnderlineInputBorder(
@@ -302,6 +302,9 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                   return 'Please entre Email';
                                 }else if(!GetUtils.isEmail(value)){
                                   return 'Please entre that contains @ and .';
+                                }
+                                else if(driverEmails.contains(value)){
+                                  return 'this email is already used';
                                 }
                                 return null;
                               },
@@ -343,12 +346,6 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                               // value: _selectedItem,
                               hint: Text(_selectedItem,style:TextStyle(color: Colors.black,fontSize: 18)),
                               elevation: 16,
-                              // icon: IconButton(
-                              //   icon: Icon(Icons.file_download),
-                              //   onPressed: (){
-                              //     getLicenceImage();
-                              //   },
-                              // ),
                               items: _dropdownItems.map((String item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
@@ -422,7 +419,7 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
 
                             SizedBox(height: 40,),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async {
                                 if(checkBox1) {
                                   setState(() {
                                     contract="seasonal";
@@ -433,12 +430,11 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                                     contract="Full Time Contract";
                                   });
                                 }
-                                if(_image!=null && _formKey.currentState!.validate()){
-                                  print('/////////////////driver//////////////////');
-                                  print(widget.records.driverImage);
-                                  print('//////////////driverdownloader/////////////////////');
-                                  print(driverDownloadURL);
+                                await controller.fetchDrivers();
+                                driverEmails.assignAll(controller.driverEmailList.where((element) => element!=widget.records.email));
+                                driverIdentityNumber.assignAll(controller.identityDriverList.where((id) => id!=widget.records.identityNumber));
 
+                                if(_image!=null && _formKey.currentState!.validate()){
                                   Get.to(()=>EditDriverImagesScreen(record:
                                 DriverModel(
                                   id:widget.records.id,
@@ -511,7 +507,7 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height* .04,
+              top: MediaQuery.of(context).size.height*.04,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
@@ -536,49 +532,77 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
     );
   }
   Widget imageProfile(){
-    return Stack(
+    return Column(
       children: <Widget>[
         if(driverDownloadURL=='')
-           Center(
-
-            child:CircleAvatar(
-                backgroundColor: Colors.white10,
-                radius: 35.0,
-                child:Image(image: AssetImage('assets/images/Exclude.png')
-          ,width:70,fit: BoxFit.cover))
-          )
+           GestureDetector(
+             onTap: (){
+               showModalBottomSheet(
+                   context: context,
+                   builder: ((builder)=>bottomSheet())
+               );
+             },
+             child: Center(
+              child:Stack(
+                children: [
+                  CircleAvatar(
+                      backgroundColor: Colors.white10,
+                      radius: 35.0,
+                      child:Image(image: AssetImage('assets/images/Exclude.png')
+          ,width:70,fit: BoxFit.cover)),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(45),
+                              color: Color(0xFF373737)
+                          ),
+                          child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
+                      )
+                  )
+                ],
+              )
+          ),
+           )
 
         else Center(
-          child: CircleAvatar(
-              backgroundColor: Colors.white10,
-              radius: 35.0,
-              child:_image == null
-            ?         ClipOval(child: Image.network(driverDownloadURL,fit: BoxFit.cover,width: 70))
-                  :ClipOval(child: Image.file(File(_image!),width:70,fit: BoxFit.cover,))
+          child: GestureDetector(
+            onTap: (){
+              showModalBottomSheet(
+                  context: context,
+                  builder: ((builder)=>bottomSheet())
+              );
+            },
+            child: Stack(
+              children: [
+                CircleAvatar(
+                    backgroundColor: Colors.white10,
+                    radius: 35.0,
+                    child:_image == null
+                  ?         ClipOval(child: Image.network(driverDownloadURL,fit: BoxFit.cover,width: 70))
+                        :ClipOval(child: Image.file(File(_image!),width:70,fit: BoxFit.cover,))
+                ),
+                Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(45),
+                            color: Color(0xFF373737)
+                        ),
+                        child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
+                    )
+                )
+              ],
+            ),
           ),
         ),
 
-        Positioned(
-            bottom: 5,
-            right: 100,
-            child: InkWell(
-              onTap: (){
-                showModalBottomSheet(
-                    context: context,
-                    builder: ((builder)=>bottomSheet())
-                );
-              },
-              child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(45),
-                      color: Color(0xFF373737)
-                  ),
-                  child: Icon(Icons.camera_alt_rounded,color: Colors.white,size: 15,)
-              ),
-            )
-        )
       ],
     );
   }

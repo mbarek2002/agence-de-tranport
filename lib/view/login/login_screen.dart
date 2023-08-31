@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../utils/common_widget.dart';
-// import { getAuth, signInWithEmailAndPassword } from "pafirebase/auth";
 
 
 class LogInScreen extends StatefulWidget {
@@ -16,6 +15,7 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  LoginController loginController = Get.put(LoginController());
   final _formKey = GlobalKey<FormState>();
   final controller  = Get.put(LoginController());
   Color color=Colors.transparent;
@@ -97,7 +97,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
+                            padding:  EdgeInsets.only(
                               right:40,
                               left: 40,
                               bottom: 35
@@ -144,7 +144,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: OutlinedButton(
                                 onPressed: (){
                                   if (_formKey.currentState!.validate()) {
-                                    LoginController.instance.loginAdmin(controller.emailController.text.trim(), controller.passwordController.text.trim(),context);
+                                    loginController.loginAdmin(controller.emailController.text.trim(), controller.passwordController.text.trim(),context);
                                   }
                                 },
                                 child: Text(tLogin,style: TextStyle(color: Colors.white,fontSize: 15),),
@@ -160,8 +160,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 ],
               ),
           ),
-
-
       ),
     );
   }

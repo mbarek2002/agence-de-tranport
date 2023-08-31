@@ -1,8 +1,6 @@
 
 import 'package:admin_citygo/view/home/home_screen.dart';
-import 'package:admin_citygo/view/notification_new_driver_screen/consult_notification_new_driver.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +19,7 @@ class LoginController extends GetxController{
   RxString idAdmin=''.obs;
   void getAdminImage(String email)async {
     try {
-      await Future.delayed(Duration(seconds: 4));
+       // Future.delayed(Duration(seconds: 4));
       QuerySnapshot adminsData = await FirebaseFirestore.instance.collection(
           'admins').where("email", isEqualTo: email).get();
       for (var admin in adminsData.docs) {
@@ -33,10 +31,6 @@ class LoginController extends GetxController{
       print(e.toString());
     }
   }
-
-  // final storage = GetStorage();
-
-
 
   void loginAdmin(String email,String password,BuildContext context)async{
 
@@ -50,9 +44,13 @@ class LoginController extends GetxController{
     );
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email, password: password).then((value)=>Get.offAll(()=>HomeScreen())
+            email: email, password: password).then((value){
+            emailController.text="";
+            passwordController.text="";
+            Get.offAll(()=>HomeScreen());
+        }
         );
-        Navigator.pop(context);
+        // Navigator.pop(context);
       }on FirebaseAuthException catch(e){
         if(e.code.toLowerCase() == 'invalid-email'){
           Navigator.pop(context);

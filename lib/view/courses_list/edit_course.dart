@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:admin_citygo/controllers/courses/courses_controller.dart';
 import 'package:admin_citygo/controllers/login/login_controller.dart';
+import 'package:admin_citygo/models/checkListData.dart';
 import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
@@ -79,15 +80,18 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
 
     if(widget.record.check=="car") {
       coursesController.checkBox2.value = true;
+      if(widget.record.passengersDetails!=null)
       coursesController.passengerCarDetails.value = widget.record.passengersDetails!;
       if(widget.record.carListDetails!=null)coursesController.checkListTable.value = widget.record.carListDetails!;
     }
     if(widget.record.check=="passengers"){
-    coursesController.passengerDetails.value = widget.record.passengersDetails!;
+      if(widget.record.passengersDetails!=null)
+        coursesController.passengerDetails.value = widget.record.passengersDetails!;
     coursesController.checkBox1.value=true;
     }
 
 
+    print(widget.record.id);
   }
 
 /////////////////pick up date //////////////////////
@@ -117,8 +121,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
   Future<DateTime?> pickDate()=> showDatePicker(
       context: context,
       initialDate: dateTimePickUp,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100)
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2200)
   );
   Future<TimeOfDay?> pickTime()=>showTimePicker(
       context: context,
@@ -913,6 +917,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                               .importFromExcelForPassenger()
                                                               .then((value) {
                                                             {
+                                                              coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
+                                                              widget.record.passengersDetails=null;
                                                               if (coursesController
                                                                   .checkBox2
                                                                   .value ==
@@ -943,6 +949,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                           coursesController.checkBox1.value =
                                                           !coursesController.checkBox1.value;
                                                           coursesController.passengerDetails.value = [];
+                                                          widget.record.passengersDetails=null;
                                                         }
                                                       },
                                                       value: coursesController
@@ -961,7 +968,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                     IconButton(
                                                       icon: Icon(Icons.edit,size:20,color: Colors.white,),
                                                       onPressed: (){
-                                                        coursesController.importFromExcelForPassenger();
+                                                        coursesController.importFromExcelForPassenger().then((value) {
+                                                          widget.record.passengersDetails=null;
+                                                        });
+                                                        coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
                                                       },
                                                     ),
                                                     // IconButton(
@@ -1060,15 +1070,18 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                   (builder) =>checkCarDialog()
                                                           );
                                                         } else {
-                                                          coursesController
-                                                              .checkBox2.value =
-                                                          !coursesController
-                                                              .checkBox2.value;
-                                                          coursesController
-                                                              .image.value = "";
-                                                          coursesController
-                                                              .passengerCarDetails
-                                                              .value = [];
+                                                          coursesController.checkBox2.value = !coursesController.checkBox2.value;
+                                                          coursesController.image.value = "";
+                                                          coursesController.imageCar1.value="";
+                                                          coursesController.imageCar2.value="";
+                                                          coursesController.imageCar3.value="";
+                                                          coursesController.imageCar4.value="";
+                                                          coursesController.passengerCarDetails.value = [];
+                                                          coursesController.checkListTable.value=[];
+                                                          widget.record.passengersDetails=null;
+                                                          widget.record.carListDetails=null;
+
+
                                                         }
                                                       },
                                                       value: coursesController
@@ -1141,7 +1154,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                                       style: TextStyle(color: Colors.white, fontFamily: 'Georgia'),
                                                                                     ),
                                                                                     onPressed: () {
-                                                                                      coursesController.importFromExcel();
+                                                                                      coursesController.importFromExcel().then((value) {
+                                                                                        widget.record.passengersDetails=null;
+                                                                                      });
+                                                                                      coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
                                                                                     },
                                                                                   ),
                                                                                 ),
@@ -1357,6 +1373,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                     if (coursesController
                                         .seatingCapacityController.text ==
                                         "") errorList.add("seating capacity");
+                                    if(int.parse(coursesController.passagersConroller.text)>
+                                    int.parse(coursesController.seatingCapacityController.text))
+                                      errorList.add("check the seating capcity");
+
                                     if((int.tryParse(coursesController.collieController.text) ?? 0)<=0 || coursesController.collieController.text=="")
                                       errorList.add("Luggage capacity");
 
@@ -1364,7 +1384,9 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                       showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
                                       await coursesController.update_course(
                                           Course(
+                                              adminId: widget.record.adminId,
                                               seen:widget.record.seen,
+                                              finished: widget.record.finished,
                                               id:widget.record.id,
                                               pickUpLocation: coursesController.pickUpLocationConroller.text,
                                               dropOffLocation: coursesController.dropOffLocationConroller.text,
@@ -2422,7 +2444,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                         style: TextStyle(color: Colors.white, fontFamily: 'Georgia'),
                       ),
                       onPressed: () async{
-                        await coursesController.importFromExcel();
+                        await coursesController.importFromExcel().then((value) {
+                          widget.record.passengersDetails=null;
+                        });
+                        coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
                       },
                     ),
                   ),

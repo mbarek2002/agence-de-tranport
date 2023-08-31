@@ -30,11 +30,8 @@ class _DriversListScreenState extends State<DriversListScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('////////////////////');
-
     driversController.fetchDrivers();
-    print('////////////////////');
-    print(homeController.box.read('email'));
+    print(driversController.driverEmailList);
   }
 
   DriversController driversController = Get.put(DriversController());
@@ -224,6 +221,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                             ),
                                             GestureDetector(
                                               onTap: (){
+                                                driversController.fetchDrivers();
                                                 Get.to(()=>EditDriverScreen(records: driversController.filteredList[index],));
                                               },
                                               child: Container(

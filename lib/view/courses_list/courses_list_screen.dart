@@ -8,8 +8,10 @@ import 'package:admin_citygo/controllers/login/login_controller.dart';
 import 'package:admin_citygo/models/course.dart';
 import 'package:admin_citygo/view/courses_list/add_course.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
+import 'package:admin_citygo/view/courses_list/course_passenger_detail.dart';
 import 'package:admin_citygo/view/courses_list/edit_course.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,7 +39,8 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
   void initState() {
     super.initState();
     coursesController.fetchCourses();
-    loginController.getAdminImage(loginController.emailController.text);
+    // loginController.getAdminImage(loginController.emailController.text);
+    loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) {
       String id = data[0];
@@ -63,6 +66,21 @@ Future download(String url)async{
       headers: {},
       savedDir: baseStorage!.path,
       fileName:"mission order",
+      showNotification: true,
+      openFileFromNotification: true,
+    );
+  }
+
+}
+Future downloadCarImage(String url)async{
+  var status = await Permission.storage.request();
+  if(status.isGranted){
+    final baseStorage = await getExternalStorageDirectory();
+    await FlutterDownloader.enqueue(
+      url: url,
+      headers: {},
+      savedDir: baseStorage!.path,
+      fileName:"car_image",
       showNotification: true,
       openFileFromNotification: true,
     );
@@ -99,7 +117,6 @@ Future download(String url)async{
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => AddCourseScreen()));
-            print("add");
           },
         ),
         appBar: AppBar(
@@ -160,7 +177,7 @@ Future download(String url)async{
                       onChanged: (value)=>coursesController.filter(value),
                       decoration: InputDecoration(
                         suffixIcon: Icon(Icons.search),
-                        hintText:"search by name , identity card",
+                        hintText:"search by pick up location",
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(25.0),
                           borderSide: new BorderSide(),
@@ -189,13 +206,19 @@ Future download(String url)async{
                   Container(
                     height:MediaQuery.of(context).size.height*0.05,
                     width: MediaQuery.of(context).size.width * 0.95,
+                   
                     child: Row(
                         children:[
                           GestureDetector(
                             child: Container(
-                              color:coursesController.formNum.value==1
-                                    ?Color(0xFF0F5CA0).withOpacity(0.6)
-                                    :Color(0xFF3C77E1),
+                              decoration: BoxDecoration(
+                                  color:coursesController.formNum.value==1
+                                      ?Color(0xFF0F5CA0).withOpacity(0.6)
+                                      :Color(0xFF3C77E1),
+                                  borderRadius:BorderRadius.only(
+                                      topLeft:  Radius.circular(5),
+                                  )
+                              ),
                               width: MediaQuery.of(context).size.width * (0.95/2),
                               child:Center(
                                 child:Text(
@@ -210,16 +233,18 @@ Future download(String url)async{
                             ),
                               onTap:(){
                                 coursesController.formNum.value=1;
-                                print(
-                                  coursesController.formNum.value
-                                );
                               }
                           ),
                           GestureDetector(
                             child: Container(
-                              color:coursesController.formNum.value==2
-                                  ?Color(0xFF0F5CA0).withOpacity(0.6)
-                                  :Color(0xFF3C77E1),
+                              decoration: BoxDecoration(
+                                  color:coursesController.formNum.value==2
+                                      ?Color(0xFF0F5CA0).withOpacity(0.6)
+                                      :Color(0xFF3C77E1),
+                                  borderRadius:BorderRadius.only(
+                                    topRight:  Radius.circular(5),
+                                  )
+                              ),
                               width: MediaQuery.of(context).size.width * (0.95/2),
                               child:Center(
                                 child:Text(
@@ -259,7 +284,10 @@ Future download(String url)async{
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                borderRadius:BorderRadius.circular(5),
+                                borderRadius:BorderRadius.only(
+                                    bottomRight:  Radius.circular(5),
+                                    bottomLeft: Radius.circular(5)
+                                ),
                                 color: Color(0xFF0F5CA0).withOpacity(0.7),
                               ),
                               child: Column(
@@ -433,102 +461,18 @@ Future download(String url)async{
                                                     ),
                                                   ),
                                                   onTap:(){
-                                                    showModalBottomSheet(
-                                                        context: context,
-                                                        builder: (BuildContext ctx){
-                                                          return Container(
-                                                              height: MediaQuery.of(context).size.height*0.53,
-                                                              child: SingleChildScrollView(
-                                                                scrollDirection: Axis.vertical,
-                                                                child: SingleChildScrollView(
-                                                                  scrollDirection: Axis.horizontal,
-                                                                  child:Obx(()=>
-                                                                  Column(
-                                                                    children: [
-                                                                      DataTable(
-                                                                        columnSpacing: 3,
-                                                                        dataRowHeight: 50,
-                                                                        columns: const <DataColumn>[
-                                                                          DataColumn(
-                                                                            label: Expanded(
-                                                                              child: Text(
-                                                                                'First Name',
-                                                                                style: TextStyle(fontStyle: FontStyle.italic),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          DataColumn(
-                                                                            label: Expanded(
-                                                                              child: Text(
-                                                                                'Last Name',
-                                                                                style: TextStyle(fontStyle: FontStyle.italic),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          DataColumn(
-                                                                            label: Expanded(
-                                                                              child: Text(
-                                                                                'Identity Number',
-                                                                                style: TextStyle(fontStyle: FontStyle.italic),
-                                                                              ),
-                                                                            ),
-                                                                            numeric: true,
-                                                                          ),
-                                                                          DataColumn(
-                                                                            label: Expanded(
-                                                                              child: Text(
-                                                                                'State',
-                                                                                style: TextStyle(fontStyle: FontStyle.italic),
-                                                                              ),
-                                                                            ),
-                                                                            numeric: true,
-                                                                          ),
-                                                                        ],
-
-                                                                        rows: List<DataRow>.generate(coursesController.coursesListTomorrow[i].passengersDetails!.length, (int index) =>
-                                                                            DataRow(
-                                                                                cells:<DataCell>[
-                                                                                  DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].firstname)),
-                                                                                  DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].lastName)),
-                                                                                  (coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.contains('.')
-                                                                                      && coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.endsWith('.0'))
-                                                                                  ?DataCell(Text(coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.substring(0, coursesController.coursesListTomorrow[i].passengersDetails![index].identityNum.indexOf('.'))))
-                                                                                      :
-                                                                                  DataCell(Text(coursesController.passengerDetails[index].identityNum)),
-                                                                                  DataCell(
-                                                                                      Checkbox(
-                                                                                        value: coursesController.coursesListTomorrow[i].passengersDetails![index].state,
-                                                                                        onChanged: (bool? value) {
-                                                                                          print("///////////////////");
-                                                                                          print(coursesController.coursesListTomorrow[i].passengersDetails![index].state);
-                                                                                          print("///////////////////");
-                                                                                          setState(() {
-                                                                                            coursesController.coursesListTomorrow[i].passengersDetails![index].state
-                                                                                            =!coursesController.coursesListTomorrow[i].passengersDetails![index].state;
-                                                                                          });
-
-                                                                                          print(coursesController.coursesListTomorrow[i].passengersDetails![index].state);
-                                                                                          print("**********************");
-                                                                                        },
-                                                                                      ))
-
-                                                                                ]
-                                                                            )
-                                                                        ),
-                                                                      ),
-                                                                      Center(
-                                                                          child:ElevatedButton(
-                                                                            onPressed:(){},
-                                                                            child:Text('save'),
-                                                                          )
-                                                                      )
-                                                                    ],
-                                                                  )),
-                                                                ),
-                                                              )
-                                                          );
-                                                        }
-                                                    );
+                                                    if(coursesController.coursesListTomorrow[i].passengersDetails!=null
+                                                    &&coursesController.coursesListTomorrow[i].passengersDetails!.isNotEmpty) {
+                                                      coursesController.course1
+                                                          .value =
+                                                      coursesController
+                                                          .coursesListTomorrow[i];
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .course1.value
+                                                          ));
+                                                    }
                                                   },
                                                 ),
                                               ],
@@ -758,48 +702,60 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 65,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Icon(
-                                                        Icons
-                                                            .people_alt_outlined,
-                                                        size: 20,
-                                                      ),
-                                                      Center(
-                                                        child: Container(
-                                                          child: Text(
-                                                              coursesController
-                                                                      .coursesListToday[i]
-                                                                      .passengersNum
-                                                                      .toString() +
-                                                                  '/' +
-                                                                  coursesController
-                                                                      .coursesListToday[i]
-                                                                      .seatingCapacity
-                                                                      .toString(),
-                                                              style: TextStyle(
-                                                                  fontSize: 13,
-                                                                  fontFamily:
-                                                                      'Georgia',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 65,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .people_alt_outlined,
+                                                          size: 20,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Center(
+                                                          child: Container(
+                                                            child: Text(
+                                                                coursesController
+                                                                        .coursesListToday[i]
+                                                                        .passengersNum
+                                                                        .toString() +
+                                                                    '/' +
+                                                                    coursesController
+                                                                        .coursesListToday[i]
+                                                                        .seatingCapacity
+                                                                        .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize: 13,
+                                                                    fontFamily:
+                                                                        'Georgia',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                  onTap:(){
+                                                    if(coursesController.coursesListToday[i].passengersDetails!=null
+                                                        &&coursesController.coursesListToday[i].passengersDetails!.isNotEmpty) {
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .coursesListToday[i]
+                                                          ));
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -817,13 +773,6 @@ Future download(String url)async{
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -1044,52 +993,64 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 60,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: Center(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .people_alt_outlined,
-                                                          size: 20,
-                                                        ),
-                                                        Center(
-                                                          child: Container(
-                                                            // width:60,
-                                                            child: Text(
-                                                                coursesController
-                                                                        .coursesList[i]
-                                                                        .passengersNum
-                                                                        .toString() +
-                                                                    '/' +
-                                                                    coursesController
-                                                                        .coursesList[i]
-                                                                        .seatingCapacity
-                                                                        .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize: 13,
-                                                                    fontFamily:
-                                                                        'Georgia',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold)),
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 60,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                    child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .people_alt_outlined,
+                                                            size: 20,
                                                           ),
-                                                        ),
-                                                      ],
+                                                          Center(
+                                                            child: Container(
+                                                              // width:60,
+                                                              child: Text(
+                                                                  coursesController
+                                                                          .coursesList[i]
+                                                                          .passengersNum
+                                                                          .toString() +
+                                                                      '/' +
+                                                                      coursesController
+                                                                          .coursesList[i]
+                                                                          .seatingCapacity
+                                                                          .toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize: 13,
+                                                                      fontFamily:
+                                                                          'Georgia',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
+                                                  onTap:(){
+                                                    if(coursesController.coursesList[i].passengersDetails!=null
+                                                        &&coursesController.coursesList[i].passengersDetails!.isNotEmpty) {
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .coursesList[i]
+                                                          ));
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -1107,13 +1068,7 @@ Future download(String url)async{
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
+                                                    
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -1348,47 +1303,59 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 65,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.people_alt_outlined,
-                                                        size: 20,
-                                                      ),
-                                                      Container(
-                                                        // width:70,
-                                                        child: Text(
-                                                            coursesController
-                                                                .coursesListTomorrowDrivers[i]
-                                                                .passengersNum
-                                                                .toString() +
-                                                                '/' +
-                                                                coursesController
-                                                                    .coursesListTomorrowDrivers[i]
-                                                                    .seatingCapacity
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                'Georgia',
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                      ),
-                                                    ],
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 65,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.people_alt_outlined,
+                                                          size: 20,
+                                                        ),
+                                                        Container(
+                                                          // width:70,
+                                                          child: Text(
+                                                              coursesController
+                                                                  .coursesListTomorrowDrivers[i]
+                                                                  .passengersNum
+                                                                  .toString() +
+                                                                  '/' +
+                                                                  coursesController
+                                                                      .coursesListTomorrowDrivers[i]
+                                                                      .seatingCapacity
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontFamily:
+                                                                  'Georgia',
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                  onTap:(){
+                                                    if(coursesController.coursesListTomorrowDrivers[i].passengersDetails!=null
+                                                        &&coursesController.coursesListTomorrowDrivers[i].passengersDetails!.isNotEmpty) {
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .coursesListTomorrowDrivers[i]
+                                                          ));
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -1615,47 +1582,59 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 65,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.people_alt_outlined,
-                                                        size: 20,
-                                                      ),
-                                                      Container(
-                                                        // width:70,
-                                                        child: Text(
-                                                            coursesController
-                                                                .coursesListTodayDrivers[i]
-                                                                .passengersNum
-                                                                .toString() +
-                                                                '/' +
-                                                                coursesController
-                                                                    .coursesListTodayDrivers[i]
-                                                                    .seatingCapacity
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                'Georgia',
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                      ),
-                                                    ],
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 65,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.people_alt_outlined,
+                                                          size: 20,
+                                                        ),
+                                                        Container(
+                                                          // width:70,
+                                                          child: Text(
+                                                              coursesController
+                                                                  .coursesListTodayDrivers[i]
+                                                                  .passengersNum
+                                                                  .toString() +
+                                                                  '/' +
+                                                                  coursesController
+                                                                      .coursesListTodayDrivers[i]
+                                                                      .seatingCapacity
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontFamily:
+                                                                  'Georgia',
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                  onTap:(){
+                                                    if(coursesController.coursesListTodayDrivers[i].passengersDetails!=null
+                                                        &&coursesController.coursesListTodayDrivers[i].passengersDetails!.isNotEmpty) {
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .coursesListTodayDrivers[i]
+                                                          ));
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -1673,13 +1652,7 @@ Future download(String url)async{
                                                         borderRadius:
                                                         BorderRadius
                                                             .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
+                                                    
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -1889,47 +1862,59 @@ Future download(String url)async{
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Container(
-                                                  width: 65,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.people_alt_outlined,
-                                                        size: 20,
-                                                      ),
-                                                      Container(
-                                                        // width:70,
-                                                        child: Text(
-                                                            coursesController
-                                                                .coursesListDrivers[i]
-                                                                .passengersNum
-                                                                .toString() +
-                                                                '/' +
-                                                                coursesController
-                                                                    .coursesListDrivers[i]
-                                                                    .seatingCapacity
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontSize: 13,
-                                                                fontFamily:
-                                                                'Georgia',
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                      ),
-                                                    ],
+                                                GestureDetector(
+                                                  child: Container(
+                                                    width: 65,
+                                                    height: 48,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white
+                                                            .withOpacity(0.8),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.people_alt_outlined,
+                                                          size: 20,
+                                                        ),
+                                                        Container(
+                                                          // width:70,
+                                                          child: Text(
+                                                              coursesController
+                                                                  .coursesListDrivers[i]
+                                                                  .passengersNum
+                                                                  .toString() +
+                                                                  '/' +
+                                                                  coursesController
+                                                                      .coursesListDrivers[i]
+                                                                      .seatingCapacity
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontFamily:
+                                                                  'Georgia',
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                  onTap:(){
+                                                    if(coursesController.coursesListDrivers[i].passengersDetails!=null
+                                                        &&coursesController.coursesListDrivers[i].passengersDetails!.isNotEmpty) {
+                                                      Get.to(() =>
+                                                          CoursePassengerDetail(
+                                                              course: coursesController
+                                                                  .coursesListDrivers[i]
+                                                          ));
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                             ),
@@ -1947,13 +1932,7 @@ Future download(String url)async{
                                                         borderRadius:
                                                         BorderRadius
                                                             .circular(5)),
-                                                    // decoration: BoxDecoration(
-                                                    //     image: DecorationImage(
-                                                    //         image: AssetImage(
-                                                    //             "assets/icons/edit.png"
-                                                    //         )
-                                                    //     )
-                                                    // ),
+                                                    
                                                     child: Icon(
                                                       Icons.edit,
                                                       color: Color(0xFF0F5CA0),
@@ -2060,7 +2039,11 @@ Future download(String url)async{
                             children:[
                               Container(
                                 decoration: BoxDecoration(
-                                  borderRadius:BorderRadius.circular(5),
+                                  borderRadius:BorderRadius.only(
+                                    bottomRight:  Radius.circular(5),
+                                    bottomLeft:  Radius.circular(5),
+                                  ),
+
                                   color: Color(0xFF0F5CA0).withOpacity(0.7),
                                 ),
                                 child: Column(
@@ -2095,7 +2078,7 @@ Future download(String url)async{
                                                   children: [
                                                     GestureDetector(
                                                       onTap: (){
-                                                        courseDetails(context,coursesController.coursesListTodayHistory[i]);
+                                                        coursesHistoryDetails(context,coursesController.coursesListTodayHistory[i]);
                                                       },
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width*0.85,
@@ -2183,159 +2166,8 @@ Future download(String url)async{
                                                         ),
                                                       ),
                                                     ),
-                                                    // SizedBox(width: 5),
-                                                    // Container(
-                                                    //   width: 65,
-                                                    //   height: 48,
-                                                    //   decoration: BoxDecoration(
-                                                    //       color: Colors.white
-                                                    //           .withOpacity(0.8),
-                                                    //       borderRadius:
-                                                    //       BorderRadius.circular(
-                                                    //           5)),
-                                                    //   child: Column(
-                                                    //     mainAxisAlignment:
-                                                    //     MainAxisAlignment
-                                                    //         .spaceEvenly,
-                                                    //     children: [
-                                                    //       Icon(
-                                                    //         Icons
-                                                    //             .people_alt_outlined,
-                                                    //         size: 20,
-                                                    //       ),
-                                                    //       Center(
-                                                    //         child: Container(
-                                                    //           child: Text(
-                                                    //               coursesController
-                                                    //                   .coursesListTodayHistory[i]
-                                                    //                   .passengersNum
-                                                    //                   .toString() +
-                                                    //                   '/' +
-                                                    //                   coursesController
-                                                    //                       .coursesListTodayHistory[i]
-                                                    //                       .seatingCapacity
-                                                    //                       .toString(),
-                                                    //               style: TextStyle(
-                                                    //                   fontSize: 13,
-                                                    //                   fontFamily:
-                                                    //                   'Georgia',
-                                                    //                   fontWeight:
-                                                    //                   FontWeight
-                                                    //                       .bold)),
-                                                    //         ),
-                                                    //       ),
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
                                                   ],
                                                 ),
-                                                // Row(
-                                                //   children: [
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListTodayHistory[i]));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.edit,
-                                                //           color: Color(0xFF0F5CA0),
-                                                //           size: 23,
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       width: 5,
-                                                //     ),
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         showDialog(
-                                                //             context: context,
-                                                //             builder:
-                                                //             ((builder) =>
-                                                //                 AlertDialog(
-                                                //                   content:
-                                                //                   Container(
-                                                //                     height: 100,
-                                                //                     width: 300,
-                                                //                     decoration: BoxDecoration(
-                                                //                         borderRadius: BorderRadius.only(
-                                                //                             topLeft:
-                                                //                             Radius.circular(40),
-                                                //                             topRight: Radius.circular(40))),
-                                                //                     child:
-                                                //                     Center(
-                                                //                       child:
-                                                //                       Row(
-                                                //                         mainAxisAlignment:
-                                                //                         MainAxisAlignment.spaceBetween,
-                                                //                         mainAxisSize:
-                                                //                         MainAxisSize.min,
-                                                //                         children: <Widget>[
-                                                //                           SizedBox(
-                                                //                             height:
-                                                //                             10,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
-                                                //                               child: const Text(
-                                                //                                 'Delete',
-                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
-                                                //                               ),
-                                                //                               onPressed: () {
-                                                //                                 coursesController.delete_course(coursesController.coursesListTodayHistory[i].id!);
-                                                //                                 coursesController.fetchCourses();
-                                                //                                 Navigator.pop(context);
-                                                //                               },
-                                                //                             ),
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             25,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
-                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
-                                                //                               onPressed: () => Navigator.pop(context),
-                                                //                             ),
-                                                //                           ),
-                                                //                         ],
-                                                //                       ),
-                                                //                     ),
-                                                //                   ),
-                                                //                 )));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.delete,
-                                                //           color: Color(0xFF000000)
-                                                //               .withOpacity(0.54),
-                                                //         ),
-                                                //       ),
-                                                //     )
-                                                //   ],
-                                                // )
                                               ],
                                             ),
                                           ),
@@ -2374,7 +2206,7 @@ Future download(String url)async{
                                                   children: [
                                                     GestureDetector(
                                                       onTap: (){
-                                                        courseDetails(context,coursesController.coursesListYesterDayHistory[i]);
+                                                        coursesHistoryDetails(context,coursesController.coursesListYesterDayHistory[i]);
                                                       },
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width*0.85,
@@ -2454,159 +2286,8 @@ Future download(String url)async{
                                                         ),
                                                       ),
                                                     ),
-                                                    // SizedBox(width: 5),
-                                                    // Container(
-                                                    //   width: 65,
-                                                    //   height: 48,
-                                                    //   decoration: BoxDecoration(
-                                                    //       color:Colors.white
-                                                    //           .withOpacity(0.8),
-                                                    //       borderRadius:
-                                                    //       BorderRadius.circular(
-                                                    //           5)),
-                                                    //   child: Column(
-                                                    //     mainAxisAlignment:
-                                                    //     MainAxisAlignment
-                                                    //         .center,
-                                                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                                                    //     children: [
-                                                    //       Icon(
-                                                    //         Icons.people_alt_outlined,
-                                                    //         size: 20,
-                                                    //       ),
-                                                    //       Container(
-                                                    //         // width:70,
-                                                    //         child: Text(
-                                                    //             coursesController
-                                                    //                 .coursesListYesterDayHistory[i]
-                                                    //                 .passengersNum
-                                                    //                 .toString() +
-                                                    //                 '/' +
-                                                    //                 coursesController
-                                                    //                     .coursesListYesterDayHistory[i]
-                                                    //                     .seatingCapacity
-                                                    //                     .toString(),
-                                                    //             style: TextStyle(
-                                                    //                 fontSize: 13,
-                                                    //                 fontFamily:
-                                                    //                 'Georgia',
-                                                    //                 fontWeight:
-                                                    //                 FontWeight
-                                                    //                     .bold)),
-                                                    //       ),
-                                                    //
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
                                                   ],
                                                 ),
-                                                // Row(
-                                                //   children: [
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListYesterDayHistory[i]));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.edit,
-                                                //           color: Color(0xFF0F5CA0),
-                                                //           size: 23,
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       width: 5,
-                                                //     ),
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         showDialog(
-                                                //             context: context,
-                                                //             builder:
-                                                //             ((builder) =>
-                                                //                 AlertDialog(
-                                                //                   content:
-                                                //                   Container(
-                                                //                     height: 100,
-                                                //                     width: 300,
-                                                //                     decoration: BoxDecoration(
-                                                //                         borderRadius: BorderRadius.only(
-                                                //                             topLeft:
-                                                //                             Radius.circular(40),
-                                                //                             topRight: Radius.circular(40))),
-                                                //                     child:
-                                                //                     Center(
-                                                //                       child:
-                                                //                       Row(
-                                                //                         mainAxisAlignment:
-                                                //                         MainAxisAlignment.spaceBetween,
-                                                //                         mainAxisSize:
-                                                //                         MainAxisSize.min,
-                                                //                         children: <Widget>[
-                                                //                           SizedBox(
-                                                //                             height:
-                                                //                             10,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
-                                                //                               child: const Text(
-                                                //                                 'Delete',
-                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
-                                                //                               ),
-                                                //                               onPressed: () {
-                                                //                                 coursesController.delete_course(coursesController.coursesListYesterDayHistory[i].id!);
-                                                //                                 coursesController.fetchCourses();
-                                                //                                 Navigator.pop(context);
-                                                //                               },
-                                                //                             ),
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             25,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
-                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
-                                                //                               onPressed: () => Navigator.pop(context),
-                                                //                             ),
-                                                //                           ),
-                                                //                         ],
-                                                //                       ),
-                                                //                     ),
-                                                //                   ),
-                                                //                 )));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.delete,
-                                                //           color: Color(0xFF000000)
-                                                //               .withOpacity(0.54),
-                                                //         ),
-                                                //       ),
-                                                //     )
-                                                //   ],
-                                                // )
                                               ],
                                             ),
                                           ),
@@ -2643,7 +2324,7 @@ Future download(String url)async{
                                                   children: [
                                                     GestureDetector(
                                                       onTap: (){
-                                                        courseDetails(context,coursesController.coursesListOlderHistory[i]);
+                                                        coursesHistoryDetails(context,coursesController.coursesListOlderHistory[i]);
                                                       },
                                                       child: Container(
                                                         width: MediaQuery.of(context).size.width*0.85,
@@ -2724,163 +2405,8 @@ Future download(String url)async{
                                                         ),
                                                       ),
                                                     ),
-                                                    // SizedBox(width: 5),
-                                                    // Container(
-                                                    //   width: 60,
-                                                    //   height: 48,
-                                                    //   decoration: BoxDecoration(
-                                                    //       color: Colors.white
-                                                    //           .withOpacity(0.8),
-                                                    //       borderRadius:
-                                                    //       BorderRadius.circular(
-                                                    //           5)),
-                                                    //   child: Center(
-                                                    //     child: Column(
-                                                    //       mainAxisAlignment:
-                                                    //       MainAxisAlignment
-                                                    //           .center,
-                                                    //       crossAxisAlignment: CrossAxisAlignment.center,
-                                                    //       children: [
-                                                    //         Icon(
-                                                    //           Icons
-                                                    //               .people_alt_outlined,
-                                                    //           size: 20,
-                                                    //         ),
-                                                    //         Center(
-                                                    //           child: Container(
-                                                    //             // width:60,
-                                                    //             child: Text(
-                                                    //                 coursesController
-                                                    //                     .coursesListOlderHistory[i]
-                                                    //                     .passengersNum
-                                                    //                     .toString() +
-                                                    //                     '/' +
-                                                    //                     coursesController
-                                                    //                         .coursesListOlderHistory[i]
-                                                    //                         .seatingCapacity
-                                                    //                         .toString(),
-                                                    //                 style: TextStyle(
-                                                    //                     fontSize: 13,
-                                                    //                     fontFamily:
-                                                    //                     'Georgia',
-                                                    //                     fontWeight:
-                                                    //                     FontWeight
-                                                    //                         .bold)),
-                                                    //           ),
-                                                    //         ),
-                                                    //       ],
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
                                                   ],
                                                 ),
-                                                // Row(
-                                                //   children: [
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         Get.to(()=>EditCourseScreen(record: coursesController.coursesListOlderHistory[i]));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.edit,
-                                                //           color: Color(0xFF0F5CA0),
-                                                //           size: 23,
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //     SizedBox(
-                                                //       width: 5,
-                                                //     ),
-                                                //     GestureDetector(
-                                                //       onTap: () {
-                                                //         showDialog(
-                                                //             context: context,
-                                                //             builder:
-                                                //             ((builder) =>
-                                                //                 AlertDialog(
-                                                //                   content:
-                                                //                   Container(
-                                                //                     height: 100,
-                                                //                     width: 300,
-                                                //                     decoration: BoxDecoration(
-                                                //                         borderRadius: BorderRadius.only(
-                                                //                             topLeft:
-                                                //                             Radius.circular(40),
-                                                //                             topRight: Radius.circular(40))),
-                                                //                     child:
-                                                //                     Center(
-                                                //                       child:
-                                                //                       Row(
-                                                //                         mainAxisAlignment:
-                                                //                         MainAxisAlignment.spaceBetween,
-                                                //                         mainAxisSize:
-                                                //                         MainAxisSize.min,
-                                                //                         children: <Widget>[
-                                                //                           SizedBox(
-                                                //                             height:
-                                                //                             10,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0xDADADA).withOpacity(0.69), onPrimary: Colors.white),
-                                                //                               child: const Text(
-                                                //                                 'Delete',
-                                                //                                 style: TextStyle(fontFamily: "Georgia", fontSize: 15),
-                                                //                               ),
-                                                //                               onPressed: () {
-                                                //                                 coursesController.delete_course(coursesController.coursesListOlderHistory[i].id!);
-                                                //                                 coursesController.fetchCourses();
-                                                //                                 Navigator.pop(context);
-                                                //                               },
-                                                //                             ),
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             25,
-                                                //                           ),
-                                                //                           SizedBox(
-                                                //                             width:
-                                                //                             100,
-                                                //                             child:
-                                                //                             ElevatedButton(
-                                                //                               style: ElevatedButton.styleFrom(elevation: 20, shadowColor: Colors.blue[700], primary: Color(0x0F5CA0).withOpacity(0.8), onPrimary: Colors.white),
-                                                //                               child: const Text('Cancel', style: TextStyle(fontFamily: "Georgia", fontSize: 15)),
-                                                //                               onPressed: () => Navigator.pop(context),
-                                                //                             ),
-                                                //                           ),
-                                                //                         ],
-                                                //                       ),
-                                                //                     ),
-                                                //                   ),
-                                                //                 )));
-                                                //       },
-                                                //       child: Container(
-                                                //         height: 40,
-                                                //         width: 25,
-                                                //         decoration: BoxDecoration(
-                                                //             color: Colors.white,
-                                                //             borderRadius:
-                                                //             BorderRadius
-                                                //                 .circular(5)),
-                                                //         child: Icon(
-                                                //           Icons.delete,
-                                                //           color: Color(0xFF000000)
-                                                //               .withOpacity(0.54),
-                                                //         ),
-                                                //       ),
-                                                //     )
-                                                //   ],
-                                                // )
                                               ],
                                             ),
                                           ),
@@ -2922,1055 +2448,2073 @@ Future download(String url)async{
   }
 
   Future<dynamic> courseDetails(BuildContext context,Course course) {
-    print(course.id);
+    coursesController.courses.doc(course.id).update({
+      "seen":true
+    });
     return showDialog(
-                                                      context: context,
-                                                      builder: (builder)=>AlertDialog(
-                                                        content: Container(
-                                                          height: MediaQuery.of(context).size.height*0.6,
-                                                          width: MediaQuery.of(context).size.width*0.8,
-                                                          child:ListView(
-                                                            children: [
-                                                              SizedBox(
-                                                                height:MediaQuery.of(context).size.height*0.02,
-                                                              ),
-                                                              Container(
-                                                                height:coursesController.formNum.value==2
-                                                                  ?MediaQuery.of(context).size.height*0.6
-                                                                  :MediaQuery.of(context).size.height*0.4,
-                                                                width: MediaQuery.of(context).size.width*0.77,
-                                                                decoration:BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(15),
-                                                                color: Color(0xFF0F5CA0).withOpacity(0.6)
-                                                              ),
-                                                                child: Column(
+                context: context,
+                builder: (builder)=>AlertDialog(
+                  content: Container(
+                    height: MediaQuery.of(context).size.height*0.6,
+                    width: MediaQuery.of(context).size.width*0.8,
+                    child:ListView(
+                      children: [
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height*0.02,
+                        ),
+                        Container(
+                          height:coursesController.formNum.value==2
+                            ?MediaQuery.of(context).size.height*0.6
+                            :MediaQuery.of(context).size.height*0.4,
+                          width: MediaQuery.of(context).size.width*0.77,
+                          decoration:BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xFF0F5CA0).withOpacity(0.6)
+                        ),
+                          child: Column(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.only(
+                                        left:MediaQuery.of(context).size.width*0.05,
+                                      top: MediaQuery.of(context).size.height*0.03
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height:30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20)
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                                "assets/icons/arrow.png",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.05,
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.45,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              course.pickUpLocation,
+                                                style: TextStyle(
+                                                  color: Colors.white
+                                                ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height*0.01,
+                                  ),
+                                  Container(
+                                    color: Colors.white,
+                                    height: 2,
+                                    width: MediaQuery.of(context).size.width*0.6,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.only(
+                                        left:MediaQuery.of(context).size.width*0.05,
+                                      top: MediaQuery.of(context).size.height*0.03
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height:30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20)
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.location_on,
+                                              color: Color(0xFF0F5CA0),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.05,
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.45,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              course.dropOffLocation,
+                                              style: TextStyle(
+                                                  color: Colors.white
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height*0.01,
+                                  ),
+                                  Container(
+                                    color: Colors.white,
+                                    height: 2,
+                                    width: MediaQuery.of(context).size.width*0.6,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.58,
+                                    padding:  EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height*0.03
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Row(
+                                        //   children: [
+                                        //     Text(
+                                        //       course.usedLuggageBigSize.toString()+
+                                        //           "/"+course.luggageBigSize.toString(),
+                                        //       style: TextStyle(
+                                        //           color: Colors.white
+                                        //       ),
+                                        //     ),
+                                        //     Icon(
+                                        //         Icons.luggage_outlined,
+                                        //         color: Colors.white
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        // Row(
+                                        //   children: [
+                                        //     Text(
+                                        //       course.usedLuggageMediumSize.toString()
+                                        //           +"/"+course.luggageMediumSize.toString(),
+                                        //       style: TextStyle(
+                                        //           color: Colors.white
+                                        //       ),),
+                                        //     Icon(Icons.luggage,size: 20,color: Colors.white
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        Text('luggage',style:TextStyle(color:Colors.white)),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              course.usedCollie.toString()
+                                                  +"/"+course.collie.toString(),
+
+                                              style: TextStyle(
+                                                  color: Colors.white
+                                              ),),
+                                            // Icon(
+                                            //     Icons.mark_email_unread_sharp,
+                                            //     color: Colors.white
+                                            // ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height*0.01,
+                                  ),
+                                  Container(
+                                    color: Colors.white,
+                                    height: 2,
+                                    width: MediaQuery.of(context).size.width*0.6,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.only(
+                                        left:MediaQuery.of(context).size.width*0.05,
+                                      top: MediaQuery.of(context).size.height*0.03
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height:30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20)
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                                "assets/icons/driver_blue.png",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width*0.05,
+                                        ),
+                                        Text(
+                                          course.driverName,
+                                            style: TextStyle(
+                                              color: Colors.white
+                                            ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height*0.01,
+                                  ),
+                                  Container(
+                                    color: Colors.white,
+                                    height: 2,
+                                    width: MediaQuery.of(context).size.width*0.6,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:  EdgeInsets.only(
+                                        left:MediaQuery.of(context).size.width*0.05,
+                                      top: MediaQuery.of(context).size.height*0.03
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                            children:[
+                                            Container(
+                                              height:30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(20)
+                                              ),
+                                              child: Center(
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons.car,
+                                                    color: Color(0xFF0F5CA0),)
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context).size.width*0.05,
+                                            ),
+                                            Text(
+                                              course.regNumber,
+                                              style: TextStyle(
+                                                  color: Colors.white
+                                              ),
+                                            )
+                                          ]
+                                        ),
+                                        if(
+                                        (course.carImage1URL!=null && course.carImage1URL!="")
+                                            ||(course.carImage2URL!=null && course.carImage2URL!="")
+                                            ||(course.carImage3URL!=null && course.carImage3URL!="")
+                                            ||(course.carImage4URL!=null && course.carImage1URL!="")
+                                            ||(course.carListDetails!=null && course.carListDetails!.length>0)
+                                        )
+                                          IconButton(
+                                            onPressed:(){
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext context){
+                                                    return Container(
+                                                        height: MediaQuery.of(context).size.height*0.53,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        child: SingleChildScrollView(
+                                                          scrollDirection: Axis.vertical,
+                                                          child: SingleChildScrollView(
+                                                            scrollDirection: Axis.horizontal,
+                                                            child:
+                                                            Column(
+                                                              children: [
+                                                                if(course.carListDetails !=null && course.carListDetails!.length>0)
+                                                                Column(
                                                                   children: [
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                height:30,
-                                                                                width: 30,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: Colors.white,
-                                                                                  borderRadius: BorderRadius.circular(20)
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Image.asset(
-                                                                                      "assets/icons/arrow.png",
-                                                                                    fit: BoxFit.cover,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width*0.05,
-                                                                              ),
-                                                                              Container(
-                                                                                width: MediaQuery.of(context).size.width*0.45,
-                                                                                child: SingleChildScrollView(
-                                                                                  scrollDirection: Axis.horizontal,
-                                                                                  child: Text(
-                                                                                    course.pickUpLocation,
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                      ),
-                                                                                  ),
-                                                                                ),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 60,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text('legend')),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 10,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![0].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![0].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                height:30,
-                                                                                width: 30,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: Colors.white,
-                                                                                  borderRadius: BorderRadius.circular(20)
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Icon(
-                                                                                    Icons.location_on,
-                                                                                    color: Color(0xFF0F5CA0),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width*0.05,
-                                                                              ),
-                                                                              Container(
-                                                                                width: MediaQuery.of(context).size.width*0.45,
-                                                                                child: SingleChildScrollView(
-                                                                                  scrollDirection: Axis.horizontal,
-                                                                                  child: Text(
-                                                                                    course.dropOffLocation,
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![1].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![1].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    if(coursesController.formNum.value==2)
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              Row(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    height:30,
-                                                                                    width: 30,
-                                                                                    decoration: BoxDecoration(
-                                                                                        color: Colors.white,
-                                                                                        borderRadius: BorderRadius.circular(20)
-                                                                                    ),
-                                                                                    child: Center(
-                                                                                        child: Icon(
-                                                                                          Icons.person,
-                                                                                          color: Color(0xFF0F5CA0),
-                                                                                        )
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    width: MediaQuery.of(context).size.width*0.05,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    course.passengersNum.toString(),
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),
-                                                                                  ),
-
-                                                                                ],
-                                                                              ),
-                                                                              IconButton(
-                                                                                  onPressed:(){
-                                                                                    showModalBottomSheet(
-                                                                                      context: context,
-                                                                                      builder: (BuildContext ctx){
-                                                                                        return Container(
-                                                                                          height: MediaQuery.of(context).size.height*0.53,
-                                                                                          child: SingleChildScrollView(
-                                                                                            scrollDirection: Axis.vertical,
-                                                                                            child: SingleChildScrollView(
-                                                                                              scrollDirection: Axis.horizontal,
-                                                                                              child:
-                                                                                                  Column(
-                                                                                                  children: [
-                                                                                                    DataTable(
-                                                                                                    columnSpacing: 3,
-                                                                                                    dataRowHeight: 50,
-                                                                                                    columns: const <DataColumn>[
-                                                                                                      DataColumn(
-                                                                                                        label: Expanded(
-                                                                                                          child: Text(
-                                                                                                            'First Name',
-                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      DataColumn(
-                                                                                                        label: Expanded(
-                                                                                                          child: Text(
-                                                                                                            'Last Name',
-                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      DataColumn(
-                                                                                                        label: Expanded(
-                                                                                                          child: Text(
-                                                                                                            'Identity Number',
-                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        numeric: true,
-                                                                                                      ),
-                                                                                                      DataColumn(
-                                                                                                        label: Expanded(
-                                                                                                          child: Text(
-                                                                                                            'State',
-                                                                                                            style: TextStyle(fontStyle: FontStyle.italic),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        numeric: true,
-                                                                                                      ),
-                                                                                                    ],
-
-                                                                                                    rows: List<DataRow>.generate(course.passengersDetails!.length, (int index) =>
-                                                                                                        DataRow(
-                                                                                                            cells:<DataCell>[
-                                                                                                              DataCell(Text(course.passengersDetails![index].firstname)),
-                                                                                                              DataCell(Text(course.passengersDetails![index].lastName)),
-                                                                                                              (course.passengersDetails![index].identityNum.contains('.') && course.passengersDetails![index].identityNum.endsWith('.0'))?
-                                                                                                              DataCell(Text(course.passengersDetails![index].identityNum.substring(0, course.passengersDetails![index].identityNum.indexOf('.'))))
-                                                                                                                  :
-                                                                                                              DataCell(Text(coursesController.passengerDetails[index].identityNum)),
-                                                                                                              DataCell(
-                                                                                                                  Checkbox(
-                                                                                                                value: course.passengersDetails![index].state,
-                                                                                                                    onChanged: (bool? value) {
-                                                                                                                  print("///////////////////");
-                                                                                                                  print(course.passengersDetails![index].state);
-                                                                                                                  print("///////////////////");
-                                                                                                                  setState(() {
-                                                                                                                    course.passengersDetails![index].state=!course.passengersDetails![index].state;
-                                                                                                                  });
-
-                                                                                                                    print(course.passengersDetails![index].state);
-                                                                                                                    print("**********************");
-                                                                                                              },
-                                                                                                              ))
-
-                                                                                                            ]
-                                                                                                        )
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                    Center(
-                                                                                                      child:ElevatedButton(
-                                                                                                        onPressed:(){},
-                                                                                                        child:Text('save'),
-                                                                                                      )
-                                                                                                  )
-                                                                                                ],
-                                                                                              ),
-                                                                                            ),
-                                                                                          )
-                                                                                      );
-                                                                                      }
-                                                                                      );
-
-                                                                                  }
-                                                                                  , icon: Icon(
-                                                                                Icons.remove_red_eye,
-                                                                                color: Colors.white,
-                                                                                size: 25,
-                                                                              )
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![2].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![2].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    if(coursesController.formNum.value==2)
-                                                                      Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                height:30,
-                                                                                width: 30,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: Colors.white,
-                                                                                  borderRadius: BorderRadius.circular(20)
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Image.asset(
-                                                                                      "assets/icons/balance.png",
-                                                                                    fit: BoxFit.cover,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width*0.05,
-                                                                              ),
-                                                                              Text(
-                                                                                course.seatingCapacity.toString(),
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.white
-                                                                                  ),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![4].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![4].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
                                                                         Container(
-                                                                          width: MediaQuery.of(context).size.width*0.58,
-                                                                          padding:  EdgeInsets.only(
-                                                                            top: MediaQuery.of(context).size.height*0.03
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
                                                                           ),
-                                                                          child: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              // Row(
-                                                                              //   children: [
-                                                                              //     Text(
-                                                                              //       course.usedLuggageBigSize.toString()+
-                                                                              //           "/"+course.luggageBigSize.toString(),
-                                                                              //       style: TextStyle(
-                                                                              //           color: Colors.white
-                                                                              //       ),
-                                                                              //     ),
-                                                                              //     Icon(
-                                                                              //         Icons.luggage_outlined,
-                                                                              //         color: Colors.white
-                                                                              //     ),
-                                                                              //   ],
-                                                                              // ),
-                                                                              // Row(
-                                                                              //   children: [
-                                                                              //     Text(
-                                                                              //       course.usedLuggageMediumSize.toString()
-                                                                              //           +"/"+course.luggageMediumSize.toString(),
-                                                                              //       style: TextStyle(
-                                                                              //           color: Colors.white
-                                                                              //       ),),
-                                                                              //     Icon(Icons.luggage,size: 20,color: Colors.white
-                                                                              //     ),
-                                                                              //   ],
-                                                                              // ),
-                                                                              Text('luggage',style:TextStyle(color:Colors.white)),
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    course.usedCollie.toString()
-                                                                                        +"/"+course.collie.toString(),
 
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),),
-                                                                                  // Icon(
-                                                                                  //     Icons.mark_email_unread_sharp,
-                                                                                  //     color: Colors.white
-                                                                                  // ),
-                                                                                ],
-                                                                              )
-                                                                            ],
-                                                                          ),
+                                                                          child: Center(child: Text(course.carListDetails![3].name)),
                                                                         ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
-                                                                        Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![3].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            children: [
-                                                                              Container(
-                                                                                height:30,
-                                                                                width: 30,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: Colors.white,
-                                                                                  borderRadius: BorderRadius.circular(20)
-                                                                                ),
-                                                                                child: Center(
-                                                                                  child: Image.asset(
-                                                                                      "assets/icons/driver_blue.png",
-                                                                                    fit: BoxFit.cover,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width*0.05,
-                                                                              ),
-                                                                              Text(
-                                                                                course.driverName,
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.white
-                                                                                  ),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![5].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![5].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
-                                                                    Column(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
                                                                       children: [
-                                                                        Padding(
-                                                                          padding:  EdgeInsets.only(
-                                                                              left:MediaQuery.of(context).size.width*0.05,
-                                                                            top: MediaQuery.of(context).size.height*0.03
-                                                                          ),
-                                                                          child: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              Row(
-                                                                                  children:[
-                                                                                  Container(
-                                                                                    height:30,
-                                                                                    width: 30,
-                                                                                    decoration: BoxDecoration(
-                                                                                        color: Colors.white,
-                                                                                        borderRadius: BorderRadius.circular(20)
-                                                                                    ),
-                                                                                    child: Center(
-                                                                                        child: FaIcon(
-                                                                                          FontAwesomeIcons.car,
-                                                                                          color: Color(0xFF0F5CA0),)
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    width: MediaQuery.of(context).size.width*0.05,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    course.regNumber,
-                                                                                    style: TextStyle(
-                                                                                        color: Colors.white
-                                                                                    ),
-                                                                                  )
-                                                                                ]
-                                                                              ),
-                                                                              if(
-                                                                              (course.carImage1URL!=null && course.carImage1URL!="")
-                                                                              ||(course.carImage2URL!=null && course.carImage2URL!="")
-                                                                              ||(course.carImage3URL!=null && course.carImage3URL!="")
-                                                                              ||(course.carImage4URL!=null && course.carImage1URL!="")
-                                                                              ||course.carListDetails!.length>0
-                                                                              )
-                                                                                IconButton(
-                                                                                  onPressed:(){
-                                                                                    print(course.carListDetails!.length);
-                                                                                    showModalBottomSheet(
-                                                                                        context: context,
-                                                                                        builder: (BuildContext context){
-                                                                                          return Container(
-                                                                                              height: MediaQuery.of(context).size.height*0.53,
-                                                                                              width: MediaQuery.of(context).size.width,
-                                                                                              child: SingleChildScrollView(
-                                                                                                scrollDirection: Axis.vertical,
-                                                                                                child: SingleChildScrollView(
-                                                                                                  scrollDirection: Axis.horizontal,
-                                                                                                  child:
-                                                                                                      course.carListDetails!.length>0
-                                                                                                  ?Column(
-                                                                                                    children: [
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 60,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text('legend')),
-                                                                                                          ),
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 10,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![0].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                              size: 30,
-                                                                                                              value: course.carListDetails![0].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![1].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![1].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![2].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![2].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![4].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![4].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![3].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![3].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![5].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![5].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![6].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![6].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![7].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![7].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![8].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![8].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![9].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![9].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![10].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![10].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![11].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![11].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![12].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![12].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![13].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![13].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![14].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![14].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        children: [
-                                                                                                          Container(
-                                                                                                            width:120,
-                                                                                                            height: 30,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-                                                                                                            ),
-
-                                                                                                            child: Center(child: Text(course.carListDetails![15].name)),
-                                                                                                          ),
-                                                                                                          GFCheckbox(
-                                                                                                            size: 30,
-                                                                                                            value: course.carListDetails![15].state, onChanged: (bool value) {  },
-                                                                                                          )
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                        children: [
-                                                                                                          if(course.carImage1URL!=null && course.carImage1URL!="")
-                                                                                                          Container(
-                                                                                                            width:MediaQuery.of(context).size.width*0.27,
-                                                                                                            height:MediaQuery.of(context).size.height*0.05,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-
-                                                                                                            ),
-                                                                                                            child:Image.network(
-                                                                                                              course.carImage1URL!,
-                                                                                                              fit: BoxFit.fill,
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                          if(course.carImage2URL!=null && course.carImage2URL!="")
-                                                                                                          Container(
-                                                                                                            width:MediaQuery.of(context).size.width*0.27,
-                                                                                                            height:MediaQuery.of(context).size.height*0.05,
-                                                                                                            decoration: BoxDecoration(
-                                                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
-                                                                                                                borderRadius: BorderRadius.circular(5)
-
-                                                                                                            ),
-                                                                                                            child:Image.network(
-                                                                                                              course.carImage2URL!,
-                                                                                                              fit: BoxFit.fill,
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-                                                                                                      Row(
-                                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                        children: [
-                                                                                                          if(course.carImage3URL!=null && course.carImage3URL!="")
-                                                                                                            Container(
-                                                                                                              width:MediaQuery.of(context).size.width*0.27,
-                                                                                                              height:MediaQuery.of(context).size.height*0.05,
-                                                                                                              decoration: BoxDecoration(
-                                                                                                                  color: Color(0xFF0F5CA0).withOpacity(0.6),
-                                                                                                                  borderRadius: BorderRadius.circular(5)
-
-                                                                                                              ),
-                                                                                                              child:Image.network(
-                                                                                                                course.carImage3URL!,
-                                                                                                                fit: BoxFit.fill,
-                                                                                                              ),
-                                                                                                            ),
-                                                                                                          if(course.carImage4URL!=null && course.carImage4URL!="")
-                                                                                                            Container(
-                                                                                                              width:MediaQuery.of(context).size.width*0.27,
-                                                                                                              height:MediaQuery.of(context).size.height*0.05,
-                                                                                                              decoration: BoxDecoration(
-                                                                                                                  color: Color(0xFF0F5CA0).withOpacity(0.6),
-                                                                                                                  borderRadius: BorderRadius.circular(5)
-
-                                                                                                              ),
-                                                                                                              child:Image.network(
-                                                                                                                course.carImage4URL!,
-                                                                                                                fit: BoxFit.fill,
-                                                                                                              ),
-                                                                                                            ),
-                                                                                                        ],
-                                                                                                      ),
-                                                                                                      SizedBox(height: 5,),
-
-                                                                                                    ],
-                                                                                                  )
-                                                                                                  :Container(
-                                                                                                        padding: EdgeInsets.only(
-                                                                                                          left: 50
-                                                                                                        ),
-                                                                                                        child: Text("No check for car"),
-                                                                                                      ),
-                                                                                                ),
-                                                                                              )
-                                                                                          );
-                                                                                        }
-                                                                                    );
-
-                                                                                  }
-                                                                                  , icon: Icon(
-                                                                                Icons.remove_red_eye,
-                                                                                color: Colors.white,
-                                                                                size: 25,
-                                                                              )
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height: MediaQuery.of(context).size.height*0.01,
-                                                                        ),
                                                                         Container(
-                                                                          color: Colors.white,
-                                                                          height: 2,
-                                                                          width: MediaQuery.of(context).size.width*0.6,
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![6].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![6].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![7].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![7].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![8].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![8].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![9].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![9].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![10].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![10].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![11].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![11].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![12].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![12].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![13].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![13].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![14].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![14].state, onChanged: (bool value) {  },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    SizedBox(height: 5,),
+                                                                    Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          width:120,
+                                                                          height: 30,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+
+                                                                          child: Center(child: Text(course.carListDetails![15].name)),
+                                                                        ),
+                                                                        GFCheckbox(
+                                                                          size: 30,
+                                                                          value: course.carListDetails![15].state, onChanged: (bool value) {  },
                                                                         )
                                                                       ],
                                                                     ),
                                                                   ],
                                                                 ),
-                                                              ),
-                                                              SizedBox(
-                                                                height:MediaQuery.of(context).size.height*0.02,
-                                                              ),
-                                                              Container(
-                                                                padding: EdgeInsets.only(
-                                                                  left: MediaQuery.of(context).size.width*0.01,
-                                                                  right: MediaQuery.of(context).size.width*0.05,
-                                                                ),
-                                                                height:MediaQuery.of(context).size.height*0.05,
-                                                                width: MediaQuery.of(context).size.width*0.77,
-                                                                decoration:BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(15),
-                                                                    color: Color(0xFF0F5CA0).withOpacity(0.6)
-                                                                ),
-                                                                child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  children: [
-                                                                    Text('Pick up Date',
-                                                                    style:TextStyle(
-                                                                      fontFamily: "Gidugu",
-                                                                      fontSize: 15,
-                                                                      color: Colors.white
-                                                                    ),),
-                                                                    Center(
-                                                                      child: Text(
-                                                                          DateFormat("d MMM y 'At' h:mm a").format(course.pickUpDate),
-                                                                          style:TextStyle(
-                                                                              fontFamily: "Gidugu",
-                                                                              fontSize: 13,
-                                                                              color: Colors.white
-                                                                          )
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              if(course.dropOffDate!=null)
-                                                              SizedBox(
-                                                                height:MediaQuery.of(context).size.height*0.02,
-                                                              ),
-                                                              if(course.dropOffDate!=null)
+                                                                SizedBox(height: 5,),
+                                                                if((course.carImage1URL!=null && course.carImage1URL!="")
+                                                                ||(course.carImage2URL!=null && course.carImage2URL!=""))
                                                                 Container(
-                                                                padding: EdgeInsets.only(
-                                                                  left: MediaQuery.of(context).size.width*0.01,
-                                                                  right: MediaQuery.of(context).size.width*0.05,
+                                                                  width:MediaQuery.of(context).size.width,
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                    children: [
+                                                                      if(course.carImage1URL!=null && course.carImage1URL!="")
+                                                                        GestureDetector(
+                                                                          child: Container(
+                                                                            width:MediaQuery.of(context).size.width*0.27,
+                                                                            height:MediaQuery.of(context).size.height*0.08,
+                                                                            decoration: BoxDecoration(
+                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                                borderRadius: BorderRadius.circular(5)
+
+                                                                            ),
+                                                                            child:Image.network(
+                                                                              course.carImage1URL!,
+                                                                              fit: BoxFit.fill,
+                                                                            ),
+                                                                          ),
+                                                                          onTap: (){
+                                                                            showDialog(
+                                                                                context: context,
+                                                                                builder: (builder)=>AlertDialog(
+                                                                                  content:CarDetail(course.carImage1URL!),
+                                                                                )
+                                                                            );
+                                                                          },
+                                                                        ),
+                                                                      if(course.carImage2URL!=null && course.carImage2URL!="")
+                                                                        GestureDetector(
+                                                                          child: Container(
+                                                                            width:MediaQuery.of(context).size.width*0.27,
+                                                                            height:MediaQuery.of(context).size.height*0.08,
+                                                                            decoration: BoxDecoration(
+                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                                borderRadius: BorderRadius.circular(5)
+                                                                            ),
+                                                                            child:Image.network(
+                                                                              course.carImage2URL!,
+                                                                              fit: BoxFit.fill,
+                                                                            ),
+                                                                          ),
+                                                                          onTap: (){
+                                                                            showDialog(
+                                                                                context: context,
+                                                                                builder: (builder)=>AlertDialog(
+                                                                                  content:CarDetail(course.carImage2URL!),
+                                                                                )
+                                                                            );
+                                                                          },
+                                                                        ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                height:MediaQuery.of(context).size.height*0.05,
-                                                                width: MediaQuery.of(context).size.width*0.77,
-                                                                decoration:BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(15),
-                                                                    color: Color(0xFF0F5CA0).withOpacity(0.6)
+                                                                SizedBox(height: 5,),
+                                                                if((course.carImage3URL!=null && course.carImage3URL!="")
+                                                                    ||(course.carImage4URL!=null && course.carImage4URL!=""))
+                                                                Container(
+                                                                  width:MediaQuery.of(context).size.width,
+                                                                  child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                    children: [
+                                                                      if(course.carImage3URL!=null && course.carImage3URL!="")
+                                                                        GestureDetector(
+                                                                          child: Container(
+                                                                            width:MediaQuery.of(context).size.width*0.27,
+                                                                            height:MediaQuery.of(context).size.height*0.08,
+                                                                            decoration: BoxDecoration(
+                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                                borderRadius: BorderRadius.circular(5)
+                                                                            ),
+                                                                            child:Image.network(
+                                                                              course.carImage3URL!,
+                                                                              fit: BoxFit.fill,
+                                                                            ),
+                                                                          ),
+                                                                            onTap: (){
+                                                                              showDialog(
+                                                                                  context: context,
+                                                                                  builder: (builder)=>AlertDialog(
+                                                                                    content:CarDetail(course.carImage3URL!),
+                                                                                  )
+                                                                              );
+                                                                            }
+                                                                        ),
+                                                                      if(course.carImage4URL!=null && course.carImage4URL!="")
+                                                                        GestureDetector(
+                                                                          child: Container(
+                                                                            width:MediaQuery.of(context).size.width*0.27,
+                                                                            height:MediaQuery.of(context).size.height*0.08,
+                                                                            decoration: BoxDecoration(
+                                                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                                borderRadius: BorderRadius.circular(5)
+
+                                                                            ),
+                                                                            child:Image.network(
+                                                                              course.carImage4URL!,
+                                                                              fit: BoxFit.fill,
+                                                                            ),
+                                                                          ),
+                                                                            onTap: (){
+                                                                              showDialog(
+                                                                                  context: context,
+                                                                                  builder: (builder)=>AlertDialog(
+                                                                                    content:CarDetail(course.carImage4URL!),
+                                                                                  )
+                                                                              );
+                                                                            }
+                                                                        ),
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                                child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                SizedBox(height: 5,),
+                                                              ],
+                                                            )
+                                                          ),
+                                                        )
+                                                    );
+                                                  }
+                                              );
+
+                                            }
+                                            , icon: Icon(
+                                          Icons.remove_red_eye,
+                                          color: Colors.white,
+                                          size: 25,
+                                        )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height*0.01,
+                                  ),
+                                  Container(
+                                    color: Colors.white,
+                                    height: 2,
+                                    width: MediaQuery.of(context).size.width*0.6,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height*0.02,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width*0.01,
+                            right: MediaQuery.of(context).size.width*0.05,
+                          ),
+                          height:MediaQuery.of(context).size.height*0.05,
+                          width: MediaQuery.of(context).size.width*0.77,
+                          decoration:BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xFF0F5CA0).withOpacity(0.6)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Pick up Date',
+                              style:TextStyle(
+                                fontFamily: "Gidugu",
+                                fontSize: 15,
+                                color: Colors.white
+                              ),),
+                              Center(
+                                child: Text(
+                                    DateFormat("d MMM y 'At' h:mm a").format(course.pickUpDate),
+                                    style:TextStyle(
+                                        fontFamily: "Gidugu",
+                                        fontSize: 13,
+                                        color: Colors.white
+                                    )
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        if(course.dropOffDate!=null)
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height*0.02,
+                        ),
+                        if(course.dropOffDate!=null)
+                          Container(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width*0.01,
+                            right: MediaQuery.of(context).size.width*0.05,
+                          ),
+                          height:MediaQuery.of(context).size.height*0.05,
+                          width: MediaQuery.of(context).size.width*0.77,
+                          decoration:BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xFF0F5CA0).withOpacity(0.6)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Drop off Date',
+                              style:TextStyle(
+                                fontFamily: "Gidugu",
+                                fontSize: 14,
+                                color: Colors.white
+                              ),),
+                              Center(
+                                child: Text(
+                                    DateFormat("d MMM y 'At' h:mm a").format(course.dropOffDate!),
+                                    style:TextStyle(
+                                        fontFamily: "Gidugu",
+                                        fontSize: 13,
+                                        color: Colors.white
+                                    )
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height*0.02,
+                        ),
+                        if(course.check=="car" && course.orderUrl !=null)
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width*0.01,
+                            right: MediaQuery.of(context).size.width*0.05,
+                          ),
+                          height:MediaQuery.of(context).size.height*0.05,
+                          width: MediaQuery.of(context).size.width*0.77,
+                          decoration:BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xFF0F5CA0).withOpacity(0.6)
+                          ),
+                          child:GestureDetector(
+                            onTap:  ()async{
+                              try{
+                                String pdfUrl = course.orderUrl!;
+                                download(pdfUrl);
+                              }
+                              catch(e){
+                                print(e.toString());
+                              }
+                            } ,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Mission Order file',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Gidugu"
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.file_download_outlined,
+                                    color: Colors.white,
+                                    ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height*0.02,
+                        ),
+                        if(coursesController.coursesListToday.contains(course)
+                        || coursesController.coursesListTodayDrivers.contains(course))
+                          Center(
+                            child: GestureDetector(
+                                onTap: (){
+                                  coursesController.courses.doc(course.id).update({
+                                    "finished":true
+                                  }).then((value){
+                                    coursesController
+                                  .fetchCourses();
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: Container(
+                                  height:MediaQuery.of(context).size.height*0.05,
+                                    width: MediaQuery.of(context).size.width*0.3,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Center(child: Text("Finish",style:TextStyle(color:Colors.white),))
+                                )
+                            ),
+                          )
+                      ],
+                    ),
+                  ),
+                )
+            );
+  }
+  /////////////////////////add to driver code////////////////////////////////////
+  Future<dynamic> coursesHistoryDetails(BuildContext context,Course course) {
+
+    return showDialog(
+        context: context,
+        builder: (builder)=>AlertDialog(
+          content: Container(
+            height: MediaQuery.of(context).size.height*0.6,
+            width: MediaQuery.of(context).size.width*0.8,
+            child:ListView(
+              children: [
+                SizedBox(
+                  height:MediaQuery.of(context).size.height*0.02,
+                ),
+                Container(
+                  height:coursesController.formNum.value==2
+                      ?MediaQuery.of(context).size.height*0.6
+                      :MediaQuery.of(context).size.height*0.4,
+                  width: MediaQuery.of(context).size.width*0.77,
+                  decoration:BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFF0F5CA0).withOpacity(0.6)
+                  ),
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(
+                                left:MediaQuery.of(context).size.width*0.05,
+                                top: MediaQuery.of(context).size.height*0.03
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height:30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/icons/arrow.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width*0.05,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      course.pickUpLocation,
+                                      style: TextStyle(
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.01,
+                          ),
+                          Container(
+                            color: Colors.white,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width*0.6,
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(
+                                left:MediaQuery.of(context).size.width*0.05,
+                                top: MediaQuery.of(context).size.height*0.03
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height:30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.location_on,
+                                      color: Color(0xFF0F5CA0),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width*0.05,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      course.dropOffLocation,
+                                      style: TextStyle(
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.01,
+                          ),
+                          Container(
+                            color: Colors.white,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width*0.6,
+                          )
+                        ],
+                      ),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding:  EdgeInsets.only(
+                                  left:MediaQuery.of(context).size.width*0.05,
+                                  top: MediaQuery.of(context).size.height*0.03
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height:30,
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        child: Center(
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Color(0xFF0F5CA0),
+                                            )
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width*0.05,
+                                      ),
+                                      Text(
+                                        course.passengersNum.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                  //////////////////////////add to driver ///////////////////////////////////
+                                  if(course.passengersDetails != null && course.passengersDetails!.isNotEmpty)
+                                  //////////////////////////add to driver ///////////////////////////////////
+                                    IconButton(
+                                      onPressed:(){
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext ctx){
+                                              return Container(
+                                                  height: MediaQuery.of(context).size.height*0.53,
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection: Axis.vertical,
+                                                    child: SingleChildScrollView(
+                                                      scrollDirection: Axis.horizontal,
+                                                      child:
+                                                      Column(
+                                                        children: [
+                                                          DataTable(
+                                                            columnSpacing: 10,
+                                                            dataRowHeight: 50,
+                                                            columns: const <DataColumn>[
+                                                              DataColumn(
+                                                                label: Expanded(
+                                                                  child: Text(
+                                                                    'First Name',
+                                                                    style: TextStyle(fontStyle: FontStyle.italic),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              DataColumn(
+                                                                label: Expanded(
+                                                                  child: Text(
+                                                                    'Last Name',
+                                                                    style: TextStyle(fontStyle: FontStyle.italic),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              DataColumn(
+                                                                label: Expanded(
+                                                                  child: Text(
+                                                                    'Phone Number',
+                                                                    style: TextStyle(fontStyle: FontStyle.italic),
+                                                                  ),
+                                                                ),
+                                                                numeric: true,
+                                                              ),
+                                                              DataColumn(
+                                                                label: Expanded(
+                                                                  child: Text(
+                                                                    'State',
+                                                                    style: TextStyle(fontStyle: FontStyle.italic),
+                                                                  ),
+                                                                ),
+                                                                numeric: true,
+                                                              ),
+                                                            ],
+
+                                                            rows: List<DataRow>.generate(course.passengersDetails!.length, (int index) =>
+                                                                DataRow(
+                                                                    cells:<DataCell>[
+                                                                      DataCell(Text(course.passengersDetails![index].firstname)),
+                                                                      DataCell(Text(course.passengersDetails![index].lastName)),
+                                                                      (course.passengersDetails![index].phoneNum.contains('.')
+                                                                          && course.passengersDetails![index].phoneNum.endsWith('.0'))?
+                                                                      DataCell(Text(course.passengersDetails![index].phoneNum.substring
+                                                                        (0, course.passengersDetails![index].phoneNum.indexOf('.'))))
+                                                                          :
+                                                                      DataCell(Text(course.passengersDetails![index].phoneNum.toString())),
+                                                                      DataCell(
+                                                                        Checkbox(
+                                                                            value: course.passengersDetails![index].state,
+                                                                            onChanged: (value){}
+                                                                        )
+                                                                      )
+
+                                                                    ]
+                                                                )
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                              );
+                                            }
+                                        );
+                                      }
+                                      , icon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: Colors.white,
+                                    size: 25,
+                                  )
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              height: 2,
+                              width: MediaQuery.of(context).size.width*0.6,
+                            )
+                          ],
+                        ),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding:  EdgeInsets.only(
+                                  left:MediaQuery.of(context).size.width*0.05,
+                                  top: MediaQuery.of(context).size.height*0.03
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height:30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Center(
+                                      child: Image.asset(
+                                        "assets/icons/balance.png",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.05,
+                                  ),
+                                  Text(
+                                    course.seatingCapacity.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height*0.01,
+                            ),
+                            Container(
+                              color: Colors.white,
+                              height: 2,
+                              width: MediaQuery.of(context).size.width*0.6,
+                            )
+                          ],
+                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.58,
+                            padding:  EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height*0.03
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       course.usedLuggageBigSize.toString()+
+                                //           "/"+course.luggageBigSize.toString(),
+                                //       style: TextStyle(
+                                //           color: Colors.white
+                                //       ),
+                                //     ),
+                                //     Icon(
+                                //         Icons.luggage_outlined,
+                                //         color: Colors.white
+                                //     ),
+                                //   ],
+                                // ),
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       course.usedLuggageMediumSize.toString()
+                                //           +"/"+course.luggageMediumSize.toString(),
+                                //       style: TextStyle(
+                                //           color: Colors.white
+                                //       ),),
+                                //     Icon(Icons.luggage,size: 20,color: Colors.white
+                                //     ),
+                                //   ],
+                                // ),
+                                Text('luggage',style:TextStyle(color:Colors.white)),
+                                Row(
+                                  children: [
+                                    Text(
+                                      course.usedCollie.toString()
+                                          +"/"+course.collie.toString(),
+
+                                      style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    // Icon(
+                                    //     Icons.mark_email_unread_sharp,
+                                    //     color: Colors.white
+                                    // ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.01,
+                          ),
+                          Container(
+                            color: Colors.white,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width*0.6,
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(
+                                left:MediaQuery.of(context).size.width*0.05,
+                                top: MediaQuery.of(context).size.height*0.03
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height:30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/icons/driver_blue.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width*0.05,
+                                ),
+                                Text(
+                                  course.driverName,
+                                  style: TextStyle(
+                                      color: Colors.white
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.01,
+                          ),
+                          Container(
+                            color: Colors.white,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width*0.6,
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.only(
+                                left:MediaQuery.of(context).size.width*0.05,
+                                top: MediaQuery.of(context).size.height*0.03
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                    children:[
+                                      Container(
+                                        height:30,
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        child: Center(
+                                            child: FaIcon(
+                                              FontAwesomeIcons.car,
+                                              color: Color(0xFF0F5CA0),)
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width*0.05,
+                                      ),
+                                      Text(
+                                        course.regNumber,
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),
+                                      )
+                                    ]
+                                ),
+                                if(
+                                (course.carImage1URL!=null && course.carImage1URL!="")
+                                    ||(course.carImage2URL!=null && course.carImage2URL!="")
+                                    ||(course.carImage3URL!=null && course.carImage3URL!="")
+                                    ||(course.carImage4URL!=null && course.carImage1URL!="")
+                                    ||(course.carListDetails!=null && course.carListDetails!.length>0)
+                                )
+                                  IconButton(
+                                      onPressed:(){
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext context){
+                                              return Container(
+                                                  height: MediaQuery.of(context).size.height*0.53,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection: Axis.vertical,
+                                                    child: SingleChildScrollView(
+                                                      scrollDirection: Axis.horizontal,
+                                                      child:
+                                                      Column(
+                                                        children: [
+                                                          if(course.carListDetails !=null && course.carListDetails!.length>0)
+                                                            Column(
+                                                              children: [
+                                                                Row(
                                                                   children: [
-                                                                    Text('Drop off Date',
-                                                                    style:TextStyle(
-                                                                      fontFamily: "Gidugu",
-                                                                      fontSize: 14,
-                                                                      color: Colors.white
-                                                                    ),),
-                                                                    Center(
-                                                                      child: Text(
-                                                                          DateFormat("d MMM y 'At' h:mm a").format(course.dropOffDate!),
-                                                                          style:TextStyle(
-                                                                              fontFamily: "Gidugu",
-                                                                              fontSize: 13,
-                                                                              color: Colors.white
-                                                                          )
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 60,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
                                                                       ),
+
+                                                                      child: Center(child: Text('legend')),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 10,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![0].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![0].state, onChanged: (bool value) {  },
                                                                     )
                                                                   ],
                                                                 ),
-                                                              ),
-                                                              SizedBox(
-                                                                height:MediaQuery.of(context).size.height*0.02,
-                                                              ),
-                                                              if(course.check=="car")
-                                                              Container(
-                                                                padding: EdgeInsets.only(
-                                                                  left: MediaQuery.of(context).size.width*0.01,
-                                                                  right: MediaQuery.of(context).size.width*0.05,
-                                                                ),
-                                                                height:MediaQuery.of(context).size.height*0.05,
-                                                                width: MediaQuery.of(context).size.width*0.77,
-                                                                decoration:BoxDecoration(
-                                                                    borderRadius: BorderRadius.circular(15),
-                                                                    color: Color(0xFF0F5CA0).withOpacity(0.6)
-                                                                ),
-                                                                child:Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                SizedBox(height: 5,),
+                                                                Row(
                                                                   children: [
-                                                                    Text('Mission Order file',
-                                                                      style: TextStyle(
-                                                                        color: Colors.white,
-                                                                        fontFamily: "Gidugu"
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
                                                                       ),
-                                                                    ),
-                                                                    IconButton(
-                                                                        onPressed: ()async{
-                                                                          print(course.orderUrl);
-                                                                          try{
-                                                                            String pdfUrl = course.orderUrl!;
-                                                                            download(pdfUrl);
-                                                                          }
-                                                                        catch(e){
-                                                                            print(e.toString());
-                                                                        }
-                                                                          } ,
-                                                                        icon: Icon(
-                                                                            Icons.file_download_outlined,
-                                                                        color: Colors.white,
-                                                                        )
-                                                                    ),
 
+                                                                      child: Center(child: Text(course.carListDetails![1].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![1].state, onChanged: (bool value) {  },
+                                                                    )
                                                                   ],
                                                                 ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![2].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![2].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![4].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![4].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![3].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![3].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![5].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![5].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![6].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![6].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![7].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![7].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![8].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![8].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![9].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![9].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![10].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![10].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![11].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![11].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![12].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![12].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![13].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![13].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![14].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![14].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5,),
+                                                                Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width:120,
+                                                                      height: 30,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xFF0F5CA0).withOpacity(0.8),
+                                                                          borderRadius: BorderRadius.circular(5)
+                                                                      ),
+
+                                                                      child: Center(child: Text(course.carListDetails![15].name)),
+                                                                    ),
+                                                                    GFCheckbox(
+                                                                      size: 30,
+                                                                      value: course.carListDetails![15].state, onChanged: (bool value) {  },
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          SizedBox(height: 5,),
+                                                          if((course.carImage1URL!=null && course.carImage1URL!="")
+                                                              ||(course.carImage2URL!=null && course.carImage2URL!=""))
+                                                            Container(
+                                                              width:MediaQuery.of(context).size.width,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                children: [
+                                                                  if(course.carImage1URL!=null && course.carImage1URL!="")
+                                                                    GestureDetector(
+                                                                      child: Container(
+                                                                        width:MediaQuery.of(context).size.width*0.27,
+                                                                        height:MediaQuery.of(context).size.height*0.08,
+                                                                        decoration: BoxDecoration(
+                                                                            color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                            borderRadius: BorderRadius.circular(5)
+
+                                                                        ),
+                                                                        child:Image.network(
+                                                                          course.carImage1URL!,
+                                                                          fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                      onTap: (){
+                                                                        showDialog(
+                                                                            context: context,
+                                                                            builder: (builder)=>AlertDialog(
+                                                                              content:CarDetail(course.carImage1URL!),
+                                                                            )
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  if(course.carImage2URL!=null && course.carImage2URL!="")
+                                                                    GestureDetector(
+                                                                      child: Container(
+                                                                        width:MediaQuery.of(context).size.width*0.27,
+                                                                        height:MediaQuery.of(context).size.height*0.08,
+                                                                        decoration: BoxDecoration(
+                                                                            color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                            borderRadius: BorderRadius.circular(5)
+                                                                        ),
+                                                                        child:Image.network(
+                                                                          course.carImage2URL!,
+                                                                          fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                      onTap: (){
+                                                                        showDialog(
+                                                                            context: context,
+                                                                            builder: (builder)=>AlertDialog(
+                                                                              content:CarDetail(course.carImage2URL!),
+                                                                            )
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          SizedBox(height: 5,),
+                                                          if((course.carImage3URL!=null && course.carImage3URL!="")
+                                                              ||(course.carImage4URL!=null && course.carImage4URL!=""))
+                                                            Container(
+                                                              width:MediaQuery.of(context).size.width,
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                children: [
+                                                                  if(course.carImage3URL!=null && course.carImage3URL!="")
+                                                                    GestureDetector(
+                                                                        child: Container(
+                                                                          width:MediaQuery.of(context).size.width*0.27,
+                                                                          height:MediaQuery.of(context).size.height*0.08,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                              borderRadius: BorderRadius.circular(5)
+                                                                          ),
+                                                                          child:Image.network(
+                                                                            course.carImage3URL!,
+                                                                            fit: BoxFit.fill,
+                                                                          ),
+                                                                        ),
+                                                                        onTap: (){
+                                                                          showDialog(
+                                                                              context: context,
+                                                                              builder: (builder)=>AlertDialog(
+                                                                                content:CarDetail(course.carImage3URL!),
+                                                                              )
+                                                                          );
+                                                                        }
+                                                                    ),
+                                                                  if(course.carImage4URL!=null && course.carImage4URL!="")
+                                                                    GestureDetector(
+                                                                        child: Container(
+                                                                          width:MediaQuery.of(context).size.width*0.27,
+                                                                          height:MediaQuery.of(context).size.height*0.08,
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                                              borderRadius: BorderRadius.circular(5)
+
+                                                                          ),
+                                                                          child:Image.network(
+                                                                            course.carImage4URL!,
+                                                                            fit: BoxFit.fill,
+                                                                          ),
+                                                                        ),
+                                                                        onTap: (){
+                                                                          showDialog(
+                                                                              context: context,
+                                                                              builder: (builder)=>AlertDialog(
+                                                                                content:CarDetail(course.carImage4URL!),
+                                                                              )
+                                                                          );
+                                                                        }
+                                                                    ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          SizedBox(height: 5,),
+                                                        ],
                                                       )
-                                                  );
+                                                    ),
+                                                  )
+                                              );
+                                            }
+                                        );
+
+                                      }
+                                      , icon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: Colors.white,
+                                    size: 25,
+                                  )
+                                  )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.01,
+                          ),
+                          Container(
+                            color: Colors.white,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width*0.6,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height:MediaQuery.of(context).size.height*0.02,
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width*0.01,
+                    right: MediaQuery.of(context).size.width*0.05,
+                  ),
+                  height:MediaQuery.of(context).size.height*0.05,
+                  width: MediaQuery.of(context).size.width*0.77,
+                  decoration:BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFF0F5CA0).withOpacity(0.6)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Pick up Date',
+                        style:TextStyle(
+                            fontFamily: "Gidugu",
+                            fontSize: 15,
+                            color: Colors.white
+                        ),),
+                      Center(
+                        child: Text(
+                            DateFormat("d MMM y 'At' h:mm a").format(course.pickUpDate),
+                            style:TextStyle(
+                                fontFamily: "Gidugu",
+                                fontSize: 13,
+                                color: Colors.white
+                            )
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                if(course.dropOffDate!=null)
+                  SizedBox(
+                    height:MediaQuery.of(context).size.height*0.02,
+                  ),
+                if(course.dropOffDate!=null)
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width*0.01,
+                      right: MediaQuery.of(context).size.width*0.05,
+                    ),
+                    height:MediaQuery.of(context).size.height*0.05,
+                    width: MediaQuery.of(context).size.width*0.77,
+                    decoration:BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xFF0F5CA0).withOpacity(0.6)
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Drop off Date',
+                          style:TextStyle(
+                              fontFamily: "Gidugu",
+                              fontSize: 14,
+                              color: Colors.white
+                          ),),
+                        Center(
+                          child: Text(
+                              DateFormat("d MMM y 'At' h:mm a").format(course.dropOffDate!),
+                              style:TextStyle(
+                                  fontFamily: "Gidugu",
+                                  fontSize: 13,
+                                  color: Colors.white
+                              )
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  height:MediaQuery.of(context).size.height*0.02,
+                ),
+                if(course.check=="car"&& course.orderUrl != null)
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width*0.01,
+                        right: MediaQuery.of(context).size.width*0.05,
+                      ),
+                      height:MediaQuery.of(context).size.height*0.05,
+                      width: MediaQuery.of(context).size.width*0.77,
+                      decoration:BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xFF0F5CA0).withOpacity(0.6)
+                      ),
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Mission Order file',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Gidugu"
+                            ),
+                          ),
+                         Icon(
+                                Icons.file_download_outlined,
+                                color: Colors.white,
+                              ),
+
+                        ],
+                      ),
+                    ),
+                    onTap: ()async{
+                      print(course.orderUrl);
+                      try{
+                        String pdfUrl = course.orderUrl!;
+                        download(pdfUrl);
+                      }
+                      catch(e){
+                        print(e.toString());
+                      }
+                    } ,
+                  )
+              ],
+            ),
+          ),
+        )
+    );
   }
+
+  Widget CarDetail(String carUrl){
+    return Container(
+      width:MediaQuery.of(context).size.width,
+      height:MediaQuery.of(context).size.height*0.4,
+      child:Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width:MediaQuery.of(context).size.width,
+            height:MediaQuery.of(context).size.height*0.3,
+            decoration: BoxDecoration(
+                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                borderRadius: BorderRadius.circular(5)
+            ),
+            child:Image.network(
+              carUrl!,
+              fit: BoxFit.fill,
+            ),
+          ),
+          GestureDetector(
+            child: Container(
+              padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width*0.01,
+                right: MediaQuery.of(context).size.width*0.05,
+              ),
+              height:MediaQuery.of(context).size.height*0.05,
+              width: MediaQuery.of(context).size.width*0.77,
+              decoration:BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Color(0xFF0F5CA0).withOpacity(0.6)
+              ),
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('download car Image',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Gidugu"
+                    ),
+                  ),
+                  Icon(
+                    Icons.file_download_outlined,
+                    color: Colors.white,
+                  ),
+
+                ],
+              ),
+            ),
+            onTap: ()async{
+              try{
+                String downloadcarUrl = carUrl!;
+                downloadCarImage(downloadcarUrl);
+              }
+              catch(e){
+                print(e.toString());
+              }
+            } ,
+          )
+        ],
+      ),
+    );
+  }
+
 }
