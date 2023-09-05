@@ -286,7 +286,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                         if(driversController.filteredList[index].moreImage1!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage1!).delete();
                                                                         if(driversController.filteredList[index].moreImage2!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage2!).delete();
                                                                         if(driversController.filteredList[index].moreImage3!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage3!).delete();
-                                                                        driversController.delete_driver(driversController.filteredList[index].id!);
+                                                                        driversController.delete_driver(driversController.filteredList[index]);
                                                                         driversController.fetchDrivers();
                                                                         Navigator.pop(context);
                                                                       },

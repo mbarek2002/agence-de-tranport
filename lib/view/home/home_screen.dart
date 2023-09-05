@@ -43,27 +43,22 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         actions: [
            Padding(
-             padding: const EdgeInsets.only(right: 20),
+             padding:  EdgeInsets.only(right: MediaQuery.of(context).size.width*0.01),
              child:
-                 Column(
-                   children: [
-                     IconButton(
-                         onPressed: (){
-                       LoginController().signAdminOut();
-                       homeController.box.remove("email");
+                 IconButton(
+                     onPressed: (){
+                   LoginController().signAdminOut();
+                   homeController.box.remove("email");
 
-                       Get.offAll(()=>LogInScreen());
-                     }
-                     ,icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
-                   ],
-                 ),
+                   Get.offAll(()=>LogInScreen());
+                 }
+                 ,icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
            ),
         ],
         backgroundColor: Color(0xFF0F5CA0),
         title: Padding(
           padding:  EdgeInsets.only(
-              top:20,
-              left: 40
+              left:  MediaQuery.of(context).size.width*0.1
           ),
           child: Text(tHome,style: TextStyle(
               fontSize: 30,
@@ -98,129 +93,203 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ),
                     ),
-                SizedBox(height: 200,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                        width: 80,
-                        height: 80,
-                          child: GestureDetector(
-                            onTap: (){
-                              Get.to(()=>DriversListScreen());
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(tHomeList)
-                              )
-                              ),
-                              child: Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                image:DecorationImage(
-                                  image:
-                              AssetImage("assets/icons/driver.png"))))
-                            ),
+                SizedBox(height:  MediaQuery.of(context).size.height*0.2,),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.5,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=>DriversListScreen());
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height*0.1,
+                          width: MediaQuery.of(context).size.width*0.8,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF0F5CA0).withOpacity(0.45),
+                            borderRadius: BorderRadius.circular(20)
                           ),
-                          ),
-                        Text('Drivers List')
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        badges.Badge(
-                          badgeContent: Text(''),
-                          child: SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                color: Colors.white
-                              ),
-                              child: GestureDetector(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround  ,
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    left:MediaQuery.of(context).size.width*0.05
+                                ),
                                 child: Container(
-                                decoration: BoxDecoration(
-                                image: DecorationImage(
-                                image: AssetImage(
-                                  "assets/icons/person-combination.png"
-                                )
-                                )
+                                    height: MediaQuery.of(context).size.height*0.08,
+                                    width: MediaQuery.of(context).size.width*0.18,
+                                  decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(tHomeList)
+                                  )
+                                  ),
+                                  child: Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                    image:DecorationImage(
+                                      image:
+                                  AssetImage("assets/icons/driver.png"))))
                                 ),
-                                ),
-                                onTap: (){
-                                  Get.to(()=>NotificationNewDrivers());
-                                },
                               ),
-                            ),
+                              Container(
+                                  height: MediaQuery.of(context).size.height*0.06,
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.8),
+                                    borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                      'Drivers List',
+                                        style: TextStyle(
+                                          color: Color(0xFF105EA0),
+                                          fontSize: 20,
+                                            fontFamily: "Georgia"
+
+                                        ),
+                                      ))
+                              )
+                            ],
                           ),
                         ),
-                        Text('New Drivers Request')
-                      ],
-                    )
-                  ],
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=>NotificationNewDrivers());
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height*0.1,
+                          width: MediaQuery.of(context).size.width*0.8,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF0F5CA0).withOpacity(0.45),
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              // badges.Badge(
+                              //   badgeContent: Text(''),
+                              //   child:
+                                Padding(
+                                  padding:  EdgeInsets.only(
+                                      left:MediaQuery.of(context).size.width*0.05
+                                  ),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height*0.08,
+                                    width: MediaQuery.of(context).size.width*0.18,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.white
+                                    ),
+                                    child: Container(
+                                    decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/icons/person-combination.png"
+                                    )
+                                    )
+                                    ),
+                                    ),
+                                  ),
+                                ),
+                              // ),
+                              Container(
+                                  height: MediaQuery.of(context).size.height*0.06,
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                      child: Padding(
+                                        padding:  EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03),
+                                        child: Text(
+                                          'New Drivers Request',
+                                          style: TextStyle(
+                                              color: Color(0xFF105EA0),
+                                              fontSize: 19,
+                                            fontFamily: "Georgia"
+                                          ),
+                                        ),
+                                      ))
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=>CoursesListSceen());
+                        },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height*0.1,
+                          width: MediaQuery.of(context).size.width*0.8,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF0F5CA0).withOpacity(0.45),
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    left:MediaQuery.of(context).size.width*0.05
+                                ),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height*0.08,
+                                  width: MediaQuery.of(context).size.width*0.18,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(tHomeList)
+                                      )
+                                  ),
+                                  // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/icons/care-request-reviewer.png"
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  height: MediaQuery.of(context).size.height*0.06,
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                        'Courses List',
+                                        style: TextStyle(
+                                            color: Color(0xFF105EA0),
+                                            fontSize: 20,
+                                            fontFamily: "Georgia"
+                                        ),
+                                      ))
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ),
                 SizedBox(height: 60,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // GestureDetector(
-                    //   child: SizedBox(
-                    //       width: 80,
-                    //       height: 80,
-                    //       child: Container(
-                    //         decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //             color: Colors.white,
-                    //           // image: DecorationImage(
-                    //           //   image: AssetImage("assets/icons/care-request-reviewer.png")
-                    //           // )
-                    //         ),
-                    //         child: Icon(Icons.calendar_month_outlined,size: 60,color: Color(0xFF0F5CA0),),
-                    //       ),
-                    //     ),
-                    // ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: 80,
-                          height: 80,
-                          child: GestureDetector(
-                          onTap: (){
-                            Get.to(()=>CoursesListSceen());
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(tHomeList)
-                                  )
-                              ),
-                              // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/icons/care-request-reviewer.png"
-                                    )
-                                  )
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text('Courses List')
-                      ],
-                    ),
-                      ],
-                ),
+
                   ],
             ),
           ),

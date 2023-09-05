@@ -821,10 +821,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                 SizedBox(width: 20,),
                                 GestureDetector(
                                   onTap: ()async{
-
-                                    notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
-
-                                    controller.add_driver(
+                                    await controller.add_driver(
                                         DriverModel(
                                             driverImage: widget.record.driverImage,
                                             firstName: widget.record.firstName.capitalize.toString(),
@@ -846,6 +843,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                         )
                                     ).then((value) {
                                       // Get.offAll(() => HomeScreen())
+                                      notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
                                       Get.back();
                                       Get.back();
                                     }

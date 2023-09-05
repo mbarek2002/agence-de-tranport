@@ -124,37 +124,109 @@ class DriversController extends GetxController{
 //////////////////////////////fin licence file picker s/////////////////////////////////////////
 
 //////////////cud operation///////////////////
-  Future delete_driver(String id )async{
-    await driversList.doc(id).delete().then((value) {
+
+  Future<void> deleteUserByEmail(String email) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      User? user = (await auth.fetchSignInMethodsForEmail(email)).isEmpty
+          ? null
+          : auth.currentUser;
+
+      if (user != null) {
+        await user.delete();
+        print("User with email $email deleted successfully.");
+      } else {
+        print("User with email $email not found.");
+      }
+    } catch (e) {
+      print("Error deleting user: $e");
+    }
+  }
+  Future delete_driver(DriverModel d )async{
+    await deleteUserByEmail(d.email);
+    await driversList.doc(d.email).delete().then((value) {
       fetchDrivers();
       init();
     });
   }
+  Future<bool> isEmailRegistered(String email) async {
+    try {
+      List<String> signInMethods = await FirebaseAuth.instance
+          .fetchSignInMethodsForEmail(email);
+      print(signInMethods);
 
-  Future add_driver(DriverModel d)async{
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: d.email, password: d.password).then((value) {
-      driversList.add({
-        "driverImage":d.driverImage,
-        "firstName":d.firstName,
-        "lastName":d.lastName,
-        "birthDate":d.birthDate,
-        "identityNumber":d.identityNumber,
-        "identityCardImageFace1":d.identityCardImageFace1,
-        "identityCardImageFace2":d.identityCardImageFace2,
-        "phoneNumber":d.phoneNumber,
-        "licenceType":d.licenceType,
-        "licenceImageFace1":d.licenceImageFace1,
-        "licenceImageFace2":d.licenceImageFace2,
-        "email":d.email,
-        "password":d.password,
-        "contractType":d.contractType,
-        "more1":d.moreImage1,
-        "more2":d.moreImage2,
-        "more3":d.moreImage3,
-      });
-      fetchDrivers();
-      init();
-    });
+      // If the list is empty, the email is not registered
+      return signInMethods.isEmpty;
+    } catch (e) {
+      print("Error checking email registration: $e");
+      return false;
+    }
+  }
+
+
+  Future add_driver(DriverModel d)async {
+    try {
+       bool test = await isEmailRegistered(d.email);
+       print(d.email);
+       if(test == true)
+         {
+           await FirebaseAuth.instance.createUserWithEmailAndPassword(
+               email: d.email, password: d.password).then((value) {
+             driversList.add({
+               "driverImage": d.driverImage,
+               "firstName": d.firstName,
+               "lastName": d.lastName,
+               "birthDate": d.birthDate,
+               "identityNumber": d.identityNumber,
+               "identityCardImageFace1": d.identityCardImageFace1,
+               "identityCardImageFace2": d.identityCardImageFace2,
+               "phoneNumber": d.phoneNumber,
+               "licenceType": d.licenceType,
+               "licenceImageFace1": d.licenceImageFace1,
+               "licenceImageFace2": d.licenceImageFace2,
+               "email": d.email,
+               "password": d.password,
+               "contractType": d.contractType,
+               "more1": d.moreImage1,
+               "more2": d.moreImage2,
+               "more3": d.moreImage3,
+             });
+             fetchDrivers();
+             init();
+           });
+
+           print("true");
+         }
+         else{
+         driversList.add({
+           "driverImage": d.driverImage,
+           "firstName": d.firstName,
+           "lastName": d.lastName,
+           "birthDate": d.birthDate,
+           "identityNumber": d.identityNumber,
+           "identityCardImageFace1": d.identityCardImageFace1,
+           "identityCardImageFace2": d.identityCardImageFace2,
+           "phoneNumber": d.phoneNumber,
+           "licenceType": d.licenceType,
+           "licenceImageFace1": d.licenceImageFace1,
+           "licenceImageFace2": d.licenceImageFace2,
+           "email": d.email,
+           "password": d.password,
+           "contractType": d.contractType,
+           "more1": d.moreImage1,
+           "more2": d.moreImage2,
+           "more3": d.moreImage3,
+         });
+         fetchDrivers();
+         init();
+
+
+       }
+           print('false');
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   Future update_driver(DriverModel d)async{

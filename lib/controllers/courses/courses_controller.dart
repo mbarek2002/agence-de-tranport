@@ -400,18 +400,14 @@ class CoursesController extends GetxController {
 
       Timestamp date = course['pickUpDate'];
 
-
-      print(date.toDate().day.toString()+"/"+date.toDate().month.toString()+"/"+date.toDate().year.toString()+"/");
-      // print(
-          // date.toDate().day.toString()+"/"+date.toDate().month.toString()+"/"+date.toDate().year.toString()+"/");
-
-
-      print(date.toDate().year >= DateTime.now().add(Duration(days: 1)).year);
-      print(date.toDate().month >= DateTime.now().add(Duration(days: 1)).month );
-      print(date.toDate().day > DateTime.now().add(Duration(days: 1)).day);
-
       if (courseData.containsKey('idAdmin')) {
+        print(course['idAdmin'] == loginController.idAdmin.value);
+        print(course['idAdmin']);
+        print(loginController.idAdmin.value);
+        print('///////////////////////////');
+
         if (course['idAdmin'] == loginController.idAdmin.value) {
+          print("admin");
           coursesListAdmin.add(Course(
             check: course['check'],
             adminId: course['idAdmin'],
@@ -473,6 +469,7 @@ class CoursesController extends GetxController {
         }
       }
       else if (!courseData.containsKey('idAdmin')) {
+        print("driver");
         coursesListDriver.add(Course(
           check: course['check'],
           id: course.id,
@@ -674,7 +671,8 @@ class CoursesController extends GetxController {
         "pickUpLocation": course.pickUpLocation,
         "dropOffLocation": course.dropOffLocation,
         "pickUpDate": course.pickUpDate,
-        if (course.dropOffDate != null) "dropOffDate": course.dropOffDate,
+        if (course.dropOffDate != null)
+          "dropOffDate": course.dropOffDate,
         "driverName": course.driverName,
         "identityNum": course.identityNum,
         "passengersNum": course.passengersNum,

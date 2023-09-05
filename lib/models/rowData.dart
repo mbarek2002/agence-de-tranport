@@ -22,8 +22,8 @@ class rowdata {
       'lastName': lastName,
       'phoneNum': phoneNum,
       "state": state,
-      "collieNumber":collieNumber,
-      "passengersNumber":passengersNumber
+      "requestedCollies":collieNumber,
+      "requestedPassengers":passengersNumber
     };
   }
 }

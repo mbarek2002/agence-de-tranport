@@ -297,6 +297,7 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                             ),
                             TextFormField(
                               controller: controller.emailController,
+                              readOnly: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please entre Email';
@@ -321,11 +322,12 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                               ),
                             ),
                             TextFormField(
+                              readOnly: true,
                               controller: controller.passwordController,
-                              validator: Validators.compose([
-                                Validators.required('Password is required'),
-                                Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
-                              ]),
+                              // validator: Validators.compose([
+                              //   Validators.required('Password is required'),
+                              //   Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
+                              // ]),
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
 
