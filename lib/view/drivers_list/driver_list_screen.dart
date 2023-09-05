@@ -109,6 +109,19 @@ class _DriversListScreenState extends State<DriversListScreen> {
                             color: Color(0xFF0F5CA0)
                         ),
                       ),
+
+
+                      const Positioned(
+                        top: 12,
+                        left: 0,
+                        right: 0,
+                        child:  Text("Drivers List",style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Georgia"
+                              ),textAlign: TextAlign.center,),
+                      ),
                       Positioned(
                         top: MediaQuery.of(context).size.height* .12,
                         child: Container(
@@ -150,17 +163,6 @@ class _DriversListScreenState extends State<DriversListScreen> {
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 12,
-                        left: 0,
-                        right: 0,
-                        child:  Text("Drivers List",style: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Georgia"
-                              ),textAlign: TextAlign.center,),
-                      )
                     ],
                   ),
                   SizedBox(height: size.height*.07,),
@@ -174,7 +176,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                             onChanged: (value)=>driversController.updateList(value),
                             decoration: InputDecoration(
                               suffixIcon: Icon(Icons.search),
-                              hintText:"search by name , identity card",
+                              hintText:"search by name ",
                               border: new OutlineInputBorder(
                                 borderRadius: new BorderRadius.circular(25.0),
                                 borderSide: new BorderSide(),

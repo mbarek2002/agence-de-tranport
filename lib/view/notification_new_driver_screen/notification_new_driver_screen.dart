@@ -82,40 +82,41 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                     ),
                     // TopWidget(title: 'Notification New driver'),
                     SizedBox(height: 80,),
-                    Center(
-                        child: Container(
-                        height: MediaQuery.of(context).size.height*0.73,
-                        width: MediaQuery.of(context).size.width,
-                          child:StreamBuilder<QuerySnapshot>(
-                          stream:notificationNewDriverController.notiDrivers.snapshots(),
-                          builder: (context,AsyncSnapshot snapshots) {
-                            if(snapshots.connectionState == ConnectionState.waiting){
-                              return Center(
-                                child: CircularProgressIndicator(color: Colors.green,),
-                              );
-                            }
-                            if(snapshots.hasData){
-                              return ListView.builder(
-                                    itemCount: snapshots.data!.docs.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      final DocumentSnapshot record = snapshots.data!.docs[index];
-                                      return
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                            top: 10,
-                                          ),
-                                          child:!record['valid'] ?
-                                          ToggleContainer(record: record):SizedBox(width:0),
-                                      );
-                                    }
-                                  );
-                            }
-                            else{
-                              return Center(child: CircularProgressIndicator(color: Colors.red,),);
-                            }
+                    Expanded(
+                      child: Container(
+                        // color: Colors.red,
+                      // height: MediaQuery.of(context).size.height*0.65,
+                      width: MediaQuery.of(context).size.width,
+                        child:StreamBuilder<QuerySnapshot>(
+                        stream:notificationNewDriverController.notiDrivers.snapshots(),
+                        builder: (context,AsyncSnapshot snapshots) {
+                          if(snapshots.connectionState == ConnectionState.waiting){
+                            return Center(
+                              child: CircularProgressIndicator(color: Colors.green,),
+                            );
                           }
-                        ),
-                    )
+                          if(snapshots.hasData){
+                            return ListView.builder(
+                                  itemCount: snapshots.data!.docs.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    final DocumentSnapshot record = snapshots.data!.docs[index];
+                                    return
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          top: 10,
+                                        ),
+                                        child:!record['valid'] ?
+                                        ToggleContainer(record: record):SizedBox(width:0),
+                                    );
+                                  }
+                                );
+                          }
+                          else{
+                            return Center(child: CircularProgressIndicator(color: Colors.red,),);
+                          }
+                        }
+                      ),
+                      ),
                     ),
                   ],
                 ),

@@ -135,8 +135,8 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                   ),
                   SizedBox(height: 35,),
                   Container(
-                    margin: EdgeInsets.only(left: 50),
-                    height: MediaQuery.of(context).size.height*0.787,
+                    margin: EdgeInsets.only(left: 40),
+                    // height: MediaQuery.of(context).size.height*0.74,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: Color(0xFFffffff).withOpacity(0.4),
@@ -369,7 +369,7 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text("Contract type".capitalize.toString(),style: TextStyle(
+                                Text("Contract type ".capitalize.toString(),style: TextStyle(
                                     fontSize: 8,
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold,
