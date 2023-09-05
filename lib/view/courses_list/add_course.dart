@@ -191,7 +191,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     topRight: Radius.circular(15),
                                     topLeft: Radius.circular(15),
                                   )),
-                              height: MediaQuery.of(context).size.height * 0.74,
+                              height: MediaQuery.of(context).size.height * 0.7,
                               width: MediaQuery.of(context).size.width * 0.9,
                               child: SingleChildScrollView(
                                 child: Column(
@@ -971,117 +971,118 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                         ),
                                       ],
                                     ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+
+                                        errorList = [];
+                                        if (coursesController
+                                            .pickUpLocationConroller.text ==
+                                            "") errorList.add("pick-up location");
+                                        if (coursesController
+                                            .dropOffLocationConroller.text ==
+                                            "") errorList.add("drop off location");
+                                        if (coursesController.passagersConroller.text ==
+                                            "") errorList.add("passengers number");
+                                        if (coursesController.selectedItem
+                                            .toLowerCase() ==
+                                            "driver name") errorList.add("driver name");
+                                        if (coursesController
+                                            .regNumberController.text ==
+                                            "") errorList.add("reg number");
+                                        if (coursesController
+                                            .seatingCapacityController.text ==
+                                            "") errorList.add("seating capacity");
+                                        if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
+                                          errorList.add("luggage capacity");
+
+                                        if (errorList.isEmpty) {
+                                          // if(coursesController.checkBox1==true || coursesController.checkBox2==true){
+
+                                          showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
+                                          coursesController.add_course(
+                                              Course(
+                                                  pickUpLocation: coursesController.pickUpLocationConroller.text,
+                                                  dropOffLocation: coursesController.dropOffLocationConroller.text,
+                                                  pickUpDate: dateTimePickUp,
+                                                  dropOffDate:
+                                                  coursesController.isReturn.value == true
+                                                      ? dateTimeDropOff
+                                                      :null,
+                                                  driverName:  coursesController.selectedItem.value,
+                                                  identityNum: coursesController.selectedItemId.value,
+                                                  passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
+                                                  seatingCapacity: int.tryParse(coursesController.seatingCapacityController.text) ?? 0,
+                                                  regNumber: coursesController.regNumberController.text,
+                                                  check: coursesController.checkBox1.value == true
+                                                      ?"passengers"
+                                                      :  coursesController.checkBox2.value == true
+                                                      ?"car"
+                                                      :"",
+                                                  // luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
+                                                  // luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
+                                                  collie: int.tryParse(coursesController.collieController.text) ?? 0,
+                                                  // usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
+                                                  // usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
+                                                  usedCollie: coursesController.usedCollie.value
+                                              )
+                                          ).then((value) {
+                                            Navigator.pop(context);
+                                            coursesController.init();
+                                            Get.back();
+                                          });
+                                          // }
+                                          // else
+                                          //   ScaffoldMessenger.of(context).showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text("select a check type"),
+                                          //       duration: Duration(seconds: 3),
+                                          //     ),
+                                          //   );
+
+                                        }
+                                        else {
+                                          showDialog(
+                                              context: context,
+                                              builder: ((builder) => AlertDialog(
+                                                content: Container(
+                                                  height: MediaQuery.of(context).size.height*0.2,
+                                                  width: MediaQuery.of(context).size.width,
+                                                  child: Column(
+                                                    children: [
+                                                      const Icon(IconData(0xe6cb,
+                                                          fontFamily:
+                                                          'MaterialIcons')
+                                                      ),
+                                                      Text('verify your data :\n' +
+                                                          errorList.join(",")),
+                                                    ],
+                                                  ),
+                                                ),
+                                              )));
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color: Color(0xFF1A8FDD)),
+                                        child: Center(
+                                            child: Text(
+                                              'Add',
+                                              style: TextStyle(color: Colors.white),
+                                            )),
+                                      ),
+                                    ),
                                     SizedBox(height:150)
                                   ],
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
 
-                                errorList = [];
-                                if (coursesController
-                                        .pickUpLocationConroller.text ==
-                                    "") errorList.add("pick-up location");
-                                if (coursesController
-                                        .dropOffLocationConroller.text ==
-                                    "") errorList.add("drop off location");
-                                if (coursesController.passagersConroller.text ==
-                                    "") errorList.add("passengers number");
-                                if (coursesController.selectedItem
-                                        .toLowerCase() ==
-                                    "driver name") errorList.add("driver name");
-                                if (coursesController
-                                        .regNumberController.text ==
-                                    "") errorList.add("reg number");
-                                if (coursesController
-                                        .seatingCapacityController.text ==
-                                    "") errorList.add("seating capacity");
-                                if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
-                                  errorList.add("luggage capacity");
-
-                                if (errorList.isEmpty) {
-                                  // if(coursesController.checkBox1==true || coursesController.checkBox2==true){
-
-                                    showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
-                                  coursesController.add_course(
-                                    Course(
-                                        pickUpLocation: coursesController.pickUpLocationConroller.text,
-                                        dropOffLocation: coursesController.dropOffLocationConroller.text,
-                                        pickUpDate: dateTimePickUp,
-                                        dropOffDate:
-                                        coursesController.isReturn.value == true
-                                            ? dateTimeDropOff
-                                            :null,
-                                        driverName:  coursesController.selectedItem.value,
-                                        identityNum: coursesController.selectedItemId.value,
-                                        passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
-                                        seatingCapacity: int.tryParse(coursesController.seatingCapacityController.text) ?? 0,
-                                        regNumber: coursesController.regNumberController.text,
-                                        check: coursesController.checkBox1.value == true
-                                        ?"passengers"
-                                        :  coursesController.checkBox2.value == true
-                                        ?"car"
-                                        :"",
-                                        // luggageBigSize: int.tryParse(coursesController.luggageBigSizeController.text) ?? 0,
-                                        // luggageMediumSize: int.tryParse(coursesController.luggageMediumSizeController.text) ?? 0,
-                                        collie: int.tryParse(coursesController.collieController.text) ?? 0,
-                                        // usedLuggageBigSize: coursesController.usedLuggageBigSize.value,
-                                        // usedLuggageMediumSize: coursesController.usedLuggageMediumSize.value,
-                                        usedCollie: coursesController.usedCollie.value
-                                    )
-                                  ).then((value) {
-                                    Navigator.pop(context);
-                                    coursesController.init();
-                                    Get.back();
-                                  });
-                                  // }
-                                  // else
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //       content: Text("select a check type"),
-                                  //       duration: Duration(seconds: 3),
-                                  //     ),
-                                  //   );
-
-                                }
-                                else {
-                                  showDialog(
-                                      context: context,
-                                      builder: ((builder) => AlertDialog(
-                                            content: Container(
-                                              height: MediaQuery.of(context).size.height*0.2,
-                                              width: MediaQuery.of(context).size.width,
-                                              child: Column(
-                                                children: [
-                                                  const Icon(IconData(0xe6cb,
-                                                      fontFamily:
-                                                          'MaterialIcons')
-                                                  ),
-                                                  Text('verify your data :\n' +
-                                                      errorList.join(",")),
-                                                ],
-                                              ),
-                                            ),
-                                          )));
-                                }
-                              },
-                              child: Container(
-                                height: 30,
-                                width: 90,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xFF1A8FDD)),
-                                child: Center(
-                                    child: Text(
-                                  'Add',
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                              ),
-                            )
                           ],
                         ),
                       ))),

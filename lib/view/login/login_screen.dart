@@ -45,9 +45,9 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
             child: ListView(
                 children: [
-                  Padding(
+                  const Padding(
                     padding:  EdgeInsets.only(
-                        top: height*0.1
+                        top: 8
                     ),
                     child: Center(
                       child: Text(
@@ -56,9 +56,9 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 18),
                   Center(child: Text(tLogin,style: TextStyle(color: Colors.white,fontSize: 30),)),
-                  SizedBox(height: 30,),
+                  SizedBox(height: 32,),
                   Form(
                       key: _formKey,
                       child: Column(
@@ -84,9 +84,9 @@ class _LogInScreenState extends State<LogInScreen> {
                               },
                               style: TextStyle(color: Colors.white),
                               controller: controller.emailController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Username',
-                                labelStyle: TextStyle(color: Color(0xFF090909),fontSize: 30),
+                                labelStyle: TextStyle(color: Color(0xFF090909),fontSize: 24),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white), // White bottom border color
                                 ),
@@ -129,7 +129,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       const Icon(Icons.visibility,color: Colors.black,),
                                 ),
                                 labelText: 'Password',
-                                labelStyle: TextStyle(color:Color(0xFF090909),fontSize: 30),
+                                labelStyle: TextStyle(color:Color(0xFF090909),fontSize: 24),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                 ),

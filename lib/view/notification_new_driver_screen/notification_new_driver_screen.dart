@@ -68,7 +68,7 @@ class _NotificationNewDriversState extends State<NotificationNewDrivers> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height*0.07,
+                      height: MediaQuery.of(context).size.height*0.06,
                       width: MediaQuery.of(context).size.width,
                       child: Container(
                         decoration: BoxDecoration(

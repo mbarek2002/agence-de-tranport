@@ -37,6 +37,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
   DriversController driversController = Get.put(DriversController());
   @override
   Widget build(BuildContext context) {
+    Size size =MediaQuery.of(context).size;
     return  Scaffold(
         resizeToAvoidBottomInset:false,
         floatingActionButton: FloatingActionButton(
@@ -51,99 +52,158 @@ class _DriversListScreenState extends State<DriversListScreen> {
             print("add");
           },
         ),
-        appBar: AppBar(
-          leading: Padding(
-            padding:  EdgeInsets.only(
-                top:20.0
+        // appBar: AppBar(
+        //   toolbarHeight: size.height*.15,
+        //   leading: Padding(
+        //     padding:  EdgeInsets.only(
+        //         top:20.0
+        //     ),
+        //     child: IconButton(
+        //       iconSize: 35,
+        //       icon: Icon(
+        //         Icons.arrow_back,
+        //         color: Colors.white,
+        //       ),
+        //       onPressed: (){
+        //         Get.back();
+        //       },
+        //     ),
+        //   ),
+        //   backgroundColor: Color(0xFF0F5CA0),
+        //   title: Padding(
+        //     padding:  EdgeInsets.only(
+        //         top:30,
+        //         left: 0
+        //     ),
+        //     child: Text("Drivers List",style: TextStyle(
+        //         fontSize: 22,
+        //         color: Colors.white,
+        //         fontWeight: FontWeight.bold,
+        //         fontFamily: "Georgia"
+        //     ),),
+        //   ),
+        // ),
+        body: SafeArea(
+          child: Container(
+            width: size.width,
+            height: size.height,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(tHomebackground)
+                )
             ),
-            child: IconButton(
-              iconSize: 35,
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: (){
-                Get.back();
-              },
-            ),
-          ),
-          backgroundColor: Color(0xFF0F5CA0),
-          title: Padding(
-            padding:  EdgeInsets.only(
-                top:30,
-                left: 0
-            ),
-            child: Text("Drivers List",style: TextStyle(
-                fontSize: 22,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Georgia"
-            ),),
-          ),
-        ),
-        body: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(tHomebackground)
-                  )
-              ),
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height*0.07,
-                    width: MediaQuery.of(context).size.width,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(80),
-                            bottomRight: Radius.circular(80),
-                          ),
-                          color: Color(0xFF0F5CA0)
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        height: size.height*.17,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(38),
+                              bottomRight: Radius.circular(38),
+                            ),
+                            color: Color(0xFF0F5CA0)
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        top: MediaQuery.of(context).size.height* .12,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              image: DecorationImage(
+                                  image: NetworkImage(loginController.adminImageUrl.value),
+                                  fit: BoxFit.cover
+                              ),
+                            ),
+                            child: GestureDetector(
+                              onTap: ()=>Get.offAll(()=>HomeScreen()),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 4,
+                        left: 8,
+                        child: GestureDetector(
+                          onTap: (){
+                            print("dyfougfotpiù");
+                            Get.back();
+                          },
+                          child: Container(
+                            width: 56,
+                            height: 56,
+
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 12,
+                        left: 0,
+                        right: 0,
+                        child:  Text("Drivers List",style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Georgia"
+                              ),textAlign: TextAlign.center,),
+                      )
+                    ],
                   ),
-                  SizedBox(height: 35,),
+                  SizedBox(height: size.height*.07,),
                   Container(
                     width: MediaQuery.of(context).size.width*0.9,
                     child:Obx(()=> Column(
                       children: [
-                        TextFormField(
-                          onChanged: (value)=>driversController.updateList(value),
-                          decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.search),
-                            hintText:"search by name , identity card",
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(25.0),
-                              borderSide: new BorderSide(),
-                            ),
-                            fillColor: Colors.white,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(
-                                color: Colors.white,
+                        SizedBox(
+                          height: 55,
+                          child: TextFormField(
+                            onChanged: (value)=>driversController.updateList(value),
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.search),
+                              hintText:"search by name , identity card",
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(25.0),
+                                borderSide: new BorderSide(),
+                              ),
+                              fillColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                  width: 2.0,
+                                ),
                               ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                                width: 2.0,
-                              ),
-                            ),
+                            // style:,
                           ),
-                          // style:,
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(height: 16,),
                         if(driversController.isLoading.value)
                           Center(child: CircularProgressIndicator(),)
                         else
                           Center(
-                          child:
-                              SingleChildScrollView(
-                            child: Container(
+                            child: SingleChildScrollView(
+                                child: Container(
                                 height: MediaQuery.of(context).size.height*0.6,
                                 width: MediaQuery.of(context).size.width*0.9,
                                 child:
@@ -155,6 +215,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                     );
                                   },
                                   child: ListView.builder(
+                                    padding: EdgeInsets.only(bottom: size.height*.2),
                                     itemCount: driversController.filteredList.length,
                                     itemBuilder: (BuildContext context, int index) {
 
@@ -189,13 +250,14 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(width: 10,),
+                                            SizedBox(width: 4,),
+                                            // Spacer(),
                                             GestureDetector(
                                               onTap: (){
                                                 Get.to(()=>DriverDetails(record: driversController.filteredList[index]));
                                               },
                                               child: Container(
-                                                width:MediaQuery.of(context).size.width*.55,
+                                                // width:MediaQuery.of(context).size.width*.55,
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
@@ -207,7 +269,8 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                           fontFamily: "Georgia"
                                                       ),
                                                     ),
-                                                    SizedBox(width: 60 ,),
+                                                    // SizedBox(width: 60 ,),
+                                                    SizedBox(width: 8,),
                                                     Container(
                                                       width:MediaQuery.of(context).size.width*.45,                                                          height: 1,
                                                       decoration: BoxDecoration(
@@ -362,38 +425,17 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                 )
 
                             ),
+                              ),
                           ),
-                        )
+
+                        // SizedBox(height: 80,)
                       ],
                     )),
                   ),
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height* .04,
-              child: Container(
-                // color: Colors.green,
-                width: MediaQuery.of(context).size.width,
-                // height: 20,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                        image: NetworkImage(loginController.adminImageUrl.value),
-                        fit: BoxFit.cover
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: ()=>Get.offAll(()=>HomeScreen()),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         )
 
 

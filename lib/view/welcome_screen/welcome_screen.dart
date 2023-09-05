@@ -10,52 +10,51 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width =  MediaQuery.of(context).size.width;
+    Size size =  MediaQuery.of(context).size;
     return Scaffold(
       body: ImageContainer(
-        width: width,
+        width: size.width,
         border: BorderRadius.only(
-              topRight: Radius.circular(40),
+              // topRight: Radius.circular(40),
               topLeft: Radius.circular(40),
             ),
         margin: EdgeInsets.only(
-          left: 60,
-         top: 80
+          left: size.width*.15,
+         top: size.height*.1
             ),
-        child: Center(
-                child:Padding(
-                  padding: const EdgeInsets.only(
-                    top: 200,
-                      left:40.0,
-                    bottom: 200
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        tDriveInSecurity,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 55,
-                            fontFamily: "Georgia"
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      SizedBox(
-                        width: width*0.7,
-                        child: OutlinedButton(
-                          onPressed: (){
-                            Get.offAll(()=>LogInScreen());
-                          },
-                          child: Text(tGetStart,style: TextStyle(color: Colors.white,fontSize: 15),),
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Color(0xFF1590CF)
-                          )
-                        ),
-                      )
-                    ],
-                  ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Spacer(),
+              Text(
+                tDriveInSecurity,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 55,
+                    fontFamily: "Georgia"
                 ),
-      )
+              ),
+              // SizedBox(height: 30,),
+              Spacer(flex: 4,),
+              SizedBox(
+                width: size.width*0.7,
+                child: OutlinedButton(
+                  onPressed: (){
+                    Get.offAll(()=>LogInScreen());
+                  },
+                  child: Text(tGetStart,style: TextStyle(color: Colors.white,fontSize: 15),),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Color(0xFF1590CF)
+                  )
+                ),
+              ),
+              Spacer(flex: 3,),
+
+            ],
+          ),
+        )
     )
     );
   }

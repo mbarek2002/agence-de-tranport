@@ -797,7 +797,7 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                           ),
 
                           Positioned(
-                            bottom: 20,
+                            bottom: 30,
                             right: 10,
                             child: Row(
                               children: [

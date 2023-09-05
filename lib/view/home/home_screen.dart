@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding:  EdgeInsets.only(
               left:  MediaQuery.of(context).size.width*0.1
           ),
-          child: Text(tHome,style: TextStyle(
+          child: const Text(tHome,style: TextStyle(
               fontSize: 30,
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage(tHomebackground)
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.of(context).size.width,
                   child: Container(
                     alignment: Alignment.centerRight,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(80),
                     bottomRight: Radius.circular(80),
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ),
                     ),
-                SizedBox(height:  MediaQuery.of(context).size.height*0.2,),
+                SizedBox(height:  MediaQuery.of(context).size.height*0.15,),
                 Container(
                   height: MediaQuery.of(context).size.height*0.5,
                   width: MediaQuery.of(context).size.width,
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.to(()=>DriversListScreen());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.1,
+                          height: MediaQuery.of(context).size.height*0.12,
                           width: MediaQuery.of(context).size.width*0.8,
                           decoration: BoxDecoration(
                             color: Color(0xFF0F5CA0).withOpacity(0.45),
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     left:MediaQuery.of(context).size.width*0.05
                                 ),
                                 child: Container(
-                                    height: MediaQuery.of(context).size.height*0.08,
+                                    height: MediaQuery.of(context).size.height*0.1,
                                     width: MediaQuery.of(context).size.width*0.18,
                                   decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.06,
+                                  height: MediaQuery.of(context).size.height*0.1,
                                   width: MediaQuery.of(context).size.width*0.45,
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.8),
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.to(()=>NotificationNewDrivers());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.1,
+                          height: MediaQuery.of(context).size.height*0.12,
                           width: MediaQuery.of(context).size.width*0.8,
                           decoration: BoxDecoration(
                               color: Color(0xFF0F5CA0).withOpacity(0.45),
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       left:MediaQuery.of(context).size.width*0.05
                                   ),
                                   child: Container(
-                                    height: MediaQuery.of(context).size.height*0.08,
+                                    height: MediaQuery.of(context).size.height*0.1,
                                     width: MediaQuery.of(context).size.width*0.18,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               // ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.06,
+                                  height: MediaQuery.of(context).size.height*0.1,
                                   width: MediaQuery.of(context).size.width*0.45,
                                   decoration: BoxDecoration(
                                       color: Colors.white.withOpacity(0.8),
@@ -211,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding:  EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03),
                                         child: Text(
                                           'New Drivers Request',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: Color(0xFF105EA0),
                                               fontSize: 19,
@@ -228,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.to(()=>CoursesListSceen());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.1,
+                          height: MediaQuery.of(context).size.height*0.12,
                           width: MediaQuery.of(context).size.width*0.8,
                           decoration: BoxDecoration(
                               color: Color(0xFF0F5CA0).withOpacity(0.45),
@@ -242,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     left:MediaQuery.of(context).size.width*0.05
                                 ),
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height*0.08,
+                                  height: MediaQuery.of(context).size.height*0.1,
                                   width: MediaQuery.of(context).size.width*0.18,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -264,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.06,
+                                  height: MediaQuery.of(context).size.height*0.1,
                                   width: MediaQuery.of(context).size.width*0.45,
                                   decoration: BoxDecoration(
                                       color: Colors.white.withOpacity(0.8),
