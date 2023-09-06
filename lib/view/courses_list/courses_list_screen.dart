@@ -3371,7 +3371,7 @@ Future downloadCarImage(String url)async{
   }
   /////////////////////////add to driver code////////////////////////////////////
   Future<dynamic> coursesHistoryDetails(BuildContext context,Course course) {
-
+  print(course.id);
     return showDialog(
         context: context,
         builder: (builder)=>AlertDialog(

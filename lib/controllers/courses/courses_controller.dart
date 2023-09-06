@@ -337,7 +337,6 @@ class CoursesController extends GetxController {
     coursesAll.clear();
 
     for (var course in courses.docs) {
-      print(course.id);
 
       Timestamp? dropOffDate;
       List<rowdata>? passengersDetailsFetch;
@@ -399,15 +398,39 @@ class CoursesController extends GetxController {
       }
 
       Timestamp date = course['pickUpDate'];
+      coursesAll.add(Course(
+        check: course['check'],
+        // adminId: course['idAdmin'] ?? "",
+        id: course.id,
+        finished: course['finished'],
+        pickUpLocation: course['pickUpLocation'],
+        dropOffLocation: course['dropOffLocation'],
+        pickUpDate: date.toDate(),
+        passengersNum: course['passengersNum'],
+        seatingCapacity: course['seatingCapacity'],
+        regNumber: course['regNumber'],
+        driverName: course['driverName'],
+        // seen: course['seen'] ?? "",
+        identityNum: course['identityNum'],
+        passengersDetails: passengersDetailsFetch,
+        carListDetails: carDetailsFetch,
+        orderUrl: orderUrl,
+        dropOffDate: dropOffDate?.toDate(),
+        carImage1URL: carImg1Url,
+        carImage2URL: carImg2Url,
+        carImage3URL: carImg3Url,
+        carImage4URL: carImg4Url,
+        collie: course['collie'] ?? 0,
+        usedCollie: course['usedCollie'] ?? 0,
+        // luggageBigSize: course['luggageBigSize'] ?? 0,
+        // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+        // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+        // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+      ));
+
 
       if (courseData.containsKey('idAdmin')) {
-        print(course['idAdmin'] == loginController.idAdmin.value);
-        print(course['idAdmin']);
-        print(loginController.idAdmin.value);
-        print('///////////////////////////');
-
         if (course['idAdmin'] == loginController.idAdmin.value) {
-          print("admin");
           coursesListAdmin.add(Course(
             check: course['check'],
             adminId: course['idAdmin'],
@@ -437,39 +460,38 @@ class CoursesController extends GetxController {
             // luggageMediumSize: course['luggageMediumSize'] ?? 0,
             // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
           ));
-          coursesAll.add(Course(
-            check: course['check'],
-            adminId: course['idAdmin'],
-            id: course.id,
-            finished: course['finished'],
-            pickUpLocation: course['pickUpLocation'],
-            dropOffLocation: course['dropOffLocation'],
-            pickUpDate: date.toDate(),
-            passengersNum: course['passengersNum'],
-            seatingCapacity: course['seatingCapacity'],
-            regNumber: course['regNumber'],
-            driverName: course['driverName'],
-            seen: course['seen'],
-            identityNum: course['identityNum'],
-            passengersDetails: passengersDetailsFetch,
-            carListDetails: carDetailsFetch,
-            orderUrl: orderUrl,
-            dropOffDate: dropOffDate?.toDate(),
-            carImage1URL: carImg1Url,
-            carImage2URL: carImg2Url,
-            carImage3URL: carImg3Url,
-            carImage4URL: carImg4Url,
-            collie: course['collie'] ?? 0,
-            usedCollie: course['usedCollie'] ?? 0,
-            // luggageBigSize: course['luggageBigSize'] ?? 0,
-            // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-            // luggageMediumSize: course['luggageMediumSize'] ?? 0,
-            // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
-          ));
+          // coursesAll.add(Course(
+          //   check: course['check'],
+          //   adminId: course['idAdmin'],
+          //   id: course.id,
+          //   finished: course['finished'],
+          //   pickUpLocation: course['pickUpLocation'],
+          //   dropOffLocation: course['dropOffLocation'],
+          //   pickUpDate: date.toDate(),
+          //   passengersNum: course['passengersNum'],
+          //   seatingCapacity: course['seatingCapacity'],
+          //   regNumber: course['regNumber'],
+          //   driverName: course['driverName'],
+          //   seen: course['seen'],
+          //   identityNum: course['identityNum'],
+          //   passengersDetails: passengersDetailsFetch,
+          //   carListDetails: carDetailsFetch,
+          //   orderUrl: orderUrl,
+          //   dropOffDate: dropOffDate?.toDate(),
+          //   carImage1URL: carImg1Url,
+          //   carImage2URL: carImg2Url,
+          //   carImage3URL: carImg3Url,
+          //   carImage4URL: carImg4Url,
+          //   collie: course['collie'] ?? 0,
+          //   usedCollie: course['usedCollie'] ?? 0,
+          //   // luggageBigSize: course['luggageBigSize'] ?? 0,
+          //   // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+          //   // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+          //   // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+          // ));
         }
       }
       else if (!courseData.containsKey('idAdmin')) {
-        print("driver");
         coursesListDriver.add(Course(
           check: course['check'],
           id: course.id,
@@ -496,38 +518,39 @@ class CoursesController extends GetxController {
           // luggageMediumSize: course['luggageMediumSize'] ?? 0,
           // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
         ));
-        coursesAll.add(Course(
-          check: course['check'],
-          id: course.id,
-          finished: course['finished'],
-          pickUpLocation: course['pickUpLocation'],
-          dropOffLocation: course['dropOffLocation'],
-          pickUpDate: date.toDate(),
-          passengersNum: course['passengersNum'],
-          seatingCapacity: course['seatingCapacity'],
-          regNumber: course['regNumber'],
-          driverName: course['driverName'],
-          identityNum: course['identityNum'],
-          passengersDetails: passengersDetailsFetch,
-          orderUrl: orderUrl,
-          dropOffDate: dropOffDate?.toDate(),
-          carImage1URL: carImg1Url,
-          carImage2URL: carImg2Url,
-          carImage3URL: carImg3Url,
-          carImage4URL: carImg4Url,
-          collie: course['collie'] ?? 0,
-          usedCollie: course['usedCollie'] ?? 0,
-          // luggageBigSize: course['luggageBigSize'] ?? 0,
-          // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-          // luggageMediumSize: course['luggageMediumSize'] ?? 0,
-          // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
-        ));
+        // coursesAll.add(Course(
+        //   check: course['check'],
+        //   id: course.id,
+        //   finished: course['finished'],
+        //   pickUpLocation: course['pickUpLocation'],
+        //   dropOffLocation: course['dropOffLocation'],
+        //   pickUpDate: date.toDate(),
+        //   passengersNum: course['passengersNum'],
+        //   seatingCapacity: course['seatingCapacity'],
+        //   regNumber: course['regNumber'],
+        //   driverName: course['driverName'],
+        //   identityNum: course['identityNum'],
+        //   passengersDetails: passengersDetailsFetch,
+        //   orderUrl: orderUrl,
+        //   dropOffDate: dropOffDate?.toDate(),
+        //   carImage1URL: carImg1Url,
+        //   carImage2URL: carImg2Url,
+        //   carImage3URL: carImg3Url,
+        //   carImage4URL: carImg4Url,
+        //   collie: course['collie'] ?? 0,
+        //   usedCollie: course['usedCollie'] ?? 0,
+        //   // luggageBigSize: course['luggageBigSize'] ?? 0,
+        //   // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+        //   // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+        //   // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+        // ));
       }
       //
       // }catch(e){
       //   print(e.toString());
       // }
     }
+    print(coursesAll.length);
 
     filterCoursesTodayAdmin();
     filterCoursesTomorrowAdmin();
@@ -950,6 +973,7 @@ class CoursesController extends GetxController {
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
         course.pickUpDate.day == DateTime.now().day));
+    print(coursesListTodayHistory.length);
   }
 
   void filterCoursesYesterdayHistory() {
@@ -958,14 +982,20 @@ class CoursesController extends GetxController {
         course.pickUpDate.month ==
             DateTime.now().add(Duration(days: -1)).month &&
         course.pickUpDate.day == DateTime.now().add(Duration(days: -1)).day));
+    print(coursesListYesterDayHistory.length);
+
   }
 
   void filterCoursesOlderHistory() {
     coursesListOlderHistory.assignAll(coursesAll.where((course) =>
-        course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year &&
-        course.pickUpDate.month <=
-            DateTime.now().add(Duration(days: -1)).month &&
-        course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day));
+    course.pickUpDate.isBefore(DateTime.now().add(Duration(days: -1,hours:DateTime.now().hour-24)))));
+        // &&
+        // course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year &&
+        // course.pickUpDate.month <=
+        //     DateTime.now().add(Duration(days: -1)).month &&
+        // course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day));
+    print(coursesListOlderHistory.length);
+
   }
 
 //////////////////////////////////////////////

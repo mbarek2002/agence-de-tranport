@@ -316,9 +316,9 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                 }else if(!GetUtils.isEmail(value)){
                                   return 'invaild email';
                                 }
-                                else if(controller.driverEmailList.contains(value)){
-                                  return 'this email is already used';
-                                }
+                                // else if(controller.isEmailRegistered(value)){
+                                //   return 'this email is already used';
+                                // }
                                 return null;
                               },
                               style: TextStyle(color: Colors.black),
@@ -452,7 +452,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
 
                             SizedBox(height: 40,),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async {
                                 if(checkBox1==false && checkBox2 == false){
                                   setState(() {
                                     validContratType=true;
@@ -483,23 +483,25 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                   });
                                 }
                                 if(_formKey.currentState!.validate()) {
-                                  if (!validLicenceType && !validContratType)
-                                    // if (controller.driverEmailList.contains(
-                                    //     controller.emailController.text)
-                                    // || controller.identityDriverList.contains(
-                                    //         controller.identityNumberController.text)) {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     SnackBar(
-                                    //       content: Text(
-                                    //           "Email or identity number is already used"
-                                    //       ),
-                                    //       duration: Duration(seconds: 5),
-                                    //     ),
-                                    //   );
-                                    //   Navigator.pop(context);
-                                    // }
-                                    // else {
+                                  bool test =await controller.isEmailRegistered(controller.emailController.text);
+                                  if(test == true){
+                                    if (!validLicenceType && !validContratType)
+                                      // if (controller.driverEmailList.contains(
+                                      //     controller.emailController.text)
+                                      // || controller.identityDriverList.contains(
+                                      //         controller.identityNumberController.text)) {
+                                      //   ScaffoldMessenger.of(context)
+                                      //       .showSnackBar(
+                                      //     SnackBar(
+                                      //       content: Text(
+                                      //           "Email or identity number is already used"
+                                      //       ),
+                                      //       duration: Duration(seconds: 5),
+                                      //     ),
+                                      //   );
+                                      //   Navigator.pop(context);
+                                      // }
+                                      // else {
                                       if (_image == null) {
                                         // ScaffoldMessenger.of(context).showSnackBar(
                                         //   SnackBar(
@@ -573,6 +575,20 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                                             )
                                         ));
                                     // }
+                                  }
+                                  else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (builder)=>AlertDialog(
+                                          content: Container(
+                                            height: MediaQuery.of(context).size.height*0.05,
+                                            width: MediaQuery.of(context).size.width,
+                                            child: Center(child: Text('this email is already used')),
+                                          ),
+                                        )
+                                    );
+                                  }
+
                                 }
                                 },
                               child: Center(
