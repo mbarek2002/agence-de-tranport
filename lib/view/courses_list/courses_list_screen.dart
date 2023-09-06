@@ -2448,9 +2448,6 @@ Future downloadCarImage(String url)async{
   }
 
   Future<dynamic> courseDetails(BuildContext context,Course course) {
-    coursesController.courses.doc(course.id).update({
-      "seen":true
-    });
     return showDialog(
                 context: context,
                 builder: (builder)=>AlertDialog(
@@ -3339,30 +3336,30 @@ Future downloadCarImage(String url)async{
                         SizedBox(
                           height:MediaQuery.of(context).size.height*0.02,
                         ),
-                        if(coursesController.coursesListToday.contains(course)
-                        || coursesController.coursesListTodayDrivers.contains(course))
-                          Center(
-                            child: GestureDetector(
-                                onTap: (){
-                                  coursesController.courses.doc(course.id).update({
-                                    "finished":true
-                                  }).then((value){
-                                    coursesController
-                                  .fetchCourses();
-                                    Navigator.pop(context);
-                                  });
-                                },
-                                child: Container(
-                                  height:MediaQuery.of(context).size.height*0.05,
-                                    width: MediaQuery.of(context).size.width*0.3,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF0F5CA0).withOpacity(0.8),
-                                      borderRadius: BorderRadius.circular(20)
-                                    ),
-                                    child: Center(child: Text("Finish",style:TextStyle(color:Colors.white),))
-                                )
-                            ),
-                          )
+                        // if(coursesController.coursesListToday.contains(course)
+                        // || coursesController.coursesListTodayDrivers.contains(course))
+                        //   Center(
+                        //     child: GestureDetector(
+                        //         onTap: (){
+                        //           coursesController.courses.doc(course.id).update({
+                        //             "finished":true
+                        //           }).then((value){
+                        //             coursesController
+                        //           .fetchCourses();
+                        //             Navigator.pop(context);
+                        //           });
+                        //         },
+                        //         child: Container(
+                        //           height:MediaQuery.of(context).size.height*0.05,
+                        //             width: MediaQuery.of(context).size.width*0.3,
+                        //             decoration: BoxDecoration(
+                        //               color: Color(0xFF0F5CA0).withOpacity(0.8),
+                        //               borderRadius: BorderRadius.circular(20)
+                        //             ),
+                        //             child: Center(child: Text("Finish",style:TextStyle(color:Colors.white),))
+                        //         )
+                        //     ),
+                        //   )
                       ],
                     ),
                   ),

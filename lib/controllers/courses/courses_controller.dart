@@ -398,36 +398,35 @@ class CoursesController extends GetxController {
       }
 
       Timestamp date = course['pickUpDate'];
-      coursesAll.add(Course(
-        check: course['check'],
-        // adminId: course['idAdmin'] ?? "",
-        id: course.id,
-        finished: course['finished'],
-        pickUpLocation: course['pickUpLocation'],
-        dropOffLocation: course['dropOffLocation'],
-        pickUpDate: date.toDate(),
-        passengersNum: course['passengersNum'],
-        seatingCapacity: course['seatingCapacity'],
-        regNumber: course['regNumber'],
-        driverName: course['driverName'],
-        // seen: course['seen'] ?? "",
-        identityNum: course['identityNum'],
-        passengersDetails: passengersDetailsFetch,
-        carListDetails: carDetailsFetch,
-        orderUrl: orderUrl,
-        dropOffDate: dropOffDate?.toDate(),
-        carImage1URL: carImg1Url,
-        carImage2URL: carImg2Url,
-        carImage3URL: carImg3Url,
-        carImage4URL: carImg4Url,
-        collie: course['collie'] ?? 0,
-        usedCollie: course['usedCollie'] ?? 0,
-        // luggageBigSize: course['luggageBigSize'] ?? 0,
-        // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-        // luggageMediumSize: course['luggageMediumSize'] ?? 0,
-        // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
-      ));
-
+      // coursesAll.add(Course(
+      //   check: course['check'],
+      //   // adminId: course['idAdmin'] ?? "",
+      //   id: course.id,
+      //   finished: course['finished'],
+      //   pickUpLocation: course['pickUpLocation'],
+      //   dropOffLocation: course['dropOffLocation'],
+      //   pickUpDate: date.toDate(),
+      //   passengersNum: course['passengersNum'],
+      //   seatingCapacity: course['seatingCapacity'],
+      //   regNumber: course['regNumber'],
+      //   driverName: course['driverName'],
+      //   // seen: course['seen'] ?? "",
+      //   identityNum: course['identityNum'],
+      //   passengersDetails: passengersDetailsFetch,
+      //   carListDetails: carDetailsFetch,
+      //   orderUrl: orderUrl,
+      //   dropOffDate: dropOffDate?.toDate(),
+      //   carImage1URL: carImg1Url,
+      //   carImage2URL: carImg2Url,
+      //   carImage3URL: carImg3Url,
+      //   carImage4URL: carImg4Url,
+      //   collie: course['collie'] ?? 0,
+      //   usedCollie: course['usedCollie'] ?? 0,
+      //   // luggageBigSize: course['luggageBigSize'] ?? 0,
+      //   // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+      //   // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+      //   // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+      // ));
 
       if (courseData.containsKey('idAdmin')) {
         if (course['idAdmin'] == loginController.idAdmin.value) {
@@ -460,35 +459,35 @@ class CoursesController extends GetxController {
             // luggageMediumSize: course['luggageMediumSize'] ?? 0,
             // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
           ));
-          // coursesAll.add(Course(
-          //   check: course['check'],
-          //   adminId: course['idAdmin'],
-          //   id: course.id,
-          //   finished: course['finished'],
-          //   pickUpLocation: course['pickUpLocation'],
-          //   dropOffLocation: course['dropOffLocation'],
-          //   pickUpDate: date.toDate(),
-          //   passengersNum: course['passengersNum'],
-          //   seatingCapacity: course['seatingCapacity'],
-          //   regNumber: course['regNumber'],
-          //   driverName: course['driverName'],
-          //   seen: course['seen'],
-          //   identityNum: course['identityNum'],
-          //   passengersDetails: passengersDetailsFetch,
-          //   carListDetails: carDetailsFetch,
-          //   orderUrl: orderUrl,
-          //   dropOffDate: dropOffDate?.toDate(),
-          //   carImage1URL: carImg1Url,
-          //   carImage2URL: carImg2Url,
-          //   carImage3URL: carImg3Url,
-          //   carImage4URL: carImg4Url,
-          //   collie: course['collie'] ?? 0,
-          //   usedCollie: course['usedCollie'] ?? 0,
-          //   // luggageBigSize: course['luggageBigSize'] ?? 0,
-          //   // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-          //   // luggageMediumSize: course['luggageMediumSize'] ?? 0,
-          //   // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
-          // ));
+          coursesAll.add(Course(
+            check: course['check'],
+            adminId: course['idAdmin'],
+            id: course.id,
+            finished: course['finished'],
+            pickUpLocation: course['pickUpLocation'],
+            dropOffLocation: course['dropOffLocation'],
+            pickUpDate: date.toDate(),
+            passengersNum: course['passengersNum'],
+            seatingCapacity: course['seatingCapacity'],
+            regNumber: course['regNumber'],
+            driverName: course['driverName'],
+            seen: course['seen'],
+            identityNum: course['identityNum'],
+            passengersDetails: passengersDetailsFetch,
+            carListDetails: carDetailsFetch,
+            orderUrl: orderUrl,
+            dropOffDate: dropOffDate?.toDate(),
+            carImage1URL: carImg1Url,
+            carImage2URL: carImg2Url,
+            carImage3URL: carImg3Url,
+            carImage4URL: carImg4Url,
+            collie: course['collie'] ?? 0,
+            usedCollie: course['usedCollie'] ?? 0,
+            // luggageBigSize: course['luggageBigSize'] ?? 0,
+            // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+            // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+            // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+          ));
         }
       }
       else if (!courseData.containsKey('idAdmin')) {
@@ -518,50 +517,50 @@ class CoursesController extends GetxController {
           // luggageMediumSize: course['luggageMediumSize'] ?? 0,
           // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
         ));
-        // coursesAll.add(Course(
-        //   check: course['check'],
-        //   id: course.id,
-        //   finished: course['finished'],
-        //   pickUpLocation: course['pickUpLocation'],
-        //   dropOffLocation: course['dropOffLocation'],
-        //   pickUpDate: date.toDate(),
-        //   passengersNum: course['passengersNum'],
-        //   seatingCapacity: course['seatingCapacity'],
-        //   regNumber: course['regNumber'],
-        //   driverName: course['driverName'],
-        //   identityNum: course['identityNum'],
-        //   passengersDetails: passengersDetailsFetch,
-        //   orderUrl: orderUrl,
-        //   dropOffDate: dropOffDate?.toDate(),
-        //   carImage1URL: carImg1Url,
-        //   carImage2URL: carImg2Url,
-        //   carImage3URL: carImg3Url,
-        //   carImage4URL: carImg4Url,
-        //   collie: course['collie'] ?? 0,
-        //   usedCollie: course['usedCollie'] ?? 0,
-        //   // luggageBigSize: course['luggageBigSize'] ?? 0,
-        //   // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
-        //   // luggageMediumSize: course['luggageMediumSize'] ?? 0,
-        //   // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
-        // ));
+        coursesAll.add(Course(
+          check: course['check'],
+          id: course.id,
+          finished: course['finished'],
+          pickUpLocation: course['pickUpLocation'],
+          dropOffLocation: course['dropOffLocation'],
+          pickUpDate: date.toDate(),
+          passengersNum: course['passengersNum'],
+          seatingCapacity: course['seatingCapacity'],
+          regNumber: course['regNumber'],
+          driverName: course['driverName'],
+          identityNum: course['identityNum'],
+          passengersDetails: passengersDetailsFetch,
+          orderUrl: orderUrl,
+          dropOffDate: dropOffDate?.toDate(),
+          carImage1URL: carImg1Url,
+          carImage2URL: carImg2Url,
+          carImage3URL: carImg3Url,
+          carImage4URL: carImg4Url,
+          collie: course['collie'] ?? 0,
+          usedCollie: course['usedCollie'] ?? 0,
+          // luggageBigSize: course['luggageBigSize'] ?? 0,
+          // usedLuggageBigSize: course['usedLuggageBigSize'] ?? 0,
+          // luggageMediumSize: course['luggageMediumSize'] ?? 0,
+          // usedLuggageMediumSize: course['usedLuggageMediumSize'] ?? 0
+        ));
       }
       //
       // }catch(e){
       //   print(e.toString());
       // }
     }
-    print(coursesAll.length);
 
+////////////////filter courses admin//////////////////////////
     filterCoursesTodayAdmin();
     filterCoursesTomorrowAdmin();
     filterCoursesOthersAdmin();
 
-    ////////////////////////
+    /////////// filter courses drivers/////////////
     filterCoursesTodayDriver();
     filterCoursesTomorrowDriver();
     filterCoursesOthersDriver();
 
-    //////////////////////////////////////
+    /////////////////filter history/////////////////////
     filterCoursesTodayHistory();
     filterCoursesYesterdayHistory();
     filterCoursesOlderHistory();
@@ -1000,72 +999,86 @@ class CoursesController extends GetxController {
 
 //////////////////////////////////////////////
   void filter(String prefix) {
-    /////////////////admin//////////////////////////
+    /////////////////filter recherche admin//////////////////////////
     coursesListToday.assignAll(coursesListAdmin.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
         course.pickUpDate.day == DateTime.now().day&&
             course.finished == false));
 
     coursesListTomorrow.assignAll(coursesListAdmin.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
+
         course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year &&
         course.pickUpDate.month ==
             DateTime.now().add(Duration(days: 1)).month &&
         course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day));
 
     coursesList.assignAll(coursesListAdmin.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
+
         // !coursesListToday.contains(course) &&
         // !coursesListTomorrow.contains(course)
        course.pickUpDate.isAfter(DateTime.now().add(Duration(days: 1,hours: 24-DateTime.now().hour)))
 
     ));
 
-    /////////////////driver//////////////////////////
+    /////////////////filter recherche driver//////////////////////////
 
     coursesListTodayDrivers.assignAll(coursesListDriver.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
         course.pickUpDate.day == DateTime.now().day&&
             course.finished == false));
 
     coursesListTomorrowDrivers.assignAll(coursesListDriver.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         course.pickUpDate.year == DateTime.now().add(Duration(days: 1)).year &&
         course.pickUpDate.month ==
             DateTime.now().add(Duration(days: 1)).month &&
         course.pickUpDate.day == DateTime.now().add(Duration(days: 1)).day));
 
     coursesListDrivers.assignAll(coursesListDriver.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         // !coursesListToday.contains(course) &&
         // !coursesListTomorrow.contains(course)
         course.pickUpDate.isAfter(DateTime.now().add(Duration(days: 1,hours: 24-DateTime.now().hour)))
 
     ));
 
-    /////////////////history////////////////////////////
+    /////////////////filter recherche history////////////////////////////
     coursesListTodayHistory.assignAll(coursesAll.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         course.pickUpDate.year == DateTime.now().year &&
         course.pickUpDate.month == DateTime.now().month &&
         course.pickUpDate.day == DateTime.now().day));
 
     coursesListYesterDayHistory.assignAll(coursesAll.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
         course.pickUpDate.year == DateTime.now().add(Duration(days: -1)).year &&
         course.pickUpDate.month ==
             DateTime.now().add(Duration(days: -1)).month &&
         course.pickUpDate.day == DateTime.now().add(Duration(days: -1)).day));
+
     coursesListOlderHistory.assignAll(coursesAll.where((course) =>
-        course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase()) &&
-        course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year &&
-        course.pickUpDate.month <=
-            DateTime.now().add(Duration(days: -1)).month &&
-        course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day));
+    (course.pickUpLocation.toLowerCase()!.startsWith(prefix.toLowerCase())
+        ||course.dropOffLocation.toLowerCase()!.startsWith(prefix.toLowerCase()))&&
+        course.pickUpDate.isAfter(DateTime.now().add(Duration(days: 1,hours: 24-DateTime.now().hour)))
+      // course.pickUpDate.year <= DateTime.now().add(Duration(days: -1)).year &&
+        // course.pickUpDate.month <=
+        //     DateTime.now().add(Duration(days: -1)).month &&
+        // course.pickUpDate.day < DateTime.now().add(Duration(days: -1)).day
+    ));
   }
 
 ///////////////////////////pick excel for car/////////////////////////////////////////
