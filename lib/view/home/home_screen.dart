@@ -32,6 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState(){
     super.initState();
+    print("**********************");
+    print(FirebaseAuth.instance.currentUser!.email.toString());
+    print("**********************");
      loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
     coursesController.fetchCourses();

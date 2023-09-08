@@ -29,6 +29,7 @@ class _ToggleContainerState extends State<ToggleContainer> {
   }
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: _toggleSize,
       child: Container(
@@ -157,7 +158,7 @@ class ExpandedContainer extends StatelessWidget {
                       color: Colors.black
                   ),),
                    onTap: (){
-                     notificationNewDriverController.delete(record.id);
+                     notificationNewDriverController.delete(record,context);
                    },
               ),
             ),

@@ -134,21 +134,19 @@ class _EditDriverScreenState extends State<EditDriverScreen> {
                     ),
                   ),
                   SizedBox(height: 35,),
-                  Container(
-                    margin: EdgeInsets.only(left: 40),
-                    // height: MediaQuery.of(context).size.height*0.74,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFffffff).withOpacity(0.4),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40)
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left:28,
-                          right: 28
+                  Flexible(
+                    child: Container(
+                      // margin: EdgeInsets.only(left: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      // height: MediaQuery.of(context).size.height*0.74,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFffffff).withOpacity(0.4),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)
+                          )
                       ),
                       child: Form(
                         key: _formKey,

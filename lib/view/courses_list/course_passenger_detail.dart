@@ -23,6 +23,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
   LoginController loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
+    Size size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -59,199 +60,102 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                     fit: BoxFit.cover, image: AssetImage(tHomebackground))),
             child: Column(
               children: [
-                SizedBox(
+                Container(
                   height: MediaQuery.of(context).size.height * 0.07,
                   width: MediaQuery.of(context).size.width,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(80),
-                          bottomRight: Radius.circular(80),
-                        ),
-                        color: Color(0xFF0F5CA0)),
-                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(80),
+                        bottomRight: Radius.circular(80),
+                      ),
+                      color: Color(0xFF0F5CA0)),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: size.height*.1,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF0F5CA0).withOpacity(0.6),
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
-                    height: MediaQuery.of(context).size.height * 0.75,
-                    width: MediaQuery.of(context).size.width*0.95,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child:
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.68,
-                              child: DataTable(
-                                columnSpacing: 5,
-                                dataRowHeight: 50,
-                                columns: const <DataColumn>[
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Center(
-                                        child: Text(
-                                          'First Name',
-                                          style: TextStyle(fontStyle: FontStyle.italic),
+                Flexible(
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF0F5CA0).withOpacity(0.6),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                      // height: MediaQuery.of(context).size.height * 0.75,
+                      // height: MediaQuery.of(context).size.height * 0.4,
+                      width: MediaQuery.of(context).size.width*0.95,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child:
+                          Column(
+                            children: [
+                              Container(
+                                // height: MediaQuery.of(context).size.height * 0.68,
+                                child: DataTable(
+                                  columnSpacing: 5,
+                                  dataRowHeight: 50,
+                                  columns: const <DataColumn>[
+                                    DataColumn(
+                                      label: Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            'First Name',
+                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Center(
-                                        child: Text(
-                                          'Last Name',
-                                          style: TextStyle(fontStyle: FontStyle.italic),
+                                    DataColumn(
+                                      label: Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            'Last Name',
+                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Center(
-                                        child: Text(
-                                          'Phone Number',
-                                          style: TextStyle(fontStyle: FontStyle.italic),
+                                    DataColumn(
+                                      label: Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            'Phone Number',
+                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                          ),
                                         ),
                                       ),
+                                      numeric: true,
                                     ),
-                                    numeric: true,
-                                  ),
-                                  DataColumn(
-                                    label: Expanded(
-                                      child: Center(
-                                        child: Text(
-                                          'State',
-                                          style: TextStyle(fontStyle: FontStyle.italic),
+                                    DataColumn(
+                                      label: Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            'State',
+                                            style: TextStyle(fontStyle: FontStyle.italic),
+                                          ),
                                         ),
                                       ),
+                                      numeric: true,
                                     ),
-                                    numeric: true,
-                                  ),
-                                ],
-                                rows: List<DataRow>.generate(
-                                    widget.course.passengersDetails!.length,
-                                        (int index) => DataRow(cells: <DataCell>[
-                                      DataCell(GestureDetector(
-                                        onTap: (){
-                                          showDialog(
-                                              context: context,
-                                              builder: (builder)=>AlertDialog(
-                                                content:Container(
-                                                  height: MediaQuery.of(context).size.height*0.35,
-                                                  color: Color(0xFF0F5CA0).withOpacity(0.6),
-                                                  child: Column(
-                                                    children: [
-                                                        Padding(
-                                                        padding:EdgeInsets.only(
-                                                            top: MediaQuery.of(context).size.height*0.01,
-                                                            bottom:MediaQuery.of(context).size.height*0.01
-                                                        ),
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width*0.55,
-                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.white.withOpacity(0.6),
-                                                              borderRadius: BorderRadius.all(Radius.circular(10))
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Text('First Name : '),
-                                                              Text(widget.course.passengersDetails![index].firstname)
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                        Padding(
-                                                        padding:EdgeInsets.only(
-                                                            top: MediaQuery.of(context).size.height*0.01,
-                                                            bottom:MediaQuery.of(context).size.height*0.01
-                                                        ),
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width*0.55,
-                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.white.withOpacity(0.6),
-                                                              borderRadius: BorderRadius.all(Radius.circular(10))
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Text('Last Name : '),
-                                                              Text(widget.course.passengersDetails![index].lastName)
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                        Padding(
-                                                        padding:EdgeInsets.only(
-                                                            top: MediaQuery.of(context).size.height*0.01,
-                                                            bottom:MediaQuery.of(context).size.height*0.01
-                                                        ),
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width*0.55,
-                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.white.withOpacity(0.6),
-                                                              borderRadius: BorderRadius.all(Radius.circular(10))
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Text('Phone Number : '),
-                                                              Text((widget.course.passengersDetails![index].phoneNum
-                                                                  .contains('.') &&
-                                                                  widget.course.passengersDetails![index].phoneNum
-                                                                      .endsWith('.0'))
-                                                              ?widget.course
-                                                                  .passengersDetails![index].phoneNum
-                                                                  .substring(
-                                                                  0,
-                                                                  widget.course.passengersDetails![index]
-                                                                      .phoneNum
-                                                                      .indexOf('.'))
-                                                                  :widget.course.passengersDetails![index].phoneNum
-
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                        Padding(
-                                                        padding:EdgeInsets.only(
-                                                            top: MediaQuery.of(context).size.height*0.01,
-                                                            bottom:MediaQuery.of(context).size.height*0.01
-                                                        ),
-                                                        child: Container(
-                                                          width: MediaQuery.of(context).size.width*0.55,
-                                                          height: MediaQuery.of(context).size.height*0.05,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.white.withOpacity(0.6),
-                                                              borderRadius: BorderRadius.all(Radius.circular(10))
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                            children: [
-                                                              Text('passengers Number : '),
-                                                              Text(widget.course.passengersDetails![index].passengersNumber.toString())
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                        Padding(
+                                  ],
+                                  rows: List<DataRow>.generate(
+                                      widget.course.passengersDetails!.length,
+                                          (int index) => DataRow(cells: <DataCell>[
+                                        DataCell(GestureDetector(
+                                          onTap: (){
+                                            showDialog(
+                                                context: context,
+                                                builder: (builder)=>AlertDialog(
+                                                  content:Container(
+                                                    height: MediaQuery.of(context).size.height*0.35,
+                                                    color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                    child: Column(
+                                                      children: [
+                                                          Padding(
                                                           padding:EdgeInsets.only(
-                                                        top: MediaQuery.of(context).size.height*0.01,
-                                                            bottom:  MediaQuery.of(context).size.height*0.01
+                                                              top: MediaQuery.of(context).size.height*0.01,
+                                                              bottom:MediaQuery.of(context).size.height*0.01
                                                           ),
                                                           child: Container(
                                                             width: MediaQuery.of(context).size.width*0.55,
@@ -263,369 +167,473 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                             child: Row(
                                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                               children: [
-                                                                Text('collie Number : '),
-                                                                Text(widget.course.passengersDetails![index].collieNumber.toString())
+                                                                Text('First Name : '),
+                                                                Text(widget.course.passengersDetails![index].firstname)
                                                               ],
                                                             ),
                                                           ),
                                                         ),
+                                                          Padding(
+                                                          padding:EdgeInsets.only(
+                                                              top: MediaQuery.of(context).size.height*0.01,
+                                                              bottom:MediaQuery.of(context).size.height*0.01
+                                                          ),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width*0.55,
+                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.white.withOpacity(0.6),
+                                                                borderRadius: BorderRadius.all(Radius.circular(10))
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                Text('Last Name : '),
+                                                                Text(widget.course.passengersDetails![index].lastName)
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                          Padding(
+                                                          padding:EdgeInsets.only(
+                                                              top: MediaQuery.of(context).size.height*0.01,
+                                                              bottom:MediaQuery.of(context).size.height*0.01
+                                                          ),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width*0.55,
+                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.white.withOpacity(0.6),
+                                                                borderRadius: BorderRadius.all(Radius.circular(10))
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                Text('Phone Number : '),
+                                                                Text((widget.course.passengersDetails![index].phoneNum
+                                                                    .contains('.') &&
+                                                                    widget.course.passengersDetails![index].phoneNum
+                                                                        .endsWith('.0'))
+                                                                ?widget.course
+                                                                    .passengersDetails![index].phoneNum
+                                                                    .substring(
+                                                                    0,
+                                                                    widget.course.passengersDetails![index]
+                                                                        .phoneNum
+                                                                        .indexOf('.'))
+                                                                    :widget.course.passengersDetails![index].phoneNum
 
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                          Padding(
+                                                          padding:EdgeInsets.only(
+                                                              top: MediaQuery.of(context).size.height*0.01,
+                                                              bottom:MediaQuery.of(context).size.height*0.01
+                                                          ),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width*0.55,
+                                                            height: MediaQuery.of(context).size.height*0.05,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.white.withOpacity(0.6),
+                                                                borderRadius: BorderRadius.all(Radius.circular(10))
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                Text('passengers Number : '),
+                                                                Text(widget.course.passengersDetails![index].passengersNumber.toString())
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                          Padding(
+                                                            padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                              bottom:  MediaQuery.of(context).size.height*0.01
+                                                            ),
+                                                            child: Container(
+                                                              width: MediaQuery.of(context).size.width*0.55,
+                                                              height: MediaQuery.of(context).size.height*0.05,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors.white.withOpacity(0.6),
+                                                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                children: [
+                                                                  Text('collie Number : '),
+                                                                  Text(widget.course.passengersDetails![index].collieNumber.toString())
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                            );
+                                          },
+                                          child: Center(
+                                            child: Text(
+                                                widget.course.passengersDetails![index].firstname),
+                                          ),
+                                        )),
+                                        DataCell(Center(
+                                          child: Text(
+                                              widget.course.passengersDetails![index].lastName),
+                                        )),
+
+
+                                        (widget.course.passengersDetails![index].phoneNum
+                                            .contains('.') &&
+                                            widget.course.passengersDetails![index].phoneNum
+                                                .endsWith('.0'))
+                                            ?
+                                          DataCell(Center(
+                                          child: Text(widget.course
+                                              .passengersDetails![index].phoneNum
+                                              .substring(
+                                              0,
+                                              widget.course.passengersDetails![index]
+                                                  .phoneNum
+                                                  .indexOf('.'))),
+                                        ))
+                                            :
+                                        DataCell(Center(child: Text(widget.course.passengersDetails![index].phoneNum.toString()))),
+                                        DataCell(
+                                  Checkbox(
+                                value: widget.course.passengersDetails![index].state,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    widget.course.passengersDetails![index].state
+                                    =!widget.course.passengersDetails![index].state;
+                                  });
+                                },
+                                  )
+                                        )
+                                      ])),
+                                ),
+                              ),
+
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    bottom:MediaQuery.of(context).size.height*0.01
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        coursesController.firstNameController.text="";
+                                        coursesController.lastNameController.text="";
+                                        coursesController.phoneNumberController.text="";
+                                        coursesController.collieNumberController.text="";
+                                        coursesController.passengersNumberController.text="";
+                                        showDialog(
+                                            context: context,
+                                            builder: (builder)=>AlertDialog(
+                                              content: Container(
+                                                // height: MediaQuery.of(context).size.height*0.48,
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                    color: Color(0xFF0F5CA0)
+                                                ),
+                                                child: SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.01,
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                        MediaQuery.of(context).size.width *
+                                                            0.6,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                            Colors.white.withOpacity(0.7),
+                                                            borderRadius: BorderRadius.only(
+                                                              topRight: Radius.circular(5),
+                                                              topLeft: Radius.circular(5),
+                                                            )),
+                                                        child: Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                            left: MediaQuery.of(context).size.width *
+                                                                0.1,
+                                                          ),
+                                                          child: TextFormField(
+                                                            controller: coursesController
+                                                                .firstNameController,
+                                                            decoration: InputDecoration(
+                                                                border: InputBorder.none,
+                                                                hintText: 'First Name',
+                                                                hintStyle: TextStyle(
+                                                                    fontFamily: 'Georgia',
+                                                                    color: Color(0xFF0F5CA0))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.02,
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                        MediaQuery.of(context).size.width *
+                                                            0.6,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                            Colors.white.withOpacity(0.7),
+                                                            borderRadius: BorderRadius.only(
+                                                              topRight: Radius.circular(5),
+                                                              topLeft: Radius.circular(5),
+                                                            )),
+                                                        child: Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                            left: MediaQuery.of(context).size.width *
+                                                                0.1,
+                                                          ),
+                                                          child: TextFormField(
+                                                            controller: coursesController
+                                                                .lastNameController,
+                                                            decoration: InputDecoration(
+                                                                border: InputBorder.none,
+                                                                hintText: 'Last Name',
+                                                                hintStyle: TextStyle(
+                                                                    fontFamily: 'Georgia',
+                                                                    color: Color(0xFF0F5CA0))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.02,
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                        MediaQuery.of(context).size.width *
+                                                            0.6,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                            Colors.white.withOpacity(0.7),
+                                                            borderRadius: BorderRadius.only(
+                                                              topRight: Radius.circular(5),
+                                                              topLeft: Radius.circular(5),
+                                                            )),
+                                                        child: Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                            left: MediaQuery.of(context).size.width *
+                                                                0.1,
+                                                          ),
+                                                          child: TextFormField(
+                                                            controller: coursesController
+                                                                .phoneNumberController,
+                                                            keyboardType:TextInputType.number,
+                                                            decoration: InputDecoration(
+                                                                border: InputBorder.none,
+                                                                hintText: 'Phone Number',
+                                                                hintStyle: TextStyle(
+                                                                    fontFamily: 'Georgia',
+                                                                    color: Color(0xFF0F5CA0))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.02,
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                        MediaQuery.of(context).size.width *
+                                                            0.6,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                            Colors.white.withOpacity(0.7),
+                                                            borderRadius: BorderRadius.only(
+                                                              topRight: Radius.circular(5),
+                                                              topLeft: Radius.circular(5),
+                                                            )),
+                                                        child: Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                            left: MediaQuery.of(context).size.width *
+                                                                0.1,
+                                                          ),
+                                                          child: TextFormField(
+                                                            controller: coursesController
+                                                                .collieNumberController,
+                                                            keyboardType:TextInputType.number,
+                                                            decoration: InputDecoration(
+                                                                border: InputBorder.none,
+                                                                hintText: 'Collie Number',
+                                                                hintStyle: TextStyle(
+                                                                    fontFamily: 'Georgia',
+                                                                    color: Color(0xFF0F5CA0))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.02,
+                                                      ),
+                                                      Container(
+                                                        width:
+                                                        MediaQuery.of(context).size.width *
+                                                            0.6,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                            Colors.white.withOpacity(0.7),
+                                                            borderRadius: BorderRadius.only(
+                                                              topRight: Radius.circular(5),
+                                                              topLeft: Radius.circular(5),
+                                                            )),
+                                                        child: Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                            left: MediaQuery.of(context).size.width *
+                                                                0.1,
+                                                          ),
+                                                          child: TextFormField(
+                                                            controller: coursesController
+                                                                .passengersNumberController,
+                                                            keyboardType:TextInputType.number,
+                                                            decoration: InputDecoration(
+                                                                border: InputBorder.none,
+                                                                hintText: 'Passengers Number',
+                                                                hintStyle: TextStyle(
+                                                                    fontFamily: 'Georgia',
+                                                                    color: Color(0xFF0F5CA0))),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height:  MediaQuery.of(context).size.height *
+                                                          0.02,
+                                                      ),
+                                                      ElevatedButton(
+                                                          onPressed: (){
+
+                                                            var errorList=<String>[];
+                                                            if(coursesController.firstNameController.text.trim().isEmpty)
+                                                              errorList.add("first Name");
+
+                                                            if(coursesController.lastNameController.text.trim().isEmpty)
+                                                              errorList.add("last Name");
+
+                                                            // if(coursesController.lastNameController.text.trim().isEmpty)
+                                                            //   errorList.add("phone Number");
+
+                                                            // else if(coursesController.lastNameController.text.length==8)
+                                                            //   errorList.add("Invalid phone Number");
+
+                                                            if(coursesController.collieNumberController.text.trim().isEmpty)
+                                                              errorList.add("Collie Number");
+
+                                                            else if(int.parse(coursesController.collieNumberController.text.trim())>
+                                                                (widget.course.collie!-widget.course.usedCollie!))
+                                                              errorList.add('check Collie Capacity');
+
+                                                            if(coursesController.passengersNumberController.text.trim().isEmpty)
+                                                              errorList.add("passengers Number");
+                                                            else if(int.parse(coursesController.passengersNumberController.text.trim())>
+                                                                (widget.course.seatingCapacity-widget.course.passengersNum))
+                                                              errorList.add('check passengers Capacity');
+
+                                                            if(errorList.isEmpty){
+                                                              widget.course.passengersDetails?.add(
+                                                                  rowdata(
+                                                                    firstname: coursesController.firstNameController.text,
+                                                                    lastName: coursesController.lastNameController.text,
+                                                                    phoneNum: coursesController.phoneNumberController.text,
+                                                                    state: false,
+                                                                    collieNumber: int.parse(coursesController.collieNumberController.text),
+                                                                    passengersNumber: int.parse(coursesController.passengersNumberController.text),
+
+                                                                  )
+                                                              );
+
+                                                              coursesController.courses.doc(widget.course.id).update(
+                                                                  {
+                                                                    "passengersDetails":
+                                                                    widget.course.passengersDetails
+                                                                        ?.map((passenger) => passenger.toJson())
+                                                                        .toList(),
+                                                                    "passengersNum":widget.course.passengersNum
+                                                                        +int.parse(coursesController.passengersNumberController.text),
+                                                                    "usedCollie":widget.course.usedCollie!
+                                                                        +int.parse(coursesController.collieNumberController.text),
+                                                                  }
+                                                              ).then((value) {
+                                                                coursesController.fetchCourses();
+                                                                Navigator.pop(context);
+                                                                Get.back();
+                                                              });
+                                                            }
+                                                            else {
+                                                              showDialog(
+                                                                  context: context,
+                                                                  builder: ((builder) =>
+                                                                      AlertDialog(
+                                                                        content: Container(
+                                                                          height: 110,
+                                                                          width: 100,
+                                                                          child: Column(
+                                                                            children: [
+                                                                              const Icon(
+                                                                                  IconData(0xe6cb,
+                                                                                      fontFamily:
+                                                                                      'MaterialIcons')),
+                                                                              Text(
+                                                                                  'verify your data :\n' +
+                                                                                      errorList.join(
+                                                                                          ",")),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      )));
+                                                            }
+
+                                                          },
+                                                          child: Text("Add",style: TextStyle(
+                                                              color: Color(0xFF0F5CA0)
+                                                          ),)
+                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                              )
-                                          );
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                              widget.course.passengersDetails![index].firstname),
-                                        ),
+                                              ),
+                                            )
+                                        );
+                                      },
+                                      child: Text('Add passenger',style: TextStyle(
+                                          color: Color(0xFF0F5CA0)
                                       )),
-                                      DataCell(Center(
-                                        child: Text(
-                                            widget.course.passengersDetails![index].lastName),
+                                    ),
+                                    SizedBox(width: 16,),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        coursesController.courses.doc(widget.course.id).update(
+                                            {
+                                              "passengersDetails":
+                                              widget.course.passengersDetails
+                                                  ?.map((passenger) => passenger.toJson())
+                                                  .toList(),
+                                            }
+                                        ).then((value) => Get.back());
+                                      },
+                                      child: Text('save',style: TextStyle(
+                                          color: Color(0xFF0F5CA0)
                                       )),
-                                      (widget.course.passengersDetails![index].phoneNum
-                                          .contains('.') &&
-                                          widget.course.passengersDetails![index].phoneNum
-                                              .endsWith('.0'))
-                                          ?
-                                        DataCell(Center(
-                                        child: Text(widget.course
-                                            .passengersDetails![index].phoneNum
-                                            .substring(
-                                            0,
-                                            widget.course.passengersDetails![index]
-                                                .phoneNum
-                                                .indexOf('.'))),
-                                      ))
-                                          :
-                                      DataCell(Center(child: Text(widget.course.passengersDetails![index].phoneNum.toString()))),
-                                      DataCell(
-                                Checkbox(
-                              value: widget.course.passengersDetails![index].state,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  widget.course.passengersDetails![index].state
-                                  =!widget.course.passengersDetails![index].state;
-                                });
-                              },
-                                )
-                                      )
-                                    ])),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:  EdgeInsets.only(
-                              bottom:MediaQuery.of(context).size.height*0.01
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  coursesController.firstNameController.text="";
-                                  coursesController.lastNameController.text="";
-                                  coursesController.phoneNumberController.text="";
-                                  coursesController.collieNumberController.text="";
-                                  coursesController.passengersNumberController.text="";
-                                    showDialog(
-                                        context: context,
-                                        builder: (builder)=>AlertDialog(
-                                          content: Container(
-                                            height: MediaQuery.of(context).size.height*0.48,
-                                            width: MediaQuery.of(context).size.width,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xFF0F5CA0)
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.01,
-                                                ),
-                                                Container(
-                                                  width:
-                                                  MediaQuery.of(context).size.width *
-                                                      0.6,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                      Colors.white.withOpacity(0.7),
-                                                      borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(5),
-                                                        topLeft: Radius.circular(5),
-                                                      )),
-                                                  child: Padding(
-                                                    padding:
-                                                     EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width *
-                                                            0.1,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: coursesController
-                                                          .firstNameController,
-                                                      decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: 'First Name',
-                                                          hintStyle: TextStyle(
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.02,
-                                                ),
-                                                Container(
-                                                  width:
-                                                  MediaQuery.of(context).size.width *
-                                                      0.6,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                      Colors.white.withOpacity(0.7),
-                                                      borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(5),
-                                                        topLeft: Radius.circular(5),
-                                                      )),
-                                                  child: Padding(
-                                                    padding:
-                                                     EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width *
-                                                            0.1,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: coursesController
-                                                          .lastNameController,
-                                                      decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: 'Last Name',
-                                                          hintStyle: TextStyle(
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.02,
-                                                ),
-                                                Container(
-                                                  width:
-                                                  MediaQuery.of(context).size.width *
-                                                      0.6,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                      Colors.white.withOpacity(0.7),
-                                                      borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(5),
-                                                        topLeft: Radius.circular(5),
-                                                      )),
-                                                  child: Padding(
-                                                    padding:
-                                                     EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width *
-                                                            0.1,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: coursesController
-                                                          .phoneNumberController,
-                                                      keyboardType:TextInputType.number,
-                                                      decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: 'Phone Number',
-                                                          hintStyle: TextStyle(
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.02,
-                                                ),
-                                                Container(
-                                                  width:
-                                                  MediaQuery.of(context).size.width *
-                                                      0.6,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                      Colors.white.withOpacity(0.7),
-                                                      borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(5),
-                                                        topLeft: Radius.circular(5),
-                                                      )),
-                                                  child: Padding(
-                                                    padding:
-                                                     EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width *
-                                                            0.1,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: coursesController
-                                                          .collieNumberController,
-                                                      keyboardType:TextInputType.number,
-                                                      decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: 'Collie Number',
-                                                          hintStyle: TextStyle(
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.02,
-                                                ),
-                                                Container(
-                                                  width:
-                                                  MediaQuery.of(context).size.width *
-                                                      0.6,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                      Colors.white.withOpacity(0.7),
-                                                      borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(5),
-                                                        topLeft: Radius.circular(5),
-                                                      )),
-                                                  child: Padding(
-                                                    padding:
-                                                     EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width *
-                                                            0.1,
-                                                    ),
-                                                    child: TextFormField(
-                                                      controller: coursesController
-                                                          .passengersNumberController,
-                                                        keyboardType:TextInputType.number,
-                                                      decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: 'Passengers Number',
-                                                          hintStyle: TextStyle(
-                                                              fontFamily: 'Georgia',
-                                                              color: Color(0xFF0F5CA0))),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height *
-                                                0.02,
-                                                ),
-                                                ElevatedButton(
-                                                    onPressed: (){
-
-                                                      var errorList=<String>[];
-                                                      if(coursesController.firstNameController.text.trim().isEmpty)
-                                                        errorList.add("first Name");
-
-                                                      if(coursesController.lastNameController.text.trim().isEmpty)
-                                                        errorList.add("last Name");
-
-                                                      if(coursesController.lastNameController.text.trim().isEmpty)
-                                                        errorList.add("phone Number");
-
-                                                      else if(coursesController.lastNameController.text.length==8)
-                                                        errorList.add("Invalid phone Number");
-
-                                                      if(coursesController.collieNumberController.text.trim().isEmpty)
-                                                        errorList.add("Collie Number");
-
-                                                      else if(int.parse(coursesController.collieNumberController.text.trim())>
-                                                              (widget.course.collie!-widget.course.usedCollie!))
-                                                        errorList.add('check Collie Capacity');
-
-                                                      if(coursesController.passengersNumberController.text.trim().isEmpty)
-                                                        errorList.add("passengers Number");
-                                                      else if(int.parse(coursesController.passengersNumberController.text.trim())>
-                                                              (widget.course.seatingCapacity-widget.course.passengersNum))
-                                                        errorList.add('check passengers Capacity');
-
-                                                      if(errorList.isEmpty){
-                                                        widget.course.passengersDetails?.add(
-                                                            rowdata(
-                                                                firstname: coursesController.firstNameController.text,
-                                                                lastName: coursesController.lastNameController.text,
-                                                                phoneNum: coursesController.phoneNumberController.text,
-                                                                state: false,
-                                                                collieNumber: int.parse(coursesController.collieNumberController.text),
-                                                               passengersNumber: int.parse(coursesController.passengersNumberController.text),
-
-                                                            )
-                                                        );
-
-                                                        coursesController.courses.doc(widget.course.id).update(
-                                                            {
-                                                              "passengersDetails":
-                                                              widget.course.passengersDetails
-                                                                  ?.map((passenger) => passenger.toJson())
-                                                                  .toList(),
-                                                              "passengersNum":widget.course.passengersNum
-                                                                  +int.parse(coursesController.passengersNumberController.text),
-                                                              "usedCollie":widget.course.usedCollie!
-                                                                  +int.parse(coursesController.collieNumberController.text),
-                                                            }
-                                                        ).then((value) {
-                                                          coursesController.fetchCourses();
-                                                          Navigator.pop(context);
-                                                          Get.back();
-                                                        });
-                                                      }
-                                                      else {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: ((builder) =>
-                                                                AlertDialog(
-                                                                  content: Container(
-                                                                    height: 110,
-                                                                    width: 100,
-                                                                    child: Column(
-                                                                      children: [
-                                                                        const Icon(
-                                                                            IconData(0xe6cb,
-                                                                                fontFamily:
-                                                                                'MaterialIcons')),
-                                                                        Text(
-                                                                            'verify your data :\n' +
-                                                                                errorList.join(
-                                                                                    ",")),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                )));
-                                                      }
-
-                                                    },
-                                                    child: Text("Add",style: TextStyle(
-                                                      color: Color(0xFF0F5CA0)
-                                                    ),)
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                    );
-                                },
-                                child: Text('Add passenger',style: TextStyle(
-                                    color: Color(0xFF0F5CA0)
-                                    )),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  coursesController.courses.doc(widget.course.id).update(
-                                    {
-                                      "passengersDetails":
-                                      widget.course.passengersDetails
-                                          ?.map((passenger) => passenger.toJson())
-                                          .toList(),
-                                    }
-                                  ).then((value) => Get.back());
-                                },
-                                child: Text('save',style: TextStyle(
-                                    color: Color(0xFF0F5CA0)
-                                )),
-                              ),
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
-                        )
-                      ],
-                    )),
+                        ),
+                      )),
+                ),
 
               ],
             ),

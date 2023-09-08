@@ -174,21 +174,19 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                     ),
                   ),
                   SizedBox(height: 35,),
-                  Container(
-                    margin: EdgeInsets.only(left: 50),
-                    height: MediaQuery.of(context).size.height*0.787,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFffffff).withOpacity(0.4),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40)
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left:28,
-                        right: 28
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 18),
+                      // margin: EdgeInsets.only(left: 50),
+                      // height: MediaQuery.of(context).size.height*0.787,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFffffff).withOpacity(0.4),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)
+                          )
                       ),
                       child: Form(
                         key: _formKey,
@@ -338,7 +336,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                               obscureText: true,
                               validator: Validators.compose([
                                 Validators.required('Please Enter your password'),
-                                Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
+                                // Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$', 'Invalid Password')
                               ]),
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(

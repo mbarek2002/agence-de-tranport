@@ -22,7 +22,11 @@ class LoginController extends GetxController{
        // Future.delayed(Duration(seconds: 4));
       QuerySnapshot adminsData = await FirebaseFirestore.instance.collection(
           'admins').where("email", isEqualTo: email).get();
+
       for (var admin in adminsData.docs) {
+        print("------------------------------");
+        print(admin);
+        print("------------------------------");
         adminImageUrl.value = admin['imageUrl'];
         idAdmin.value = admin.id;
       }

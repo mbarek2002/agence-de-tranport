@@ -325,7 +325,7 @@ class CoursesController extends GetxController {
 /////////////////crud opertion///////////////////////
 
   Future<void> fetchCourses() async {
-    // try {
+    try {
     isLoading.value = true;
     String? orderUrl;
     QuerySnapshot courses = await FirebaseFirestore.instance
@@ -338,6 +338,9 @@ class CoursesController extends GetxController {
 
     for (var course in courses.docs) {
 
+      print("///////////////////////////////////////////////");
+      print(course.id);
+      print("///////////////////////////////////////////////");
       Timestamp? dropOffDate;
       List<rowdata>? passengersDetailsFetch;
       List<checklistData>? carDetailsFetch = <checklistData>[];
@@ -567,9 +570,9 @@ class CoursesController extends GetxController {
 
     isLoading.value = false;
 
-    // } catch (e) {
-    //   print('Error '+ e.toString());
-    // }
+    } catch (e) {
+      print('Error '+ e.toString());
+    }
   }
 
   Future add_course(Course course) async {

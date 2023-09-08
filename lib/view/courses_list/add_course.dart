@@ -1375,7 +1375,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       ),
       content: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height*0.7,
+        // height: MediaQuery.of(context).size.height*0.7,
         child: SingleChildScrollView(
           child: Obx(()=>Column(
             children: [
@@ -1870,8 +1870,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 children: [
                   GestureDetector(
                     child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
                       width:MediaQuery.of(context).size.width*0.3,
-                      height:MediaQuery.of(context).size.height*0.1,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
@@ -1881,7 +1882,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           ?Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Front car picture'),
+                              Text('Front side car picture',textAlign: TextAlign.center,),
+                              SizedBox(height: 8,),
                               FaIcon(FontAwesomeIcons.image),
                             ],
                           )
@@ -1905,8 +1907,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 12),
                       width:MediaQuery.of(context).size.width*0.3,
-                      height:MediaQuery.of(context).size.height*0.1,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
@@ -1915,7 +1918,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           ?Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('back car picture'),
+                          Text('Back side car picture',textAlign: TextAlign.center),
+                        SizedBox(height: 8,),
                           FaIcon(FontAwesomeIcons.image),
                         ],
                       )
@@ -1927,7 +1931,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 12,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1939,8 +1943,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
                       width:MediaQuery.of(context).size.width*0.3,
-                      height:MediaQuery.of(context).size.height*0.1,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
@@ -1950,12 +1955,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           ?Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                              Padding(
-                                padding:  EdgeInsets.only(
-                                    left:MediaQuery.of(context).size.width*0.04
-                                ),
-                                child: Text('right side car picture'),
-                              ),
+                              Text('Right side car picture',textAlign: TextAlign.center,),
+                          SizedBox(height: 8,),
                               FaIcon(FontAwesomeIcons.image),
                             ],
                           )
@@ -1973,8 +1974,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       );
                     },
                     child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
                       width:MediaQuery.of(context).size.width*0.3,
-                      height:MediaQuery.of(context).size.height*0.1,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
@@ -1983,12 +1985,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           ?Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                              Padding(
-                                padding:  EdgeInsets.only(
-                                    left:MediaQuery.of(context).size.width*0.04
-                                ),
-                                child: Text('left side car picture'),
-                              ),
+                              Text('Left side car picture',textAlign: TextAlign.center,),
+                              SizedBox(height: 8,),
                               FaIcon(FontAwesomeIcons.image),
                             ],
                           )
@@ -2000,7 +1998,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 16,),
               ElevatedButton(onPressed: (){
                 coursesController.checkList.value=true;
                 coursesController.checkListTable.value=[
@@ -2023,7 +2021,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 ];
                 Navigator.pop(context);
               },
-                  child: Text('Next'))
+                  child: Text('Next')),
+              SizedBox(height: 16,),
 
             ],
           )),

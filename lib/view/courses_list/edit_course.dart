@@ -2068,15 +2068,23 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                 children: [
                   GestureDetector(
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width:MediaQuery.of(context).size.width*0.3,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
 
                       ),
                       child:coursesController.imageCar1.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Front side car picture',textAlign: TextAlign.center,),
+                          SizedBox(height: 8,),
+                          FaIcon(FontAwesomeIcons.image),
+                        ],
+                      )
                           :Image.file(
                         File(coursesController.imageCar1.value),
                         fit: BoxFit.fill,
@@ -2097,14 +2105,22 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width:MediaQuery.of(context).size.width*0.3,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
                       ),
                       child: coursesController.imageCar2.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Back side car picture',textAlign: TextAlign.center),
+                          SizedBox(height: 8,),
+                          FaIcon(FontAwesomeIcons.image),
+                        ],
+                      )
                           :Image.file(
                         File(coursesController.imageCar2.value),
                         fit: BoxFit.cover,
@@ -2113,7 +2129,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 12,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -2125,15 +2141,23 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width:MediaQuery.of(context).size.width*0.3,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
 
                       ),
                       child: coursesController.imageCar3.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Right side car picture',textAlign: TextAlign.center,),
+                          SizedBox(height: 8,),
+                          FaIcon(FontAwesomeIcons.image),
+                        ],
+                      )
                           :Image.file(
                         File(coursesController.imageCar3.value),
                         fit: BoxFit.cover,
@@ -2148,14 +2172,22 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                       );
                     },
                     child: Container(
-                      width:MediaQuery.of(context).size.width*0.27,
-                      height:MediaQuery.of(context).size.height*0.05,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      width:MediaQuery.of(context).size.width*0.3,
+                      // height:MediaQuery.of(context).size.height*0.1,
                       decoration: BoxDecoration(
                           color: Color(0xFF0F5CA0).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(5)
                       ),
                       child: coursesController.imageCar4.value==""
-                          ?Center(child: FaIcon(FontAwesomeIcons.image))
+                          ?Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Left side car picture',textAlign: TextAlign.center,),
+                          SizedBox(height: 8,),
+                          FaIcon(FontAwesomeIcons.image),
+                        ],
+                      )
                           :Image.file(
                         File(coursesController.imageCar4.value),
                         fit: BoxFit.cover,
@@ -2164,7 +2196,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 5,),
+              SizedBox(height: 16,),
               ElevatedButton(onPressed: (){
                 coursesController.checkList.value=true;
                 coursesController.checkListTable.value=[

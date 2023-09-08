@@ -5,6 +5,7 @@ import 'package:admin_citygo/models/driver_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -171,9 +172,17 @@ class DriversController extends GetxController{
        print(d.email);
        if(test == true)
          {
-           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-               email: d.email, password: d.password).then((value) {
-             driversList.add({
+           // User? user = FirebaseAuth.instance.currentUser;
+           FirebaseApp app = await Firebase.initializeApp(
+               name: 'secondary', options: Firebase.app().options);
+           await FirebaseAuth.instanceFor(app: app)
+               .createUserWithEmailAndPassword(
+               email: d.email, password: d.password);
+
+          await  app.delete();
+           // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+           //     email: d.email, password: d.password).then((value) {
+          await   driversList.add({
                "driverImage": d.driverImage,
                "firstName": d.firstName,
                "lastName": d.lastName,
@@ -192,9 +201,9 @@ class DriversController extends GetxController{
                "more2": d.moreImage2,
                "more3": d.moreImage3,
              });
-             fetchDrivers();
+            await fetchDrivers();
              init();
-           });
+           // });
 
            print("true");
          }

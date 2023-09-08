@@ -90,237 +90,237 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                     ),
                   ),
                   SizedBox(height: 35,),
-                  Container(
-                    margin: EdgeInsets.only(left: 50),
-                    height: MediaQuery.of(context).size.height*0.787,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFffffff).withOpacity(0.4),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40)
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left:28,
-                          right: 28
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 18),
+                      padding: EdgeInsets.symmetric(horizontal: 22),
+                      // height: MediaQuery.of(context).size.height*0.787,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFffffff).withOpacity(0.4),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)
+                          )
                       ),
                       child: Stack(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  Text('Upload Identity',style:TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    child: Obx(() => Padding(
-                                      padding: const EdgeInsets.only(
-                                          top:2.0,
-                                          bottom:2
-                                      ),
-                                      child: Container(
-                                        height: 70,
-                                        width: MediaQuery.of(context).size.width*0.365,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.2),
-                                            border: Border.all(
-                                                color: Colors.grey.withOpacity(0.4),
-                                                width: 2
-                                            )
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20,),
+                                Row(
+                                  children: [
+                                    Text('Upload Identity',style:TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
+                                  ],
+                                ),
+                                SizedBox(height: 5,),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      child: Obx(() => Padding(
+                                        padding: const EdgeInsets.only(
+                                            top:2.0,
+                                            bottom:2
                                         ),
-                                        child: controller.selectedIdentityFace1.value == null
-                                        ?Image(image:AssetImage("assets/images/idFace1.png"))
-                                          :controller.selectedIdentityFace1.value!.path.endsWith('.pdf')
-                                           ? Column(
-                                             children: [
-                                              Icon(Icons.file_open),
-                                              Text(controller.selectedIdentityFace1.value!.path.split('/').last,
-                                                style: TextStyle(fontSize: 10),)
-                                          ],
-                                        )
-                                            :Padding(
-                                            padding: EdgeInsets.only(
-                                                top:2,
-                                                bottom:2,
-                                                right: 15,
-                                                left: 15
-                                            ),
-                                            child: Image.file(controller.selectedIdentityFace1.value!,fit: BoxFit.fill,)),
-                                        // ? Text(controller.selectedFile.value!.path.split('/').last)
-
-                                      ),
-                                    )),
-                                    onTap: (){
-                                      controller.pickIdentityFileFace1();
-                                      // showModalBottomSheet(
-                                      //     context: context,
-                                      //     builder: ((builder)=>bottomSheet())
-                                      // );
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Obx(() => Padding(
-                                      padding: const EdgeInsets.only(
-                                          top:2.0,
-                                          bottom:2
-                                      ),
-                                      child: Container(
-                                        height: 70,
-                                        width: MediaQuery.of(context).size.width*0.365,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.2),
-                                            border: Border.all(
-                                                color: Colors.grey.withOpacity(0.4),
-                                                width: 2
-                                            )
-                                        ),
-                                        child: controller.selectedIdentityFace2.value == null
-                                            ?Image(image:AssetImage("assets/images/idFace2.png"))
-                                            :controller.selectedIdentityFace2.value!.path.endsWith('.pdf')
-                                            ? Column(
-                                          children: [
-                                              Icon(Icons.file_open),
-                                              Text(controller.selectedIdentityFace2.value!.path.split('/').last,)
+                                        child: Container(
+                                          height: 70,
+                                          width: MediaQuery.of(context).size.width*0.365,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.2),
+                                              border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.4),
+                                                  width: 2
+                                              )
+                                          ),
+                                          child: controller.selectedIdentityFace1.value == null
+                                          ?Image(image:AssetImage("assets/images/idFace1.png"))
+                                            :controller.selectedIdentityFace1.value!.path.endsWith('.pdf')
+                                             ? Column(
+                                               children: [
+                                                Icon(Icons.file_open),
+                                                Text(controller.selectedIdentityFace1.value!.path.split('/').last,
+                                                  style: TextStyle(fontSize: 10),)
                                             ],
                                           )
-                                            :Padding(
-                                            padding: EdgeInsets.only(
-                                                top:2,
-                                                bottom:2,
-                                                right: 15,
-                                                left: 15
-                                            ),
-                                            child: Image.file(controller.selectedIdentityFace2.value!,fit: BoxFit.fill,)),
-                                      ),
-                                    )),
-                                    onTap: (){
-                                      controller.pickIdentityFileFace2();
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
-                              SizedBox(height: 12,),
-                              Row(
-                                children: [
-                                  Text('Upload Licence',style:TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    child: Obx(() => Padding(
-                                      padding: const EdgeInsets.only(
-                                          top:2.0,
-                                          bottom:2
-                                      ),
-                                      child: Container(
-                                        height: 70,
-                                        width: MediaQuery.of(context).size.width*0.365,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.2),
-                                            border: Border.all(
-                                                color: Colors.grey.withOpacity(0.4),
-                                                width: 2
-                                            )
-                                        ),
-                                        child:controller.selectedLicenceFace1.value == null
-                                            ?Image(image:AssetImage("assets/images/idFace1.png"))
-                                            :controller.selectedLicenceFace1.value!.path.endsWith('.pdf')
-                                            ? Column(
-                                             children: [
-                                              Icon(Icons.file_open),
-                                              Text(controller.selectedLicenceFace1.value!.path.split('/').last,)
-                                          ],
-                                        )
-                                            :Padding(
-                                            padding: EdgeInsets.only(
-                                                top:2,
-                                                bottom:2,
-                                                right: 15,
-                                                left: 15
-                                            ),
-                                            child: Image.file(controller.selectedLicenceFace1.value!,fit: BoxFit.fill,)),
-                                      ),
-                                    )),
-                                    onTap: (){
-                                      controller.pickLicenceFileFace1();
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Obx(() => Padding(
-                                      padding: const EdgeInsets.only(
-                                          top:2.0,
-                                          bottom:2
-                                      ),
-                                      child: Container(
-                                        height: 70,
-                                        width: MediaQuery.of(context).size.width*0.365,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.2),
-                                            border: Border.all(
-                                                color: Colors.grey.withOpacity(0.4),
-                                                width: 2
-                                            )
-                                        ),
-                                        child: controller.selectedLicenceFace2.value == null
-                                            ?Image(image:AssetImage("assets/images/permis.png"))
-                                            :controller.selectedLicenceFace2.value!.path.endsWith('.pdf')
-                                            ? Column(
-                                          children: [
-                                            Icon(Icons.file_open),
-                                            Text(controller.selectedLicenceFace2.value!.path.split('/').last,)
-                                          ],
-                                        )
-                                            :Padding(
-                                            padding: EdgeInsets.only(
-                                                top:2,
-                                                bottom:2,
-                                                right: 15,
-                                                left: 15
-                                            ),
-                                            child: Image.file(controller.selectedLicenceFace2.value!,fit: BoxFit.fill,)),
-                                      ),
-                                    )),
-                                    onTap: (){
-                                      controller.pickLicenceFileFace2();
-                                      // return;
-                                      // showModalBottomSheet(
-                                      //     context: context,
-                                      //     builder: ((builder)=>bottomSheet())
-                                      // );
-                                      // controller.pickImage();
-                                      // Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
-                              SizedBox(height: 12,),
-                              if(counter>=1)moreWidget1(),
-                              if(counter>=2)moreWidget2(),
-                              if(counter>=3)moreWidget3(),
+                                              :Padding(
+                                              padding: EdgeInsets.only(
+                                                  top:2,
+                                                  bottom:2,
+                                                  right: 15,
+                                                  left: 15
+                                              ),
+                                              child: Image.file(controller.selectedIdentityFace1.value!,fit: BoxFit.fill,)),
+                                          // ? Text(controller.selectedFile.value!.path.split('/').last)
 
-                              if(counter<3)OutlinedButton(
-                                  onPressed: (){
-                                    setState(() {
-                                      counter++;
-                                    });
-                                  },
-                                  child: Text('More...',style:TextStyle(color: Colors.black))
-                              ),
-                            ],
+                                        ),
+                                      )),
+                                      onTap: (){
+                                        controller.pickIdentityFileFace1();
+                                        // showModalBottomSheet(
+                                        //     context: context,
+                                        //     builder: ((builder)=>bottomSheet())
+                                        // );
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      child: Obx(() => Padding(
+                                        padding: const EdgeInsets.only(
+                                            top:2.0,
+                                            bottom:2
+                                        ),
+                                        child: Container(
+                                          height: 70,
+                                          width: MediaQuery.of(context).size.width*0.365,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.2),
+                                              border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.4),
+                                                  width: 2
+                                              )
+                                          ),
+                                          child: controller.selectedIdentityFace2.value == null
+                                              ?Image(image:AssetImage("assets/images/idFace2.png"))
+                                              :controller.selectedIdentityFace2.value!.path.endsWith('.pdf')
+                                              ? Column(
+                                            children: [
+                                                Icon(Icons.file_open),
+                                                Text(controller.selectedIdentityFace2.value!.path.split('/').last,)
+                                              ],
+                                            )
+                                              :Padding(
+                                              padding: EdgeInsets.only(
+                                                  top:2,
+                                                  bottom:2,
+                                                  right: 15,
+                                                  left: 15
+                                              ),
+                                              child: Image.file(controller.selectedIdentityFace2.value!,fit: BoxFit.fill,)),
+                                        ),
+                                      )),
+                                      onTap: (){
+                                        controller.pickIdentityFileFace2();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
+                                SizedBox(height: 12,),
+                                Row(
+                                  children: [
+                                    Text('Upload Licence',style:TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('*',style:TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
+                                  ],
+                                ),
+                                SizedBox(height: 5,),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      child: Obx(() => Padding(
+                                        padding: const EdgeInsets.only(
+                                            top:2.0,
+                                            bottom:2
+                                        ),
+                                        child: Container(
+                                          height: 70,
+                                          width: MediaQuery.of(context).size.width*0.365,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.2),
+                                              border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.4),
+                                                  width: 2
+                                              )
+                                          ),
+                                          child:controller.selectedLicenceFace1.value == null
+                                              ?Image(image:AssetImage("assets/images/idFace1.png"))
+                                              :controller.selectedLicenceFace1.value!.path.endsWith('.pdf')
+                                              ? Column(
+                                               children: [
+                                                Icon(Icons.file_open),
+                                                Text(controller.selectedLicenceFace1.value!.path.split('/').last,)
+                                            ],
+                                          )
+                                              :Padding(
+                                              padding: EdgeInsets.only(
+                                                  top:2,
+                                                  bottom:2,
+                                                  right: 15,
+                                                  left: 15
+                                              ),
+                                              child: Image.file(controller.selectedLicenceFace1.value!,fit: BoxFit.fill,)),
+                                        ),
+                                      )),
+                                      onTap: (){
+                                        controller.pickLicenceFileFace1();
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      child: Obx(() => Padding(
+                                        padding: const EdgeInsets.only(
+                                            top:2.0,
+                                            bottom:2
+                                        ),
+                                        child: Container(
+                                          height: 70,
+                                          width: MediaQuery.of(context).size.width*0.365,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.2),
+                                              border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.4),
+                                                  width: 2
+                                              )
+                                          ),
+                                          child: controller.selectedLicenceFace2.value == null
+                                              ?Image(image:AssetImage("assets/images/permis.png"))
+                                              :controller.selectedLicenceFace2.value!.path.endsWith('.pdf')
+                                              ? Column(
+                                            children: [
+                                              Icon(Icons.file_open),
+                                              Text(controller.selectedLicenceFace2.value!.path.split('/').last,)
+                                            ],
+                                          )
+                                              :Padding(
+                                              padding: EdgeInsets.only(
+                                                  top:2,
+                                                  bottom:2,
+                                                  right: 15,
+                                                  left: 15
+                                              ),
+                                              child: Image.file(controller.selectedLicenceFace2.value!,fit: BoxFit.fill,)),
+                                        ),
+                                      )),
+                                      onTap: (){
+                                        controller.pickLicenceFileFace2();
+                                        // return;
+                                        // showModalBottomSheet(
+                                        //     context: context,
+                                        //     builder: ((builder)=>bottomSheet())
+                                        // );
+                                        // controller.pickImage();
+                                        // Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Text('Allowed file types .pdf,.png',style: TextStyle(fontSize: 8,color: Colors.grey),),
+                                SizedBox(height: 12,),
+                                if(counter>=1)moreWidget1(),
+                                if(counter>=2)moreWidget2(),
+                                if(counter>=3)moreWidget3(),
+
+                                if(counter<3)OutlinedButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        counter++;
+                                      });
+                                    },
+                                    child: Text('More...',style:TextStyle(color: Colors.black))
+                                ),
+                                SizedBox(height: 150,)
+                              ],
+                            ),
                           ),
                           Positioned(
                             bottom: 20,
@@ -395,7 +395,7 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                                     child: Container(
                                       width: 120,
                                       height: 30,
-                                      child: Center(child: Text('Save',style: TextStyle(color: Colors.white),)),
+                                      child: Center(child: Text('Confirm',style: TextStyle(color: Colors.white),)),
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
                                           color: Color(0xFF333333)
