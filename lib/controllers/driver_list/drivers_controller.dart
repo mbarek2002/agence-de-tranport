@@ -13,6 +13,8 @@ import 'package:image_picker/image_picker.dart';
 class DriversController extends GetxController{
 
   CollectionReference driversList = FirebaseFirestore.instance.collection("drivers");
+  CollectionReference driversNotifCollection = FirebaseFirestore.instance.collection('notiNewDrivers');
+
   ////////////////////////////////////////////////////
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -126,30 +128,43 @@ class DriversController extends GetxController{
 
 //////////////cud operation///////////////////
 
-  Future<void> deleteUserByEmail(String email) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-
+  Future delete_driver(DriverModel d,BuildContext context )async{
     try {
-      User? user = (await auth.fetchSignInMethodsForEmail(email)).isEmpty
-          ? null
-          : auth.currentUser;
+      final email = d.email;
+      final password = await d.password;
 
-      if (user != null) {
-        await user.delete();
-        print("User with email $email deleted successfully.");
-      } else {
-        print("User with email $email not found.");
+      // Show confirmation dialog
+
+
+        FirebaseApp app = await Firebase.initializeApp(
+            name: 'secondary', options: Firebase.app().options);
+
+        UserCredential userCredential = await FirebaseAuth.instanceFor(app: app).signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        await userCredential.user?.delete();
+        await app.delete();
+
+        print("User deleted successfully.");
+        print(d.email);
+        await driversList.doc(d.id).delete();
+      QuerySnapshot querySnapshot = await driversNotifCollection.where('email', isEqualTo: email).get();
+
+      // Loop through the documents and delete them
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        await documentSnapshot.reference.delete();
       }
+        print('Driver deleted successfully');
+        fetchDrivers();
+        init();
+
     } catch (e) {
-      print("Error deleting user: $e");
+      print('Error deleting driver: $e');
     }
-  }
-  Future delete_driver(DriverModel d )async{
-    await deleteUserByEmail(d.email);
-    await driversList.doc(d.email).delete().then((value) {
-      fetchDrivers();
-      init();
-    });
+
+
   }
   Future<bool> isEmailRegistered(String email) async {
     try {
@@ -167,11 +182,12 @@ class DriversController extends GetxController{
 
 
   Future add_driver(DriverModel d)async {
-    try {
+    // try {
        bool test = await isEmailRegistered(d.email);
        print(d.email);
        if(test == true)
          {
+           print("trueeeeeee");
            // User? user = FirebaseAuth.instance.currentUser;
            FirebaseApp app = await Firebase.initializeApp(
                name: 'secondary', options: Firebase.app().options);
@@ -208,6 +224,8 @@ class DriversController extends GetxController{
            print("true");
          }
          else{
+         print("falsedee");
+
          driversList.add({
            "driverImage": d.driverImage,
            "firstName": d.firstName,
@@ -233,12 +251,13 @@ class DriversController extends GetxController{
 
        }
            print('false');
-    }catch(e){
-      print(e.toString());
-    }
+    // }catch(e){
+    //   print(e.toString());
+    // }
   }
 
   Future update_driver(DriverModel d)async{
+
     driversList.doc(d.id).update(
         {
           "driverImage":d.driverImage,

@@ -86,7 +86,7 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                   SizedBox(height: 35,),
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(left: 50),
+                      margin: EdgeInsets.symmetric(horizontal: 16),
                       // height: MediaQuery.of(context).size.height*0.75,
                       decoration: BoxDecoration(
                         color: Color(0xFFffffff).withOpacity(0.4),
@@ -100,11 +100,14 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 20,),
-                          Text("Driver Register",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Georgia"),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Text("Driver Register",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Georgia"),
+                            ),
                           ),
                           SizedBox(height: 12,),
                           Padding(
@@ -289,27 +292,27 @@ class _ConsultNotiNewDriversState extends State<ConsultNotiNewDrivers> {
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height* .04,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                        image: NetworkImage(loginController.adminImageUrl.value),
-                        fit: BoxFit.cover
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: ()=>Get.offAll(()=>HomeScreen()),
-                  ),
-                ),
-              ),
-            )
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height* .04,
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width,
+            //     alignment: Alignment.center,
+            //     child: Container(
+            //       width: 50,
+            //       height: 50,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.all(Radius.circular(20)),
+            //         image: DecorationImage(
+            //             image: NetworkImage(loginController.adminImageUrl.value),
+            //             fit: BoxFit.cover
+            //         ),
+            //       ),
+            //       child: GestureDetector(
+            //         onTap: ()=>Get.offAll(()=>HomeScreen()),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         )
 

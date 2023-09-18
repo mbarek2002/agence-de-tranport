@@ -65,6 +65,8 @@ dependencies:
   flutter_downloader: ^1.11.1
   path_provider: ^2.1.0
   permission_handler: ^10.4.3
+  flutter_launcher_icons: ^0.13.1
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -96,6 +106,7 @@ flutter:
     - assets/logo/
     - assets/icons/
     - assets/icons/person-combination.svg
+    - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

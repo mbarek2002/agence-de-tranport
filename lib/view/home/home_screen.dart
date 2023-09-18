@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState(){
     super.initState();
     print("**********************");
-    print(FirebaseAuth.instance.currentUser!.email.toString());
+    print(FirebaseAuth.instance.currentUser?.email.toString());
     print("**********************");
      loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
@@ -297,55 +297,55 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height* .04,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.center,
-              child: GestureDetector(
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Obx(() {
-                    if (loginController.isLoading.value) {
-                      return SizedBox(
-                        height: 20.0,
-                        width: 20.0,
-                        child: Center(
-                            child: CircularProgressIndicator()
-                        ),
-                      );
-                    } else {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white.withOpacity(0.2),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image:
-                            NetworkImage(
-                              loginController.adminImageUrl.value
-                            ),
-                          )
-                        ),
-                        height: 60,
-                        width: 60,
-                      );
-                    }
-                  }
-                  )
-               ),
-                
-                onTap: () {
-                  Get.offAll(() => HomeScreen());
-                }
-
-                ),
-                ),
-                ),
+          // Positioned(
+          //   top: MediaQuery.of(context).size.height* .04,
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     alignment: Alignment.center,
+          //     child: GestureDetector(
+          //       child: Container(
+          //         height: 50,
+          //         width: 50,
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(20)
+          //         ),
+          //         child: Obx(() {
+          //           if (loginController.isLoading.value) {
+          //             return SizedBox(
+          //               height: 20.0,
+          //               width: 20.0,
+          //               child: Center(
+          //                   child: CircularProgressIndicator()
+          //               ),
+          //             );
+          //           } else {
+          //             return Container(
+          //               decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(15),
+          //                 color: Colors.white.withOpacity(0.2),
+          //                 image: DecorationImage(
+          //                   fit: BoxFit.cover,
+          //                   image:
+          //                   NetworkImage(
+          //                     loginController.adminImageUrl.value
+          //                   ),
+          //                 )
+          //               ),
+          //               height: 60,
+          //               width: 60,
+          //             );
+          //           }
+          //         }
+          //         )
+          //      ),
+          //
+          //       onTap: () {
+          //         Get.offAll(() => HomeScreen());
+          //       }
+          //
+          //       ),
+          //       ),
+          //       ),
         ],
       ),
     );

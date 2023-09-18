@@ -31,7 +31,7 @@ class Course {
   int? collie;
   int? usedCollie;
 
-  int identityNum;
+  int? identityNum;
   bool? seen;
   bool? finished;
   String check;

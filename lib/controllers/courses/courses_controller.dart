@@ -348,6 +348,7 @@ class CoursesController extends GetxController {
       String? carImg2Url;
       String? carImg3Url;
       String? carImg4Url;
+      int? identityNum;
 
       var courseData = course.data() as Map<String, dynamic>;
 
@@ -399,6 +400,9 @@ class CoursesController extends GetxController {
       if (courseData.containsKey('carImage4URL')) {
         carImg4Url = course['carImage4URL'];
       }
+      if (courseData.containsKey('identityNum')) {
+        identityNum = course['identityNum'] ?? 0;
+      }
 
       Timestamp date = course['pickUpDate'];
       // coursesAll.add(Course(
@@ -446,7 +450,7 @@ class CoursesController extends GetxController {
             regNumber: course['regNumber'],
             driverName: course['driverName'],
             seen: course['seen'],
-            identityNum: course['identityNum'],
+            identityNum: identityNum,
             passengersDetails: passengersDetailsFetch,
             carListDetails: carDetailsFetch,
             orderUrl: orderUrl,
@@ -475,7 +479,7 @@ class CoursesController extends GetxController {
             regNumber: course['regNumber'],
             driverName: course['driverName'],
             seen: course['seen'],
-            identityNum: course['identityNum'],
+            identityNum: identityNum,
             passengersDetails: passengersDetailsFetch,
             carListDetails: carDetailsFetch,
             orderUrl: orderUrl,
@@ -505,7 +509,7 @@ class CoursesController extends GetxController {
           seatingCapacity: course['seatingCapacity'],
           regNumber: course['regNumber'],
           driverName: course['driverName'],
-          identityNum: course['identityNum'],
+          identityNum: identityNum,
           passengersDetails: passengersDetailsFetch,
           orderUrl: orderUrl,
           dropOffDate: dropOffDate?.toDate(),
@@ -531,7 +535,7 @@ class CoursesController extends GetxController {
           seatingCapacity: course['seatingCapacity'],
           regNumber: course['regNumber'],
           driverName: course['driverName'],
-          identityNum: course['identityNum'],
+          identityNum: identityNum,
           passengersDetails: passengersDetailsFetch,
           orderUrl: orderUrl,
           dropOffDate: dropOffDate?.toDate(),
@@ -905,6 +909,15 @@ class CoursesController extends GetxController {
   }
 
   Future delete_course(Course course) async {
+    print("cccccc");
+    print(course.id);
+    await courses.doc(course.id).delete();
+    print("AAAAAA");
+    Get.back();
+    fetchCourses();
+    return;
+
+
     if (course.orderUrl != null)
       FirebaseStorage.instance.refFromURL(course.orderUrl!).delete();
 
@@ -920,7 +933,7 @@ class CoursesController extends GetxController {
     if (course.carImage4URL != null)
       FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
 
-    await courses.doc(course.id).delete();
+    print("DDDDD");
   }
 
   ///////////////admin/////////////////////////

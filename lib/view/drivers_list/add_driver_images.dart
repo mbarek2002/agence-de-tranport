@@ -413,27 +413,27 @@ class _AddDriverImagesScreenState extends State<AddDriverImagesScreen> {
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height* .04,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                        image: NetworkImage(loginController.adminImageUrl.value),
-                        fit: BoxFit.cover
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: ()=>Get.offAll(()=>HomeScreen()),
-                  ),
-                ),
-              ),
-            )
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height* .04,
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width,
+            //     alignment: Alignment.center,
+            //     child: Container(
+            //       width: 50,
+            //       height: 50,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.all(Radius.circular(20)),
+            //         image: DecorationImage(
+            //             image: NetworkImage(loginController.adminImageUrl.value),
+            //             fit: BoxFit.cover
+            //         ),
+            //       ),
+            //       child: GestureDetector(
+            //         onTap: ()=>Get.offAll(()=>HomeScreen()),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         )
     );

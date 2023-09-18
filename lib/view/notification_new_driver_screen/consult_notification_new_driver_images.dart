@@ -9,6 +9,7 @@ import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
@@ -113,7 +114,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                   SizedBox(height: 38,),
                   Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(left: 50),
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 28),
                       // height: MediaQuery.of(context).size.height*0.787,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
@@ -123,15 +125,11 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                               topRight: Radius.circular(40)
                           )
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left:28,
-                            right: 28
-                        ),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Column(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 20,),
@@ -159,40 +157,101 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                child:
-                                                  widget.record.identityCardImageFace1.split('?').first.endsWith('.jpg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
+                                              GestureDetector(
+                                                onTap:(){
+                                                  if(widget.record.identityCardImageFace1.split('?').first.endsWith('.jpg')||
+                                                      widget.record.identityCardImageFace1.split('?').first.endsWith('.jpeg')||
+                                                      widget.record.identityCardImageFace1.split('?').first.endsWith('.png')
+                                                  )
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider: NetworkImage(
+                                                                          widget.record.identityCardImageFace1,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.network(widget.record.identityCardImageFace1,),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+
+
+
+                                                },
+                                                child: Container(
+                                                  child:
+                                                    widget.record.identityCardImageFace1.split('?').first.endsWith('.jpg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :widget.record.identityCardImageFace1.split('?').first.endsWith('.jpeg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      : widget.record.identityCardImageFace1.split('?').first.endsWith('.png')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :Column(
+                                                    children: [
+                                                      Icon(Icons.file_open),
+                                                      Text('pdf File')
+                                                    ],
                                                   ),
-                                                )
-                                                    :widget.record.identityCardImageFace1.split('?').first.endsWith('.jpeg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    : widget.record.identityCardImageFace1.split('?').first.endsWith('.png')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    :Column(
-                                                  children: [
-                                                    Icon(Icons.file_open),
-                                                    Text('pdf File')
-                                                  ],
                                                 ),
                                               ),
                                               Center(
@@ -255,7 +314,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
 
 
 
-                                                      },child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
+                                                      },
+                                                      child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
                                                 ),
                                               )
                                             ],
@@ -285,40 +345,154 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                child:
-                                                widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
+                                              GestureDetector(
+                                                onTap:(){
+                                                  if(controller.selectedIdentityFace2.value!=null && controller.selectedIdentityFace2.value!.path.split('/')!.last.endsWith('.pdf'))
+                                                  {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.file(controller.selectedIdentityFace2.value!),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+                                                  else if(controller.selectedIdentityFace2.value!=null)
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider: FileImage(
+                                                                          controller.selectedIdentityFace2.value!,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else if(widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg')||
+                                                      widget.record.identityCardImageFace2.split('?').first.endsWith('.jpeg')||
+                                                      widget.record.identityCardImageFace2.split('?').first.endsWith('.png')
+                                                  )
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider : NetworkImage(
+                                                                          widget.record.identityCardImageFace2,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else {
+                                                    // SfPdfViewer.network(widget.record.identityCardImageFace1);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.network(widget.record.identityCardImageFace2,),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+
+
+
+                                                },
+                                                child: Container(
+                                                  child:
+                                                  widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :widget.record.identityCardImageFace2.split('?').first.endsWith('.jpeg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      : widget.record.identityCardImageFace2.split('?').first.endsWith('.png')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.identityCardImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :Column(
+                                                    children: [
+                                                      Icon(Icons.file_open),
+                                                      Text('pdf File')
+                                                    ],
                                                   ),
-                                                )
-                                                    :widget.record.identityCardImageFace2.split('?').first.endsWith('.jpeg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    : widget.record.identityCardImageFace2.split('?').first.endsWith('.png')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.identityCardImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    :Column(
-                                                  children: [
-                                                    Icon(Icons.file_open),
-                                                    Text('pdf File')
-                                                  ],
                                                 ),
                                               ),
                                               Center(
@@ -432,7 +606,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
 
 
 
-                                                      },child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
+                                                      },
+                                                      child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
                                                 ),
                                               )
                                             ],
@@ -504,40 +679,155 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                child:
-                                                widget.record.licenceImageFace1.split('?').first.endsWith('.jpg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
+                                              GestureDetector(
+                                                onTap:(){
+                                                  if(controller.selectedLicenceFace1.value!=null && controller.selectedLicenceFace1.value!.path.split('/')!.last.endsWith('.pdf'))
+                                                  {
+                                                    // SfPdfViewer.network(widget.record.identityCardImageFace1);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.file(controller.selectedLicenceFace1.value!),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+                                                  else if(controller.selectedLicenceFace1.value!=null)
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider:FileImage(
+                                                                          controller.selectedLicenceFace1.value!,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else if(widget.record.licenceImageFace1.split('?').first.endsWith('.jpg')||
+                                                      widget.record.licenceImageFace1.split('?').first.endsWith('.jpeg')||
+                                                      widget.record.licenceImageFace1.split('?').first.endsWith('.png')
+                                                  )
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider: NetworkImage(
+                                                                          widget.record.licenceImageFace1,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else {
+                                                    // SfPdfViewer.network(widget.record.identityCardImageFace1);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.network(widget.record.licenceImageFace1,),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+
+
+
+                                                },
+                                                child: Container(
+                                                  child:
+                                                  widget.record.licenceImageFace1.split('?').first.endsWith('.jpg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :widget.record.licenceImageFace1.split('?').first.endsWith('.jpeg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      : widget.record.licenceImageFace1.split('?').first.endsWith('.png')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace1,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :Column(
+                                                    children: [
+                                                      Icon(Icons.file_open),
+                                                      Text('pdf File')
+                                                    ],
                                                   ),
-                                                )
-                                                    :widget.record.licenceImageFace1.split('?').first.endsWith('.jpeg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    : widget.record.licenceImageFace1.split('?').first.endsWith('.png')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace1,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    :Column(
-                                                  children: [
-                                                    Icon(Icons.file_open),
-                                                    Text('pdf File')
-                                                  ],
                                                 ),
                                               ),
                                               Center(
@@ -652,7 +942,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
 
 
 
-                                                      },child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
+                                                      },
+                                                      child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
                                                 ),
                                               )
                                             ],
@@ -682,40 +973,101 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                child:
-                                                widget.record.licenceImageFace2.split('?').first.endsWith('.jpg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
+                                              GestureDetector(
+                                                onTap:(){
+                                                  if(widget.record.licenceImageFace2.split('?').first.endsWith('.jpg')||
+                                                      widget.record.licenceImageFace2.split('?').first.endsWith('.jpeg')||
+                                                      widget.record.licenceImageFace2.split('?').first.endsWith('.png')
+                                                  )
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((builder)=>
+                                                            AlertDialog(
+                                                              content: Stack(
+                                                                children: [
+                                                                  Container(
+                                                                    height:250,
+                                                                    width: 1800,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        top:20.0,
+                                                                      ),
+                                                                      child: PhotoView(
+                                                                        imageProvider: NetworkImage(
+                                                                          widget.record.licenceImageFace2,
+                                                                          // width:1300,
+                                                                          // height: 100,
+                                                                          // fit: BoxFit.fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Positioned(
+                                                                      top: -15,
+                                                                      right: -10,
+                                                                      child: IconButton(
+                                                                        onPressed:(){Navigator.pop(context);},
+                                                                        icon:Icon(Icons.close,size: 30,),
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  else {
+                                                    // SfPdfViewer.network(widget.record.identityCardImageFace1);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (
+                                                                (builder)=>AlertDialog(
+                                                              content: Container(
+                                                                height: 500,
+                                                                width: 2500,
+                                                                child: SfPdfViewer.network(widget.record.licenceImageFace2,),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }
+
+
+                                                },
+                                                child: Container(
+                                                  child:
+                                                  widget.record.licenceImageFace2.split('?').first.endsWith('.jpg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :widget.record.licenceImageFace2.split('?').first.endsWith('.jpeg')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      : widget.record.licenceImageFace2.split('?').first.endsWith('.png')
+                                                      ?Padding(
+                                                    padding: const EdgeInsets.all(3.0),
+                                                    child: Image.network(
+                                                      widget.record.licenceImageFace2,
+                                                      width: 100,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  )
+                                                      :Column(
+                                                    children: [
+                                                      Icon(Icons.file_open),
+                                                      Text('pdf File')
+                                                    ],
                                                   ),
-                                                )
-                                                    :widget.record.licenceImageFace2.split('?').first.endsWith('.jpeg')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    : widget.record.licenceImageFace2.split('?').first.endsWith('.png')
-                                                    ?Padding(
-                                                  padding: const EdgeInsets.all(3.0),
-                                                  child: Image.network(
-                                                    widget.record.licenceImageFace2,
-                                                    width: 100,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                )
-                                                    :Column(
-                                                  children: [
-                                                    Icon(Icons.file_open),
-                                                    Text('pdf File')
-                                                  ],
                                                 ),
                                               ),
                                               Center(
@@ -778,7 +1130,8 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                                         }
 
 
-                                                      },child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
+                                                      },
+                                                      child: Icon(Icons.remove_red_eye_sharp,size: 20,)),
                                                 ),
                                               )
                                             ],
@@ -793,110 +1146,111 @@ class _ConsultNotiNewDriversImagesState extends State<ConsultNotiNewDriversImage
                                 if(widget.record.moreImage1!="")moreWidget1(),
                                 if(widget.record.moreImage2!="")moreWidget2(),
                                 if(widget.record.moreImage3!="")moreWidget3(),
+                                SizedBox(height: 100,),
 
 
                               ],
                             ),
+                          ),
 
-                            Positioned(
-                              bottom: 30,
-                              right: 10,
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: (){
-                                      controller.init();
+                          Positioned(
+                            bottom: 30,
+                            right: 10,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    controller.init();
+                                    Get.back();
+                                  },
+                                  child: Center(
+                                    child: Container(
+                                      width: 120,
+                                      height: 30,
+                                      child: Center(child: Text('Back',style: TextStyle(color: Colors.black),)),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Color(0xFFFFFFFF)
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20,),
+                                GestureDetector(
+                                  onTap: ()async{
+                                    await controller.add_driver(
+                                        DriverModel(
+                                            driverImage: widget.record.driverImage,
+                                            firstName: widget.record.firstName.capitalize.toString(),
+                                            lastName: widget.record.lastName.capitalize.toString(),
+                                            birthDate: widget.record.birthDate,
+                                            identityNumber: widget.record.identityNumber,
+                                            identityCardImageFace1: widget.record.identityCardImageFace1,
+                                            identityCardImageFace2: widget.record.identityCardImageFace2,
+                                            phoneNumber: widget.record.phoneNumber,
+                                            licenceType: widget.record.licenceType,
+                                            licenceImageFace1: widget.record.licenceImageFace1,
+                                            licenceImageFace2: widget.record.licenceImageFace2,
+                                            email: widget.record.email,
+                                            contractType: widget.contract,
+                                            password:widget.record.password,
+                                          moreImage1: widget.record.moreImage1,
+                                          moreImage2: widget.record.moreImage2,
+                                          moreImage3: widget.record.moreImage3,
+                                        )
+                                    ).then((value) {
+                                      // Get.offAll(() => HomeScreen())
+                                      notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
                                       Get.back();
-                                    },
-                                    child: Center(
-                                      child: Container(
-                                        width: 120,
-                                        height: 30,
-                                        child: Center(child: Text('Back',style: TextStyle(color: Colors.black),)),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
-                                            color: Color(0xFFFFFFFF)
-                                        ),
+                                      Get.back();
+                                    }
+                                    );
+
+                                  },
+
+                                  child: Center(
+                                    child: Container(
+                                      width: 120,
+                                      height: 30,
+                                      child: Center(child: Text('Save',style: TextStyle(color: Colors.white),)),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Color(0xFF333333)
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 20,),
-                                  GestureDetector(
-                                    onTap: ()async{
-                                      await controller.add_driver(
-                                          DriverModel(
-                                              driverImage: widget.record.driverImage,
-                                              firstName: widget.record.firstName.capitalize.toString(),
-                                              lastName: widget.record.lastName.capitalize.toString(),
-                                              birthDate: widget.record.birthDate,
-                                              identityNumber: widget.record.identityNumber,
-                                              identityCardImageFace1: widget.record.identityCardImageFace1,
-                                              identityCardImageFace2: widget.record.identityCardImageFace2,
-                                              phoneNumber: widget.record.phoneNumber,
-                                              licenceType: widget.record.licenceType,
-                                              licenceImageFace1: widget.record.licenceImageFace1,
-                                              licenceImageFace2: widget.record.licenceImageFace2,
-                                              email: widget.record.email,
-                                              contractType: widget.contract,
-                                              password:widget.record.password,
-                                            moreImage1: widget.record.moreImage1,
-                                            moreImage2: widget.record.moreImage2,
-                                            moreImage3: widget.record.moreImage3,
-                                          )
-                                      ).then((value) {
-                                        // Get.offAll(() => HomeScreen())
-                                        notificationNewDriverController.notiDrivers.doc(widget.record.id).update({"valid":true});
-                                        Get.back();
-                                        Get.back();
-                                      }
-                                      );
-
-                                    },
-
-                                    child: Center(
-                                      child: Container(
-                                        width: 120,
-                                        height: 30,
-                                        child: Center(child: Text('Save',style: TextStyle(color: Colors.white),)),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
-                                            color: Color(0xFF333333)
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   )
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height* .04,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                        image: NetworkImage(loginController.adminImageUrl.value),
-                        fit: BoxFit.cover
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: ()=>Get.offAll(()=>HomeScreen()),
-                  ),
-                ),
-              ),
-            )
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height* .04,
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width,
+            //     alignment: Alignment.center,
+            //     child: Container(
+            //       width: 50,
+            //       height: 50,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.all(Radius.circular(20)),
+            //         image: DecorationImage(
+            //             image: NetworkImage(loginController.adminImageUrl.value),
+            //             fit: BoxFit.cover
+            //         ),
+            //       ),
+            //       child: GestureDetector(
+            //         onTap: ()=>Get.offAll(()=>HomeScreen()),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         )
     );
