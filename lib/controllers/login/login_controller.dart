@@ -15,7 +15,7 @@ class LoginController extends GetxController{
   CollectionReference admins = FirebaseFirestore.instance.collection("admins");
 
   RxBool isLoading=true.obs;
-  RxString adminImageUrl=''.obs;
+  // RxString adminImageUrl=''.obs;
   RxString idAdmin=''.obs;
   void getAdminImage(String email)async {
     try {
@@ -24,10 +24,10 @@ class LoginController extends GetxController{
           'admins').where("email", isEqualTo: email).get();
 
       for (var admin in adminsData.docs) {
-        print("------------------------------");
-        print(admin);
-        print("------------------------------");
-        adminImageUrl.value = admin['imageUrl'];
+        // print("------------------------------");
+        // print(admin);
+        // print("------------------------------");
+        // adminImageUrl.value = admin['imageUrl'];
         idAdmin.value = admin.id;
       }
       isLoading.value = false;

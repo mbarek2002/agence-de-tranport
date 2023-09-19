@@ -338,9 +338,7 @@ class CoursesController extends GetxController {
 
     for (var course in courses.docs) {
 
-      print("///////////////////////////////////////////////");
-      print(course.id);
-      print("///////////////////////////////////////////////");
+
       Timestamp? dropOffDate;
       List<rowdata>? passengersDetailsFetch;
       List<checklistData>? carDetailsFetch = <checklistData>[];
@@ -368,6 +366,7 @@ class CoursesController extends GetxController {
             )
             .toList();
       }
+
       if (courseData.containsKey('checkCarDetails')) {
         List<dynamic>? carDetailsData = courseData['checkCarDetails'];
         carDetailsFetch = carDetailsData
@@ -379,6 +378,8 @@ class CoursesController extends GetxController {
             )
             .toList();
       }
+
+
       if (courseData.containsKey('dropOffDate')) {
         dropOffDate = course['dropOffDate'];
       }
@@ -511,6 +512,7 @@ class CoursesController extends GetxController {
           driverName: course['driverName'],
           identityNum: identityNum,
           passengersDetails: passengersDetailsFetch,
+          carListDetails: carDetailsFetch,
           orderUrl: orderUrl,
           dropOffDate: dropOffDate?.toDate(),
           carImage1URL: carImg1Url,
@@ -535,6 +537,7 @@ class CoursesController extends GetxController {
           seatingCapacity: course['seatingCapacity'],
           regNumber: course['regNumber'],
           driverName: course['driverName'],
+          carListDetails: carDetailsFetch,
           identityNum: identityNum,
           passengersDetails: passengersDetailsFetch,
           orderUrl: orderUrl,
@@ -913,27 +916,33 @@ class CoursesController extends GetxController {
     print(course.id);
     await courses.doc(course.id).delete();
     print("AAAAAA");
-    Get.back();
-    fetchCourses();
-    return;
+
+    // return;
 
 
     if (course.orderUrl != null)
+      print("ordder");
       FirebaseStorage.instance.refFromURL(course.orderUrl!).delete();
 
     if (course.carImage1URL != null)
+      print("image1111111111");
       FirebaseStorage.instance.refFromURL(course.carImage1URL!).delete();
 
     if (course.carImage2URL != null)
+      print("image22222222222");
       FirebaseStorage.instance.refFromURL(course.carImage2URL!).delete();
 
     if (course.carImage3URL != null)
+      print("image333333333");
       FirebaseStorage.instance.refFromURL(course.carImage3URL!).delete();
 
     if (course.carImage4URL != null)
+      print("image4444");
       FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
 
     print("DDDDD");
+    Get.back();
+    fetchCourses();
   }
 
   ///////////////admin/////////////////////////

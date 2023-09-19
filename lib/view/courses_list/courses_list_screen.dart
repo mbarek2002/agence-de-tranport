@@ -2701,7 +2701,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
         context: context,
         builder: (builder) => AlertDialog(
               content: Container(
-                height: MediaQuery.of(context).size.height * 0.7,
+                height: MediaQuery.of(context).size.height * 0.8,
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: ListView(
                   children: [
@@ -3343,7 +3343,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
     return showModalBottomSheet(
                                     context: context,
                                     builder:
-                                        (BuildContext context) {
+                                        (BuildContext context) {print(course.carListDetails);
                                       return Container(
                                         padding: EdgeInsets.symmetric(vertical: 32,horizontal: 8),
                                           height:

@@ -182,7 +182,7 @@ class DriversController extends GetxController{
 
 
   Future add_driver(DriverModel d)async {
-    // try {
+    try {
        bool test = await isEmailRegistered(d.email);
        print(d.email);
        if(test == true)
@@ -251,9 +251,9 @@ class DriversController extends GetxController{
 
        }
            print('false');
-    // }catch(e){
-    //   print(e.toString());
-    // }
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   Future update_driver(DriverModel d)async{

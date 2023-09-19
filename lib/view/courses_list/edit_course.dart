@@ -1459,62 +1459,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
 
                     child: Center(child: Text('legend')),
                   ),
-                  // Column(
-                  //   children: [
-                  //     Container(
-                  //       width:100,
-                  //       height: 30,
-                  //       decoration: BoxDecoration(
-                  //           color: Color(0xFF0F5CA0).withOpacity(0.8),
-                  //           borderRadius: BorderRadius.circular(5)
-                  //       ),
-                  //
-                  //       child: Center(child: Text('condtion')),
-                  //     ),
-                  //     Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Container(
-                  //           width:35,
-                  //           height: 30,
-                  //           decoration: BoxDecoration(
-                  //               color: Color(0xFF0F5CA0).withOpacity(0.6),
-                  //               borderRadius: BorderRadius.only(
-                  //                   topLeft: Radius.circular(5),
-                  //                   bottomLeft: Radius.circular(5),
-                  //
-                  //               )
-                  //           ),
-                  //           child: Center(child: Text('100%')),
-                  //         ),
-                  //         SizedBox(width: 2,),
-                  //         Container(
-                  //           width:35,
-                  //           height: 30,
-                  //           decoration: BoxDecoration(
-                  //               color: Color(0xFF0F5CA0).withOpacity(0.6),
-                  //           ),
-                  //
-                  //           child: Center(child: Text('50%')),
-                  //         ),
-                  //         SizedBox(width: 2,),
-                  //         Container(
-                  //           width:35,
-                  //           height: 30,
-                  //           decoration: BoxDecoration(
-                  //               color: Color(0xFF0F5CA0).withOpacity(0.6),
-                  //               borderRadius: BorderRadius.only(
-                  //                   topRight: Radius.circular(5),
-                  //                   bottomRight: Radius.circular(5)
-                  //               )
-                  //           ),
-                  //
-                  //           child: Center(child: Text('0%')),
-                  //         ),
-                  //       ],
-                  //     )
-                  //   ],
-                  // )
+
 
                 ],
               ),
