@@ -142,6 +142,11 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                       (int index) => DataRow(cells: <DataCell>[
                                     DataCell(GestureDetector(
                                       onTap: (){
+                                        print("//////////////");
+                                        print(widget.course.passengersDetails![index].passengersNumber.toString());
+                                        print(widget.course.passengersDetails![index].collieNumber.toString());
+                                        print("//////////////");
+                                        return;
                                         showDialog(
                                             context: context,
                                             builder: (builder)=>AlertDialog(
@@ -280,9 +285,149 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                             widget.course.passengersDetails![index].firstname),
                                       ),
                                     )),
-                                    DataCell(Center(
-                                      child: Text(
-                                          widget.course.passengersDetails![index].lastName),
+
+
+
+
+                                    DataCell(GestureDetector(
+                                      onTap: (){
+                                        showDialog(
+                                            context: context,
+                                            builder: (builder)=>AlertDialog(
+                                              content:Container(
+                                                height: MediaQuery.of(context).size.height*0.35,
+                                                color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                          bottom:MediaQuery.of(context).size.height*0.01
+                                                      ),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.55,
+                                                        height: MediaQuery.of(context).size.height*0.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                            borderRadius: BorderRadius.all(Radius.circular(10))
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text('First Name : '),
+                                                            Text(widget.course.passengersDetails![index].firstname)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                          bottom:MediaQuery.of(context).size.height*0.01
+                                                      ),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.55,
+                                                        height: MediaQuery.of(context).size.height*0.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                            borderRadius: BorderRadius.all(Radius.circular(10))
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text('Last Name : '),
+                                                            Text(widget.course.passengersDetails![index].lastName)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                          bottom:MediaQuery.of(context).size.height*0.01
+                                                      ),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.55,
+                                                        height: MediaQuery.of(context).size.height*0.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                            borderRadius: BorderRadius.all(Radius.circular(10))
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text('Phone Number : '),
+                                                            Text((widget.course.passengersDetails![index].phoneNum
+                                                                .contains('.') &&
+                                                                widget.course.passengersDetails![index].phoneNum
+                                                                    .endsWith('.0'))
+                                                                ?widget.course
+                                                                .passengersDetails![index].phoneNum
+                                                                .substring(
+                                                                0,
+                                                                widget.course.passengersDetails![index]
+                                                                    .phoneNum
+                                                                    .indexOf('.'))
+                                                                :widget.course.passengersDetails![index].phoneNum
+
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                          bottom:MediaQuery.of(context).size.height*0.01
+                                                      ),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.55,
+                                                        height: MediaQuery.of(context).size.height*0.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                            borderRadius: BorderRadius.all(Radius.circular(10))
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text('passengers Number : '),
+                                                            Text(widget.course.passengersDetails![index].passengersNumber.toString())
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:EdgeInsets.only(
+                                                          top: MediaQuery.of(context).size.height*0.01,
+                                                          bottom:  MediaQuery.of(context).size.height*0.01
+                                                      ),
+                                                      child: Container(
+                                                        width: MediaQuery.of(context).size.width*0.55,
+                                                        height: MediaQuery.of(context).size.height*0.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                            borderRadius: BorderRadius.all(Radius.circular(10))
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text('Colis Number : '),
+                                                            Text(widget.course.passengersDetails![index].collieNumber.toString())
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                        );
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                            widget.course.passengersDetails![index].lastName),
+                                      ),
                                     )),
 
 
@@ -291,17 +436,288 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                         widget.course.passengersDetails![index].phoneNum
                                             .endsWith('.0'))
                                         ?
-                                      DataCell(Center(
-                                      child: Text(widget.course
-                                          .passengersDetails![index].phoneNum
-                                          .substring(
-                                          0,
-                                          widget.course.passengersDetails![index]
-                                              .phoneNum
-                                              .indexOf('.'))),
-                                    ))
+                                      DataCell(GestureDetector(
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              builder: (builder)=>AlertDialog(
+                                                content:Container(
+                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                  color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('First Name : '),
+                                                              Text(widget.course.passengersDetails![index].firstname)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Last Name : '),
+                                                              Text(widget.course.passengersDetails![index].lastName)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Phone Number : '),
+                                                              Text((widget.course.passengersDetails![index].phoneNum
+                                                                  .contains('.') &&
+                                                                  widget.course.passengersDetails![index].phoneNum
+                                                                      .endsWith('.0'))
+                                                                  ?widget.course
+                                                                  .passengersDetails![index].phoneNum
+                                                                  .substring(
+                                                                  0,
+                                                                  widget.course.passengersDetails![index]
+                                                                      .phoneNum
+                                                                      .indexOf('.'))
+                                                                  :widget.course.passengersDetails![index].phoneNum
+
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('passengers Number : '),
+                                                              Text(widget.course.passengersDetails![index].passengersNumber.toString())
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:  MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Colis Number : '),
+                                                              Text(widget.course.passengersDetails![index].collieNumber.toString())
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                          );
+                                        },
+                                        child: Center(
+                                        child: Text(widget.course
+                                            .passengersDetails![index].phoneNum
+                                            .substring(
+                                            0,
+                                            widget.course.passengersDetails![index]
+                                                .phoneNum
+                                                .indexOf('.'))),
+                                    ),
+                                      ))
                                         :
-                                    DataCell(Center(child: Text(widget.course.passengersDetails![index].phoneNum.toString()))),
+                                    DataCell(GestureDetector(
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              builder: (builder)=>AlertDialog(
+                                                content:Container(
+                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                  color: Color(0xFF0F5CA0).withOpacity(0.6),
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('First Name : '),
+                                                              Text(widget.course.passengersDetails![index].firstname)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Last Name : '),
+                                                              Text(widget.course.passengersDetails![index].lastName)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Phone Number : '),
+                                                              Text((widget.course.passengersDetails![index].phoneNum
+                                                                  .contains('.') &&
+                                                                  widget.course.passengersDetails![index].phoneNum
+                                                                      .endsWith('.0'))
+                                                                  ?widget.course
+                                                                  .passengersDetails![index].phoneNum
+                                                                  .substring(
+                                                                  0,
+                                                                  widget.course.passengersDetails![index]
+                                                                      .phoneNum
+                                                                      .indexOf('.'))
+                                                                  :widget.course.passengersDetails![index].phoneNum
+
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('passengers Number : '),
+                                                              Text(widget.course.passengersDetails![index].passengersNumber.toString())
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:EdgeInsets.only(
+                                                            top: MediaQuery.of(context).size.height*0.01,
+                                                            bottom:  MediaQuery.of(context).size.height*0.01
+                                                        ),
+                                                        child: Container(
+                                                          width: MediaQuery.of(context).size.width*0.55,
+                                                          height: MediaQuery.of(context).size.height*0.05,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.white.withOpacity(0.6),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text('Colis Number : '),
+                                                              Text(widget.course.passengersDetails![index].collieNumber.toString())
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                          );
+                                        },
+                                        child: Center(child: Text(widget.course.passengersDetails![index].phoneNum.toString())))),
                                     DataCell(
                               Checkbox(
                             value: widget.course.passengersDetails![index].state,

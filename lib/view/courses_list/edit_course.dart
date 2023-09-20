@@ -66,7 +66,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
       coursesController.isReturn.value=true;
     }
     coursesController.seatingCapacityController.text =widget.record.seatingCapacity.toString();
-    coursesController.passagersConroller.text =widget.record.passengersNum.toString();
+    // coursesController.passagersConroller.text =widget.record.passengersNum.toString();
+    coursesController.usedPassenger.value = widget.record.passengersNum;
     coursesController.regNumberController.text =widget.record.regNumber.toString();
     coursesController.selectedItem.value=widget.record.driverName;
     coursesController.selectedItemId.value=widget.record.identityNum!;
@@ -470,57 +471,199 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.85,
-                            height: 60,
-                            decoration: BoxDecoration(
-                                color:
-                                Colors.white.withOpacity(0.7),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(5),
-                                  topLeft: Radius.circular(5),
-                                )),
-                            child: TextFormField(
-                              controller: coursesController
-                                  .passagersConroller,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                    fontFamily: 'Georgia',
-                                    color: Color(0xFF0F5CA0)),
-                                labelText: 'Passengers',
-                                prefixIcon: Icon(Icons.person),
-                                border: InputBorder.none,
+                          // Container(
+                          //   width:
+                          //   MediaQuery.of(context).size.width *
+                          //       0.85,
+                          //   height: 60,
+                          //   decoration: BoxDecoration(
+                          //       color:
+                          //       Colors.white.withOpacity(0.7),
+                          //       borderRadius: BorderRadius.only(
+                          //         topRight: Radius.circular(5),
+                          //         topLeft: Radius.circular(5),
+                          //       )),
+                          //   child: TextFormField(
+                          //     controller: coursesController
+                          //         .passagersConroller,
+                          //     keyboardType: TextInputType.number,
+                          //     decoration: InputDecoration(
+                          //       labelStyle: TextStyle(
+                          //           fontFamily: 'Georgia',
+                          //           color: Color(0xFF0F5CA0)),
+                          //       labelText: 'Passengers',
+                          //       prefixIcon: Icon(Icons.person),
+                          //       border: InputBorder.none,
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(height: 12),
+                          // Container(
+                          //   width:
+                          //   MediaQuery.of(context).size.width *
+                          //       0.85,
+                          //   height: 60,
+                          //   decoration: BoxDecoration(
+                          //       color:
+                          //       Colors.white.withOpacity(0.7),
+                          //       borderRadius: BorderRadius.only(
+                          //         topRight: Radius.circular(5),
+                          //         topLeft: Radius.circular(5),
+                          //       )
+                          //   ),
+                          //   child: TextFormField(
+                          //     controller: coursesController
+                          //         .seatingCapacityController,
+                          //     keyboardType: TextInputType.number,
+                          //     decoration: InputDecoration(
+                          //       labelStyle: TextStyle(
+                          //           fontFamily: 'Georgia',
+                          //           color: Color(0xFF0F5CA0)),
+                          //       labelText: 'Seating capacity',
+                          //       prefixIcon: Icon(Icons.person),
+                          //       border: InputBorder.none,
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(height: 15),
+                          GestureDetector(
+                            onTap: (){
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context){
+                                    return Container(
+                                      height: MediaQuery.of(context).size.height*0.4,
+                                      width: MediaQuery.of(context).size.width,
+
+                                      color: Color(0xFF0F5CA0),
+                                      child: Obx(()=>Column(
+                                        children: [
+                                          SizedBox(height: 8,),
+                                          Text(
+                                            'Passenger Capacity',
+                                            style:TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'Georgia',
+                                                color: Colors.white),
+                                          ),
+
+                                          SizedBox(height: 16),
+                                          Container(
+                                              width:MediaQuery.of(context).size.width*0.8,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: TextFormField(
+                                                controller: coursesController.seatingCapacityController,
+                                                keyboardType: TextInputType.number,
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                ),
+                                                decoration: InputDecoration(
+                                                  prefixIcon: Icon(
+                                                      Icons.luggage
+                                                  ),
+                                                ),
+                                                onChanged: (value){
+                                                  if(int.parse(coursesController.seatingCapacityController.text)<coursesController.usedPassenger.value)
+                                                    coursesController.usedPassenger.value=0;
+                                                  else if(coursesController.seatingCapacityController.text == "")
+                                                    coursesController.seatingCapacityController.text='0';
+                                                },
+                                              )),
+                                          SizedBox(height: 16),
+                                          Text('Passenger',
+                                              style:TextStyle(
+                                                  fontSize: 20,
+                                                  fontFamily: 'Georgia',
+                                                  color: Colors.white)),
+
+                                          SizedBox(height: 8),
+                                          Container(
+                                              width:MediaQuery.of(context).size.width*0.8,
+                                              height: 45,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:MainAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(width: 12,),
+                                                  Icon(
+                                                      Icons.luggage
+                                                  ),
+                                                  DropdownButton<int>(
+                                                    value: coursesController.usedPassenger.value,
+                                                    onChanged: (int? newValue) {
+                                                      coursesController.usedPassenger.value = newValue!;
+                                                    },
+                                                    items: List.generate((int.tryParse(coursesController.seatingCapacityController.text)  ?? 0)+1, (index) {
+                                                      return DropdownMenuItem<int>(
+                                                        value: index,
+                                                        child: SizedBox(
+                                                            width: MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                                0.6,
+                                                            child: Text('$index')),
+                                                      );
+                                                    }),
+                                                  ),
+                                                ],
+                                              )
+                                          ),
+                                        ],
+                                      )),
+                                    );
+                                  }
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 5,
+                                  right: 5
                               ),
-                            ),
-                          ),
-                          SizedBox(height: 12),
-                          Container(
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.85,
-                            height: 60,
-                            decoration: BoxDecoration(
-                                color:
-                                Colors.white.withOpacity(0.7),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(5),
-                                  topLeft: Radius.circular(5),
-                                )
-                            ),
-                            child: TextFormField(
-                              controller: coursesController
-                                  .seatingCapacityController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                    fontFamily: 'Georgia',
-                                    color: Color(0xFF0F5CA0)),
-                                labelText: 'Seating capacity',
-                                prefixIcon: Icon(Icons.person),
-                                border: InputBorder.none,
+                              height: 55,
+                              width:
+                              MediaQuery.of(context).size.width *
+                                  0.85,
+                              decoration: BoxDecoration(
+                                  color:
+                                  Colors.white.withOpacity(0.7),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(5),
+                                    topLeft: Radius.circular(5),
+                                  )),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text('Pasengers',
+                                    style: TextStyle(
+                                        fontFamily: "Georgia",
+                                        fontSize: 20,
+                                        color: Color(0xFF0F5CA0)
+                                    ),
+                                  ),
+
+                                  Row(
+                                    children: [
+                                      Text(
+                                        coursesController.usedPassenger.toString()
+                                            +"/"+coursesController.seatingCapacityController.text,
+
+                                        style: TextStyle(
+                                            color: Color(0xFF0F5CA0)
+                                        ),),
+                                      // Icon(
+                                      //     Icons.mark_email_unread_sharp,
+                                      //     color: Color(0xFF0F5CA0)
+                                      // ),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -573,7 +716,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 },
                                               )),
                                           SizedBox(height: 16),
-                                          Text('Used Luggage Capacity',
+                                          Text('Used Colis Capacity',
                                               style:TextStyle(
                                                   fontSize: 20,
                                                   fontFamily: 'Georgia',
@@ -646,33 +789,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                         color: Color(0xFF0F5CA0)
                                     ),
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text(
-                                  //       coursesController.usedLuggageBigSize.toString()+
-                                  //           "/"+coursesController.luggageBigSizeController.text,
-                                  //       style: TextStyle(
-                                  //           color: Color(0xFF0F5CA0)
-                                  //       ),
-                                  //     ),
-                                  //     Icon(
-                                  //         Icons.luggage_outlined,
-                                  //         color: Color(0xFF0F5CA0)
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text(
-                                  //       coursesController.usedLuggageMediumSize.toString()
-                                  //           +"/"+coursesController.luggageMediumSizeController.text,
-                                  //       style: TextStyle(
-                                  //           color: Color(0xFF0F5CA0)
-                                  //       ),),
-                                  //     Icon(Icons.luggage,size: 20,color: Color(0xFF0F5CA0)
-                                  //     ),
-                                  //   ],
-                                  // ),
+
                                   Row(
                                     children: [
                                       Text(
@@ -806,7 +923,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 .importFromExcelForPassenger()
                                                 .then((value) {
                                               {
-                                                coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
+                                                coursesController.usedPassenger.value=coursesController.passengerDetails.length;
                                                 widget.record.passengersDetails=null;
                                                 if (coursesController
                                                     .checkBox2
@@ -860,7 +977,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                           coursesController.importFromExcelForPassenger().then((value) {
                                             widget.record.passengersDetails=null;
                                           });
-                                          coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
+                                          coursesController.usedPassenger.value=coursesController.passengerDetails.length;
                                         },
                                       ),
                                       // IconButton(
@@ -1046,7 +1163,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                                         coursesController.importFromExcel().then((value) {
                                                                           widget.record.passengersDetails=null;
                                                                         });
-                                                                        coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
+                                                                        coursesController.usedPassenger.value=coursesController.passengerCarDetails.length;
+                                                                        coursesController.seatingCapacityController.text=coursesController.passengerCarDetails.length.toString();
                                                                       },
                                                                     ),
                                                                   ),
@@ -1107,126 +1225,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                           }
                                         },
                                       ),
-                                      // IconButton(
-                                      //   icon: Icon(Icons.remove_red_eye,size:20,color: Colors.white,),
-                                      //   onPressed: (){
-                                      //     if(coursesController.passengerCarDetails.value!=null)
-                                      //     Get.dialog(
-                                      //       AlertDialog(
-                                      //         content: Container(
-                                      //           width: MediaQuery.of(context).size.width*0.75,
-                                      //           height: MediaQuery.of(context).size.height*0.5,
-                                      //           child:Column(
-                                      //             children: [
-                                      //               Container(
-                                      //                 color:Colors.blue.withOpacity(0.2),
-                                      //                 height:MediaQuery.of(context).size.height*0.1,
-                                      //                 width: MediaQuery.of(context).size.width*0.6,
-                                      //                 child:
-                                      //                 coursesController.image.value!="" && coursesController.image.value!.split('/')!.last.endsWith('.pdf')
-                                      //                     ?Padding(
-                                      //                     padding: EdgeInsets.all(
-                                      //                         10
-                                      //                     ),
-                                      //                     child: Column(
-                                      //                       children: [
-                                      //                         Icon(Icons.file_open),
-                                      //                         Text(
-                                      //                           coursesController.image.value!.split('/')!.last,
-                                      //                           style: TextStyle(
-                                      //                             fontSize: 8,
-                                      //                           ),
-                                      //                         )
-                                      //                       ],
-                                      //                     ))
-                                      //                     :coursesController.image.value!=""
-                                      //                     ?Padding(
-                                      //                   padding: const EdgeInsets.all(3.0),
-                                      //                   child: Image.file(File(
-                                      //                     coursesController.image.value!),
-                                      //                     width: MediaQuery.of(context).size.width*0.6,
-                                      //                     fit: BoxFit.fill,
-                                      //                   ),
-                                      //                 )
-                                      //                     :widget.record.orderUrl!.split('?').first.endsWith('.jpg')||
-                                      //                     widget.record.orderUrl!.split('?').first.endsWith('.jpeg')||
-                                      //                     widget.record.orderUrl!.split('?').first.endsWith('.png')
-                                      //                     ?Padding(
-                                      //                   padding: const EdgeInsets.all(3.0),
-                                      //                   child: Image.network(
-                                      //                     widget.record.orderUrl!,
-                                      //                     width: MediaQuery.of(context).size.width*0.6,
-                                      //                     fit: BoxFit.fill,
-                                      //                   ),
-                                      //                 )
-                                      //                     :Column(
-                                      //                   children: [
-                                      //                     Icon(Icons.file_open),
-                                      //                     Text('pdf File')
-                                      //                   ],
-                                      //                 ),
-                                      //               ),
-                                      //               Container(
-                                      //                 height: MediaQuery.of(context).size.height*0.4,
-                                      //                   child: SingleChildScrollView(
-                                      //                     scrollDirection: Axis.vertical,
-                                      //                     child: SingleChildScrollView(
-                                      //                       scrollDirection: Axis.horizontal,
-                                      //                       child: DataTable(
-                                      //                         columnSpacing: 5,
-                                      //                         dataRowHeight: 50,
-                                      //                         columns: const <DataColumn>[
-                                      //                           DataColumn(
-                                      //                             label: Expanded(
-                                      //                               child: Text(
-                                      //                                 'First Name',
-                                      //                                 style: TextStyle(fontStyle: FontStyle.italic),
-                                      //                               ),
-                                      //                             ),
-                                      //                           ),
-                                      //                           DataColumn(
-                                      //                             label: Expanded(
-                                      //                               child: Text(
-                                      //                                 'Last Name',
-                                      //                                 style: TextStyle(fontStyle: FontStyle.italic),
-                                      //                               ),
-                                      //                             ),
-                                      //                           ),
-                                      //                           DataColumn(
-                                      //                             label: Expanded(
-                                      //                               child: Text(
-                                      //                                 'Identity Number',
-                                      //                                 style: TextStyle(fontStyle: FontStyle.italic),
-                                      //                               ),
-                                      //                             ),
-                                      //                             numeric: true,
-                                      //                           ),
-                                      //                         ],
-                                      //                         rows: List<DataRow>.generate(coursesController.passengerCarDetails.length, (int index) =>
-                                      //                             DataRow(
-                                      //                                 cells:<DataCell>[
-                                      //                                   DataCell(Text(coursesController.passengerCarDetails[index].firstname)),
-                                      //                                   DataCell(Text(coursesController.passengerCarDetails[index].lastName)),
-                                      //                                   (coursesController.passengerCarDetails[index].identityNum.contains('.') && coursesController.passengerCarDetails[index].identityNum.endsWith('.0'))?
-                                      //                                   DataCell(Text(coursesController.passengerCarDetails[index].identityNum.substring(0, coursesController.passengerCarDetails[index].identityNum.indexOf('.'))))
-                                      //                                       :
-                                      //                                   DataCell(Text(coursesController.passengerCarDetails[index].identityNum)),
-                                      //
-                                      //                                 ]
-                                      //                             )
-                                      //                         ),
-                                      //                       ),
-                                      //                     ),
-                                      //                   )
-                                      //               ),
-                                      //
-                                      //             ],
-                                      //           ),
-                                      //         )
-                                      //       )
-                                      //     );
-                                      //   },
-                                      // ),
+
                                     ],
                                   )
                                 ],
@@ -1246,25 +1245,24 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                               if (coursesController
                                   .dropOffLocationConroller.text ==
                                   "") errorList.add("drop off location");
-                              if (coursesController.passagersConroller
-                                  .text ==
-                                  "") errorList.add("passengers number");
+                              // if (coursesController.passagersConroller
+                              //     .text ==
+                              //     "") errorList.add("passengers number");
                               if (coursesController.selectedItem
                                   .toLowerCase() ==
                                   "driver name") errorList.add(
                                   "driver name");
                               if (coursesController
                                   .regNumberController.text ==
-                                  "") errorList.add("reg number");
-                              if (coursesController
-                                  .seatingCapacityController.text ==
-                                  "") errorList.add("seating capacity");
-                              if(int.parse(coursesController.passagersConroller.text)>
-                                  int.parse(coursesController.seatingCapacityController.text))
+                                  "") errorList.add("check reg number");
+                              // if (coursesController
+                              //     .seatingCapacityController.text ==
+                              //     "") errorList.add("seating capacity");
+                              if((int.tryParse(coursesController.seatingCapacityController.text) ?? 0)<=0 || coursesController.seatingCapacityController.text=="")
                                 errorList.add("check the seating capcity");
 
                               if((int.tryParse(coursesController.collieController.text) ?? 0)<=0 || coursesController.collieController.text=="")
-                                errorList.add("Luggage capacity");
+                                errorList.add("check Colis capacity");
 
                               if (errorList.isEmpty) {
                                 showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
@@ -1283,7 +1281,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                             :null,
                                         driverName:  coursesController.selectedItem.value,
                                         identityNum: coursesController.selectedItemId.value,
-                                        passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
+                                        // passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
+                                        passengersNum: coursesController.usedPassenger.value??0,
                                         seatingCapacity: int.tryParse(coursesController.seatingCapacityController.text) ?? 0,
                                         regNumber: coursesController.regNumberController.text,
                                         orderUrl: widget.record.orderUrl,
@@ -1349,7 +1348,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                   // widget.record.type.toLowerCase().trim()!="car hire"
                                   // ? Text('Next',style: TextStyle(color: Colors.white),)
                                   // :
-                                  Text('Edit',style: TextStyle(color: Colors.white),))
+                                  Text('Confirm',style: TextStyle(color: Colors.white),))
                               ,
                             ),
                           ),
@@ -2289,7 +2288,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                         await coursesController.importFromExcel().then((value) {
                           widget.record.passengersDetails=null;
                         });
-                        coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
+                        coursesController.usedPassenger.value=coursesController.passengerCarDetails.length;
+                        coursesController.seatingCapacityController.text=coursesController.passengerCarDetails.length.toString();
                       },
                     ),
                   ),

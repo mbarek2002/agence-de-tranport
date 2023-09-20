@@ -45,12 +45,12 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     coursesController.dropOffLocationConroller.text = "";
     coursesController.seatingCapacityController.text = "";
     coursesController.regNumberController.text = "";
-    coursesController.luggageBigSizeController.text="0";
-    coursesController.luggageMediumSizeController.text="0";
+    // coursesController.luggageBigSizeController.text="0";
+    // coursesController.luggageMediumSizeController.text="0";
     coursesController.collieController.text="0";
     coursesController.selectedItem.value = "Driver name";
+    coursesController.seatingCapacityController.text='0';
     coursesController.init();
-    coursesController.passagersConroller.text='0';
 
   }
 
@@ -432,54 +432,195 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               ),
                             ),
                             SizedBox(height: 7),
-                            Container(
-                              width:
-                                  MediaQuery.of(context).size.width *
-                                      0.85,
-                              decoration: BoxDecoration(
-                                  color:
-                                      Colors.white.withOpacity(0.7),
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(5),
-                                    topLeft: Radius.circular(5),
-                                  )),
-                              child: TextFormField(
-                                controller: coursesController
-                                    .passagersConroller,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Georgia',
-                                      color: Color(0xFF0F5CA0)),
-                                  labelText: 'Passengers',
-                                  prefixIcon: Icon(Icons.person),
-                                  border: InputBorder.none,
+                            // Container(
+                            //   width:
+                            //       MediaQuery.of(context).size.width *
+                            //           0.85,
+                            //   decoration: BoxDecoration(
+                            //       color:
+                            //           Colors.white.withOpacity(0.7),
+                            //       borderRadius: BorderRadius.only(
+                            //         topRight: Radius.circular(5),
+                            //         topLeft: Radius.circular(5),
+                            //       )),
+                            //   child: TextFormField(
+                            //     controller: coursesController
+                            //         .passagersConroller,
+                            //     keyboardType: TextInputType.number,
+                            //     decoration: InputDecoration(
+                            //       labelStyle: TextStyle(
+                            //           fontFamily: 'Georgia',
+                            //           color: Color(0xFF0F5CA0)),
+                            //       labelText: 'Passengers',
+                            //       prefixIcon: Icon(Icons.person),
+                            //       border: InputBorder.none,
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 15),
+                            // Container(
+                            //   width:
+                            //   MediaQuery.of(context).size.width *
+                            //       0.85,
+                            //   decoration: BoxDecoration(
+                            //       color:
+                            //       Colors.white.withOpacity(0.7),
+                            //       borderRadius: BorderRadius.only(
+                            //         topRight: Radius.circular(5),
+                            //         topLeft: Radius.circular(5),
+                            //       )),
+                            //   child: TextFormField(
+                            //     controller: coursesController
+                            //         .seatingCapacityController,
+                            //     keyboardType: TextInputType.number,
+                            //     decoration: InputDecoration(
+                            //       labelStyle: TextStyle(
+                            //           fontFamily: 'Georgia',
+                            //           color: Color(0xFF0F5CA0)),
+                            //       labelText: 'Seating capacity',
+                            //       prefixIcon: Icon(Icons.person),
+                            //       border: InputBorder.none,
+                            //     ),
+                            //   ),
+                            // ),
+                            GestureDetector(
+                              onTap: (){
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context){
+                                      return Container(
+                                        height: MediaQuery.of(context).size.height*0.4,
+                                        width: MediaQuery.of(context).size.width,
+
+                                        color: Color(0xFF0F5CA0),
+                                        child: Obx(()=>Column(
+                                          children: [
+                                            SizedBox(height: 8,),
+                                            Text(
+                                              'Passenger Capacity',
+                                              style:TextStyle(
+                                                  fontSize: 20,
+                                                  fontFamily: 'Georgia',
+                                                  color: Colors.white),
+                                            ),
+
+                                            SizedBox(height: 16),
+                                            Container(
+                                                width:MediaQuery.of(context).size.width*0.8,
+                                                height: 45,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: TextFormField(
+                                                  controller: coursesController.seatingCapacityController,
+                                                  keyboardType: TextInputType.number,
+                                                  style: TextStyle(
+                                                      color: Colors.black
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: Icon(
+                                                        Icons.luggage
+                                                    ),
+                                                  ),
+                                                  onChanged: (value){
+                                                    if(int.parse(coursesController.seatingCapacityController.text)<coursesController.usedPassenger.value)
+                                                      coursesController.usedPassenger.value=0;
+                                                    else if(coursesController.seatingCapacityController.text == "")
+                                                      coursesController.seatingCapacityController.text='0';
+                                                  },
+                                                )),
+                                            SizedBox(height: 16),
+                                            Text('Passenger',
+                                                style:TextStyle(
+                                                    fontSize: 20,
+                                                    fontFamily: 'Georgia',
+                                                    color: Colors.white)),
+
+                                            SizedBox(height: 8),
+                                            Container(
+                                                width:MediaQuery.of(context).size.width*0.8,
+                                                height: 45,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(width: 12,),
+                                                    Icon(
+                                                        Icons.luggage
+                                                    ),
+                                                    DropdownButton<int>(
+                                                      value: coursesController.usedPassenger.value,
+                                                      onChanged: (int? newValue) {
+                                                        coursesController.usedPassenger.value = newValue!;
+                                                      },
+                                                      items: List.generate((int.tryParse(coursesController.seatingCapacityController.text)  ?? 0)+1, (index) {
+                                                        return DropdownMenuItem<int>(
+                                                          value: index,
+                                                          child: SizedBox(
+                                                              width: MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                                  0.6,
+                                                              child: Text('$index')),
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ],
+                                                )
+                                            ),
+                                          ],
+                                        )),
+                                      );
+                                    }
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: 5,
+                                    right: 5
                                 ),
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Container(
-                              width:
-                              MediaQuery.of(context).size.width *
-                                  0.85,
-                              decoration: BoxDecoration(
-                                  color:
-                                  Colors.white.withOpacity(0.7),
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(5),
-                                    topLeft: Radius.circular(5),
-                                  )),
-                              child: TextFormField(
-                                controller: coursesController
-                                    .seatingCapacityController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Georgia',
-                                      color: Color(0xFF0F5CA0)),
-                                  labelText: 'Seating capacity',
-                                  prefixIcon: Icon(Icons.person),
-                                  border: InputBorder.none,
+                                height: 55,
+                                width:
+                                MediaQuery.of(context).size.width *
+                                    0.85,
+                                decoration: BoxDecoration(
+                                    color:
+                                    Colors.white.withOpacity(0.7),
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(5),
+                                      topLeft: Radius.circular(5),
+                                    )),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text('Pasengers',
+                                      style: TextStyle(
+                                          fontFamily: "Georgia",
+                                          fontSize: 20,
+                                          color: Color(0xFF0F5CA0)
+                                      ),
+                                    ),
+
+                                    Row(
+                                      children: [
+                                        Text(
+                                          coursesController.usedPassenger.toString()
+                                              +"/"+coursesController.seatingCapacityController.text,
+
+                                          style: TextStyle(
+                                              color: Color(0xFF0F5CA0)
+                                          ),),
+                                        // Icon(
+                                        //     Icons.mark_email_unread_sharp,
+                                        //     color: Color(0xFF0F5CA0)
+                                        // ),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
@@ -532,7 +673,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   },
                                                 )),
                                             SizedBox(height: 16),
-                                            Text('Used Luggage Capacity',
+                                            Text('Used Colis Capacity',
                                                 style:TextStyle(
                                                     fontSize: 20,
                                                     fontFamily: 'Georgia',
@@ -768,7 +909,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                               .importFromExcelForPassenger()
                                               .then((value) {
                                             {
-                                              coursesController.passagersConroller.text=coursesController.passengerDetails.length.toString();
+                                              coursesController.usedPassenger.value=coursesController.passengerDetails.length;
+                                              coursesController.seatingCapacityController.text=coursesController.passengerDetails.length.toString();
                                               if (coursesController
                                                       .checkBox2.value ==
                                                   true) {
@@ -875,17 +1017,16 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 if (coursesController
                                     .dropOffLocationConroller.text ==
                                     "") errorList.add("drop off location");
-                                if (coursesController.passagersConroller.text ==
-                                    "") errorList.add("passengers number");
+                                // if (coursesController.passagersConroller.text ==
+                                //     "") errorList.add("passengers number");
                                 if (coursesController.selectedItem
                                     .toLowerCase() ==
                                     "driver name") errorList.add("driver name");
                                 if (coursesController
                                     .regNumberController.text ==
                                     "") errorList.add("reg number");
-                                if (coursesController
-                                    .seatingCapacityController.text ==
-                                    "") errorList.add("seating capacity");
+                                if((int.tryParse(coursesController.seatingCapacityController.text) ?? 0)<=0 || coursesController.seatingCapacityController.text=="")
+                                  errorList.add("check the seating capcity");
                                 if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
                                   errorList.add("Colis capacity");
 
@@ -904,7 +1045,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                               :null,
                                           driverName:  coursesController.selectedItem.value,
                                           identityNum: coursesController.selectedItemId.value,
-                                          passengersNum: int.tryParse(coursesController.passagersConroller.text) ?? 0,
+                                          passengersNum:coursesController.usedPassenger.value ,
                                           seatingCapacity: int.tryParse(coursesController.seatingCapacityController.text) ?? 0,
                                           regNumber: coursesController.regNumberController.text,
                                           check: coursesController.checkBox1.value == true
@@ -1969,7 +2110,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       onPressed: () {
                         coursesController.importFromExcel().then((value) {
-                          coursesController.passagersConroller.text=coursesController.passengerCarDetails.length.toString();
+                          coursesController.usedPassenger.value=coursesController.passengerCarDetails.length;
+                          coursesController.seatingCapacityController.text=coursesController.passengerCarDetails.length.toString();
                         });
                       },
                     ),

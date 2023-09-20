@@ -14,12 +14,12 @@ class CoursesController extends GetxController {
   TextEditingController pickUpLocationConroller = TextEditingController();
   TextEditingController dropOffLocationConroller = TextEditingController();
   TextEditingController pickUpDateConroller = TextEditingController();
-  TextEditingController passagersConroller = TextEditingController();
+  // TextEditingController passagersConroller = TextEditingController();
   TextEditingController luggageConroller = TextEditingController();
   TextEditingController regNumberController = TextEditingController();
   TextEditingController seatingCapacityController = TextEditingController();
-  TextEditingController luggageBigSizeController = TextEditingController();
-  TextEditingController luggageMediumSizeController = TextEditingController();
+  // TextEditingController luggageBigSizeController = TextEditingController();
+  // TextEditingController luggageMediumSizeController = TextEditingController();
   TextEditingController collieController = TextEditingController();
   ///////////////////
   TextEditingController firstNameController = TextEditingController();
@@ -76,6 +76,7 @@ class CoursesController extends GetxController {
   RxInt usedLuggageBigSize = 0.obs;
   RxInt usedLuggageMediumSize = 0.obs;
   RxInt usedCollie = 0.obs;
+  RxInt usedPassenger = 0.obs;
 
   var carImage1URL = "".obs;
   var carImage2URL = "".obs;
@@ -119,6 +120,7 @@ class CoursesController extends GetxController {
     usedLuggageBigSize.value = 0;
     usedLuggageMediumSize.value = 0;
     usedCollie.value = 0;
+    usedPassenger.value=0;
 
     image.value = "";
     imageCar1.value = "";
@@ -360,8 +362,8 @@ class CoursesController extends GetxController {
                   lastName: passengerData['lastName'],
                   phoneNum: passengerData['phoneNum'],
                   state: passengerData['state'] ?? false,
-                  collieNumber: passengerData['collieNumber'] ??1,
-                passengersNumber: passengerData['passengersNumber']??1
+                  collieNumber: passengerData['requestedCollies'] ??1,
+                passengersNumber: passengerData['requestedPassengers']??1
               ),
             )
             .toList();
@@ -747,7 +749,7 @@ class CoursesController extends GetxController {
         "dropOffLocation": dropOffLocationConroller.text,
         "pickUpDate": course.pickUpDate,
         "dropOffDate": isReturn.value == true ? course.dropOffDate : null,
-        "passengersNum": int.tryParse(passagersConroller.text) ?? 0,
+        "passengersNum": course.passengersNum,
         "seatingCapacity": int.tryParse(seatingCapacityController.text) ?? 0,
         "driverName": selectedItem.value,
         "identityNum": selectedItemId.value,
@@ -822,7 +824,7 @@ class CoursesController extends GetxController {
         "dropOffLocation": dropOffLocationConroller.text,
         "pickUpDate": course.pickUpDate,
         "dropOffDate": isReturn.value == true ? course.dropOffDate : null,
-        "passengersNum": int.tryParse(passagersConroller.text) ?? 0,
+        "passengersNum": course.passengersNum,
         "seatingCapacity": int.tryParse(seatingCapacityController.text) ?? 0,
         "driverName": selectedItem.value,
         "identityNum": selectedItemId.value,
@@ -890,7 +892,7 @@ class CoursesController extends GetxController {
         "pickUpDate": course.pickUpDate,
         "dropOffDate": isReturn.value == true ? course.dropOffDate : null,
         "passengersDetails": null,
-        "passengersNum": int.tryParse(passagersConroller.text) ?? 0,
+        "passengersNum": course.passengersNum,
         "seatingCapacity": int.tryParse(seatingCapacityController.text) ?? 0,
         "driverName": selectedItem.value,
         "identityNum": selectedItemId.value,
@@ -916,33 +918,32 @@ class CoursesController extends GetxController {
     print(course.id);
     await courses.doc(course.id).delete();
     print("AAAAAA");
-
-    // return;
+    Get.back();
+    fetchCourses();
+    return;
 
 
     if (course.orderUrl != null)
       print("ordder");
       FirebaseStorage.instance.refFromURL(course.orderUrl!).delete();
 
-    if (course.carImage1URL != null)
-      print("image1111111111");
+    if (course.carImage1URL != null) {
       FirebaseStorage.instance.refFromURL(course.carImage1URL!).delete();
+    }
 
-    if (course.carImage2URL != null)
-      print("image22222222222");
+    if (course.carImage2URL != null) {
       FirebaseStorage.instance.refFromURL(course.carImage2URL!).delete();
+    }
 
-    if (course.carImage3URL != null)
-      print("image333333333");
+    if (course.carImage3URL != null) {
       FirebaseStorage.instance.refFromURL(course.carImage3URL!).delete();
+    }
 
-    if (course.carImage4URL != null)
-      print("image4444");
+    if (course.carImage4URL != null) {
       FirebaseStorage.instance.refFromURL(course.carImage4URL!).delete();
+    }
 
-    print("DDDDD");
-    Get.back();
-    fetchCourses();
+
   }
 
   ///////////////admin/////////////////////////
