@@ -1936,11 +1936,14 @@ class _EditDriverImagesScreenState extends State<EditDriverImagesScreen> {
                                     moreImage3: more3ImageUrl,
                                   ))
                                       .then((value) {
-                                    Navigator.pop(context);
                                     controller.init();
-                                    Get.offAll(() => HomeScreen());
+                                    // Navigator.pop(context);
+                                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>HomeScreen()));
                                     // Get.back();
-                                    // Get.back();
+                                    // Get.offAll(() => HomeScreen());
+                                    Get.back();
+                                    Get.back();
+                                    Get.back();
                                   });
 
                                   ScaffoldMessenger.of(context)

@@ -2,6 +2,7 @@
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -47,6 +48,22 @@ class LoginController extends GetxController{
         }
     );
       try {
+
+        QuerySnapshot<Map<String, dynamic>> admindoc = await FirebaseFirestore.instance
+            .collection('admins')
+            .where('email', isEqualTo: emailController.text.trim())
+            .get();
+
+        if (admindoc.docs.isEmpty) {
+          Fluttertoast.showToast(
+              msg: 'The email ${emailController.text} does not exist in the admin app',
+              gravity: ToastGravity.TOP,
+          );
+
+          Get.back();
+
+          return;
+        }
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email, password: password).then((value){
             emailController.text="";

@@ -29,13 +29,13 @@ class _LogInScreenState extends State<LogInScreen> {
       body: ImageContainer(
           height:height,
           width:width,
-          margin: EdgeInsets.only(
-                left: 60,
-                top: 80
-            ),
-          border: BorderRadius.only(
-                topLeft: Radius.circular(40),
-              ),
+          // margin: EdgeInsets.only(
+          //       left: 60,
+          //       top: 80
+          //   ),
+          // border: BorderRadius.only(
+          //       topLeft: Radius.circular(40),
+          //     ),
           child: Container(
             decoration: BoxDecoration(
               color: color,
@@ -147,9 +147,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                     loginController.loginAdmin(controller.emailController.text.trim(), controller.passwordController.text.trim(),context);
                                   }
                                 },
-                                child: Text(tLogin,style: TextStyle(color: Colors.white,fontSize: 15),),
+                                child: Text(tLogin,style: TextStyle(color: Colors.blue,fontSize: 22,fontWeight: FontWeight.bold),),
                                 style: OutlinedButton.styleFrom(
-                                    backgroundColor: Color(0xFF1590CF)
+                                    backgroundColor: Colors.white
                                 )
                             ),
                           )

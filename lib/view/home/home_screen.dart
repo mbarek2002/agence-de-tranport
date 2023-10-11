@@ -16,338 +16,289 @@ import 'package:badges/badges.dart' as badges;
 import 'package:get_storage/get_storage.dart';
 
 class HomeScreen extends StatefulWidget {
-   HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  NotificationNewDriverController notificationNewDriverController = Get.put(NotificationNewDriverController());
+  NotificationNewDriverController notificationNewDriverController =
+      Get.put(NotificationNewDriverController());
   LoginController loginController = Get.put(LoginController());
-  DriversController  driversController =Get.put(DriversController());
+  DriversController driversController = Get.put(DriversController());
   CoursesController coursesController = Get.put(CoursesController());
 
   HomeController homeController = Get.put(HomeController());
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
-     loginController.getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
+    loginController
+        .getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
     coursesController.fetchCourses();
-    homeController.box.write("email", FirebaseAuth.instance.currentUser!.email.toString());
+    homeController.box
+        .write("email", FirebaseAuth.instance.currentUser!.email.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
-           Padding(
-             padding:  EdgeInsets.only(right: MediaQuery.of(context).size.width*0.01),
-             child:
-                 IconButton(
-                     onPressed: (){
-                   LoginController().signAdminOut();
-                   homeController.box.remove("email");
+          Padding(
+            padding: EdgeInsets.only(
+                right: MediaQuery.of(context).size.width * 0.01),
+            child: IconButton(
+              onPressed: () {
+                LoginController().signAdminOut();
+                homeController.box.remove("email");
 
-                   Get.offAll(()=>LogInScreen());
-                 }
-                 ,icon: Icon(Icons.logout,color: Colors.white,size: 30,),),
-           ),
+                Get.offAll(() => LogInScreen());
+              },
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ),
         ],
         backgroundColor: Color(0xFF0F5CA0),
         title: Padding(
-          padding:  EdgeInsets.only(
-              left:  MediaQuery.of(context).size.width*0.1
+          padding:
+              EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
+          child: const Text(
+            tHome,
+            style: TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Georgia"),
           ),
-          child: const Text(tHome,style: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontFamily: "Georgia"
-          ),),
         ),
       ),
       body: Stack(
         children: [
           Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(tHomebackground)
-              )
-            ),
+                image: DecorationImage(
+                    fit: BoxFit.cover, image: AssetImage(tHomebackground))),
             child: Column(
               children: [
                 SizedBox(
-                height: MediaQuery.of(context).size.height*0.07,
-                width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width,
                   child: Container(
                     alignment: Alignment.centerRight,
                     decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(80),
-                    bottomRight: Radius.circular(80),
-                    ),
-                    color: Color(0xFF0F5CA0)
-                    ),
-                    ),
-                    ),
-                SizedBox(height:  MediaQuery.of(context).size.height*0.15,),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(80),
+                          bottomRight: Radius.circular(80),
+                        ),
+                        color: Color(0xFF0F5CA0)),
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                ),
                 Container(
-                  height: MediaQuery.of(context).size.height*0.5,
+                  height: MediaQuery.of(context).size.height * 0.5,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: (){
-                          Get.to(()=>DriversListScreen());
+                        onTap: () {
+                          Get.to(() => DriversListScreen());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.12,
-                          width: MediaQuery.of(context).size.width*0.8,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           decoration: BoxDecoration(
-                            color: Color(0xFF0F5CA0).withOpacity(0.45),
-                            borderRadius: BorderRadius.circular(20)
-                          ),
+                              color: Color(0xFF0F5CA0).withOpacity(0.45),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround  ,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Padding(
-                                padding:  EdgeInsets.only(
-                                    left:MediaQuery.of(context).size.width*0.05
-                                ),
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05),
                                 child: Container(
-                                    height: MediaQuery.of(context).size.height*0.1,
-                                    width: MediaQuery.of(context).size.width*0.18,
-                                  decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(tHomeList)
-                                  )
-                                  ),
-                                  child: Container(
-                                    height: 20,
-                                    width: 20,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.1,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.18,
                                     decoration: BoxDecoration(
-                                    image:DecorationImage(
-                                      image:
-                                  AssetImage("assets/icons/driver.png"))))
-                                ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(tHomeList))),
+                                    child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/icons/driver.png"))))),
                               ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.1,
-                                  width: MediaQuery.of(context).size.width*0.45,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.8),
-                                    borderRadius: BorderRadius.circular(20)
-                                  ),
+                                      color: Colors.white.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: Center(
                                       child: Text(
-                                      'Drivers List',
-                                        style: TextStyle(
-                                          color: Color(0xFF105EA0),
-                                          fontSize: 20,
-                                            fontFamily: "Georgia"
-
-                                        ),
-                                      ))
-                              )
+                                    'Drivers List',
+                                    style: TextStyle(
+                                        color: Color(0xFF105EA0),
+                                        fontSize: 20,
+                                        fontFamily: "Georgia"),
+                                  )))
                             ],
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          Get.to(()=>NotificationNewDrivers());
+                        onTap: () {
+                          Get.to(() => NotificationNewDrivers());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.12,
-                          width: MediaQuery.of(context).size.width*0.8,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           decoration: BoxDecoration(
                               color: Color(0xFF0F5CA0).withOpacity(0.45),
-                              borderRadius: BorderRadius.circular(20)
-                          ),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               // badges.Badge(
                               //   badgeContent: Text(''),
                               //   child:
-                                Padding(
-                                  padding:  EdgeInsets.only(
-                                      left:MediaQuery.of(context).size.width*0.05
-                                  ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05),
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.18,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.white),
                                   child: Container(
-                                    height: MediaQuery.of(context).size.height*0.1,
-                                    width: MediaQuery.of(context).size.width*0.18,
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                      color: Colors.white
-                                    ),
-                                    child: Container(
-                                    decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/icons/person-combination.png"
-                                    )
-                                    )
-                                    ),
-                                    ),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/icons/person-combination.png"))),
                                   ),
                                 ),
+                              ),
                               // ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.1,
-                                  width: MediaQuery.of(context).size.width*0.45,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
                                   decoration: BoxDecoration(
                                       color: Colors.white.withOpacity(0.8),
-                                      borderRadius: BorderRadius.circular(20)
-                                  ),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: Center(
                                       child: Padding(
-                                        padding:  EdgeInsets.only(left:MediaQuery.of(context).size.width*0.03),
-                                        child: Text(
-                                          'New Drivers Request',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Color(0xFF105EA0),
-                                              fontSize: 19,
-                                            fontFamily: "Georgia"
-                                          ),
-                                        ),
-                                      ))
-                              ),
+                                    padding: EdgeInsets.only(
+                                        left:
+                                            MediaQuery.of(context).size.width *
+                                                0.03),
+                                    child: Text(
+                                      'New Drivers Request',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Color(0xFF105EA0),
+                                          fontSize: 19,
+                                          fontFamily: "Georgia"),
+                                    ),
+                                  ))),
                             ],
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          Get.to(()=>CoursesListSceen());
+                        onTap: () {
+                          Get.to(() => CoursesListSceen());
                         },
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.12,
-                          width: MediaQuery.of(context).size.width*0.8,
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           decoration: BoxDecoration(
                               color: Color(0xFF0F5CA0).withOpacity(0.45),
-                              borderRadius: BorderRadius.circular(20)
-                          ),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Padding(
-                                padding:  EdgeInsets.only(
-                                    left:MediaQuery.of(context).size.width*0.05
-                                ),
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.05),
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height*0.1,
-                                  width: MediaQuery.of(context).size.width*0.18,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.18,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: AssetImage(tHomeList)
-                                      )
-                                  ),
+                                          image: AssetImage(tHomeList))),
                                   // child:  Icon(Icons.person,color: Colors.blue,size: 50,),
                                   child: Container(
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: AssetImage(
-                                                "assets/icons/care-request-reviewer.png"
-                                            )
-                                        )
-                                    ),
+                                                "assets/icons/care-request-reviewer.png"))),
                                   ),
                                 ),
                               ),
                               Container(
-                                  height: MediaQuery.of(context).size.height*0.1,
-                                  width: MediaQuery.of(context).size.width*0.45,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
                                   decoration: BoxDecoration(
                                       color: Colors.white.withOpacity(0.8),
-                                      borderRadius: BorderRadius.circular(20)
-                                  ),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: Center(
                                       child: Text(
-                                        'Courses List',
-                                        style: TextStyle(
-                                            color: Color(0xFF105EA0),
-                                            fontSize: 20,
-                                            fontFamily: "Georgia"
-                                        ),
-                                      ))
-                              ),
+                                    'Courses List',
+                                    style: TextStyle(
+                                        color: Color(0xFF105EA0),
+                                        fontSize: 20,
+                                        fontFamily: "Georgia"),
+                                  ))),
                             ],
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
-                SizedBox(height: 60,),
-
-                  ],
+                SizedBox(
+                  height: 60,
+                ),
+              ],
             ),
           ),
-          // Positioned(
-          //   top: MediaQuery.of(context).size.height* .04,
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width,
-          //     alignment: Alignment.center,
-          //     child: GestureDetector(
-          //       child: Container(
-          //         height: 50,
-          //         width: 50,
-          //         decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(20)
-          //         ),
-          //         child: Obx(() {
-          //           if (loginController.isLoading.value) {
-          //             return SizedBox(
-          //               height: 20.0,
-          //               width: 20.0,
-          //               child: Center(
-          //                   child: CircularProgressIndicator()
-          //               ),
-          //             );
-          //           } else {
-          //             return Container(
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(15),
-          //                 color: Colors.white.withOpacity(0.2),
-          //                 image: DecorationImage(
-          //                   fit: BoxFit.cover,
-          //                   image:
-          //                   NetworkImage(
-          //                     loginController.adminImageUrl.value
-          //                   ),
-          //                 )
-          //               ),
-          //               height: 60,
-          //               width: 60,
-          //             );
-          //           }
-          //         }
-          //         )
-          //      ),
-          //
-          //       onTap: () {
-          //         Get.offAll(() => HomeScreen());
-          //       }
-          //
-          //       ),
-          //       ),
-          //       ),
+
         ],
       ),
     );
   }
 }
-
-

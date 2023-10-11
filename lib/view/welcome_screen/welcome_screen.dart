@@ -14,14 +14,14 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: ImageContainer(
         width: size.width,
-        border: BorderRadius.only(
-              // topRight: Radius.circular(40),
-              topLeft: Radius.circular(40),
-            ),
-        margin: EdgeInsets.only(
-          left: size.width*.15,
-         top: size.height*.1
-            ),
+        // border: BorderRadius.only(
+        //       // topRight: Radius.circular(40),
+        //       topLeft: Radius.circular(40),
+        //     ),
+        // margin: EdgeInsets.only(
+        //   left: size.width*.15,
+        //  top: size.height*.1
+        //     ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -44,9 +44,9 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: (){
                     Get.offAll(()=>LogInScreen());
                   },
-                  child: Text(tGetStart,style: TextStyle(color: Colors.white,fontSize: 15),),
+                  child: Text(tGetStart,style: TextStyle(color: Colors.blue,fontSize: 22,fontWeight: FontWeight.bold),),
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: Color(0xFF1590CF)
+                    backgroundColor: Colors.white
                   )
                 ),
               ),

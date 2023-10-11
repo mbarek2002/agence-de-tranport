@@ -532,7 +532,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                   context: context,
                                   builder: (BuildContext context){
                                     return Container(
-                                      height: MediaQuery.of(context).size.height*0.4,
+                                      height: MediaQuery.of(context).size.height*0.5,
                                       width: MediaQuery.of(context).size.width,
 
                                       color: Color(0xFF0F5CA0),
@@ -615,6 +615,14 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 ],
                                               )
                                           ),
+                                          Spacer(),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: Size(MediaQuery.sizeOf(context).width*.5,48)
+                                              ),
+                                              onPressed: ()=>Navigator.pop(context), child: Text("Next",style: TextStyle(color: Color(0xFF0F5CA0),fontSize: 18,fontWeight: FontWeight.bold),)),
+                                          Spacer(),
+
                                         ],
                                       )),
                                     );
@@ -640,7 +648,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('Pasengers',
+                                  Text('Passengers',
                                     style: TextStyle(
                                         fontFamily: "Georgia",
                                         fontSize: 20,
@@ -674,7 +682,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                   context: context,
                                   builder: (BuildContext context){
                                     return Container(
-                                      height: MediaQuery.of(context).size.height*0.4,
+                                      height: MediaQuery.of(context).size.height*0.5,
                                       width: MediaQuery.of(context).size.width,
 
                                       color: Color(0xFF0F5CA0),
@@ -757,6 +765,13 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 ],
                                               )
                                           ),
+                                          Spacer(),
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  minimumSize: Size(MediaQuery.sizeOf(context).width*.5,48)
+                                              ),
+                                              onPressed: ()=>Navigator.pop(context), child: Text("Next",style: TextStyle(color: Color(0xFF0F5CA0),fontSize: 18,fontWeight: FontWeight.bold),)),
+                                          Spacer(),
                                         ],
                                       )),
                                     );
@@ -1242,6 +1257,12 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                               if (coursesController
                                   .pickUpLocationConroller.text ==
                                   "") errorList.add("pick-up location");
+
+                              if(coursesController.isReturn.value){
+                                if(dateTimeDropOff.compareTo(DateTime.now()) != 1){
+                                  errorList.add('Return date and time must not be earlier than now.');
+                                }
+                              }
                               if (coursesController
                                   .dropOffLocationConroller.text ==
                                   "") errorList.add("drop off location");
@@ -1310,26 +1331,56 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                               }
                               else {
                                 showDialog(
-                                    context: context,
-                                    builder: ((builder) =>
-                                        AlertDialog(
-                                          content: Container(
-                                            height: 110,
-                                            width: 100,
-                                            child: Column(
-                                              children: [
-                                                const Icon(
-                                                    IconData(0xe6cb,
-                                                        fontFamily:
-                                                        'MaterialIcons')),
-                                                Text(
-                                                    'verify your data :\n' +
-                                                        errorList.join(
-                                                            ",")),
-                                              ],
+                                  context: context,
+                                  builder: (builder) => AlertDialog(
+                                    content: Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                              Icons.warning,
+                                            size: 60, // Adjust the icon size as needed
+                                            color: Colors.blue, // Adjust the icon color as needed
+                                          ),
+                                          SizedBox(height: 20), // Add some space between icon and text
+                                          Text(
+                                            'Verify your data:',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 10), // Add some space between title and error list
+
+                                          // Show each error in a separate line
+                                          Flexible(
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: errorList.map((error) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                                    child: Text(
+                                                      '- $error',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
                                             ),
                                           ),
-                                        )));
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+
+
                               }
 
                               // }catch(e){

@@ -489,7 +489,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     context: context,
                                     builder: (BuildContext context){
                                       return Container(
-                                        height: MediaQuery.of(context).size.height*0.4,
+                                        height: MediaQuery.of(context).size.height*0.5,
                                         width: MediaQuery.of(context).size.width,
 
                                         color: Color(0xFF0F5CA0),
@@ -572,6 +572,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   ],
                                                 )
                                             ),
+                                            Spacer(),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    minimumSize: Size(MediaQuery.sizeOf(context).width*.5,48)
+                                                ),
+                                                onPressed: ()=>Navigator.pop(context), child: Text("Next",style: TextStyle(color: Color(0xFF0F5CA0),fontSize: 18,fontWeight: FontWeight.bold),)),
+                                            Spacer(),
                                           ],
                                         )),
                                       );
@@ -597,7 +604,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text('Pasengers',
+                                    Text('Passengers',
                                       style: TextStyle(
                                           fontFamily: "Georgia",
                                           fontSize: 20,
@@ -631,7 +638,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     context: context,
                                     builder: (BuildContext context){
                                       return Container(
-                                        height: MediaQuery.of(context).size.height*0.4,
+                                        height: MediaQuery.of(context).size.height*0.5,
                                         width: MediaQuery.of(context).size.width,
 
                                         color: Color(0xFF0F5CA0),
@@ -714,6 +721,13 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   ],
                                                 )
                                             ),
+                                            Spacer(),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    minimumSize: Size(MediaQuery.sizeOf(context).width*.5,48)
+                                                ),
+                                                onPressed: ()=>Navigator.pop(context), child: Text("Next",style: TextStyle(color: Color(0xFF0F5CA0),fontSize: 18,fontWeight: FontWeight.bold),)),
+                                            Spacer(),
                                           ],
                                         )),
                                       );
@@ -1017,6 +1031,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 if (coursesController
                                     .dropOffLocationConroller.text ==
                                     "") errorList.add("drop off location");
+                                if(coursesController.isReturn.value){
+                                  if(dateTimeDropOff.compareTo(DateTime.now()) != 1){
+                                    errorList.add('Return date and time must not be earlier than now.');
+                                  }
+                                }
                                 // if (coursesController.passagersConroller.text ==
                                 //     "") errorList.add("passengers number");
                                 if (coursesController.selectedItem
@@ -1029,6 +1048,9 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                   errorList.add("check the seating capcity");
                                 if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
                                   errorList.add("Colis capacity");
+
+
+
 
                                 if (errorList.isEmpty) {
                                   // if(coursesController.checkBox1==true || coursesController.checkBox2==true){
@@ -1077,23 +1099,56 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 }
                                 else {
                                   showDialog(
-                                      context: context,
-                                      builder: ((builder) => AlertDialog(
-                                        content: Container(
-                                          height: MediaQuery.of(context).size.height*0.2,
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Column(
-                                            children: [
-                                              const Icon(IconData(0xe6cb,
-                                                  fontFamily:
-                                                  'MaterialIcons')
+                                    context: context,
+                                    builder: (builder) => AlertDialog(
+                                      content: Container(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.warning,
+                                              size: 60, // Adjust the icon size as needed
+                                              color: Colors.blue, // Adjust the icon color as needed
+                                            ),
+                                            SizedBox(height: 20), // Add some space between icon and text
+                                            Text(
+                                              'Verify your data:',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              Text('verify your data :\n' +
-                                                  errorList.join(",")),
-                                            ],
-                                          ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(height: 10), // Add some space between title and error list
+
+                                            // Show each error in a separate line
+                                            Flexible(
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: errorList.map((error) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                                      child: Text(
+                                                        '- $error',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      )));
+                                      ),
+                                    ),
+                                  );
+
+
                                 }
                               },
                               child: Container(

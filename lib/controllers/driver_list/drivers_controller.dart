@@ -25,7 +25,7 @@ class DriversController extends GetxController{
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   /////////////////////////////////////////////////////////////////////
-
+  Rx<bool> loadingConfirmed= false.obs;
 
 
   void init(){
@@ -147,7 +147,7 @@ class DriversController extends GetxController{
         await userCredential.user?.delete();
         await app.delete();
 
-        print("User deleted successfully.");
+        print("User deleted successfully.") ;
         print(d.email);
         await driversList.doc(d.id).delete();
       QuerySnapshot querySnapshot = await driversNotifCollection.where('email', isEqualTo: email).get();
@@ -166,6 +166,7 @@ class DriversController extends GetxController{
 
 
   }
+
   Future<bool> isEmailRegistered(String email) async {
     try {
       List<String> signInMethods = await FirebaseAuth.instance
@@ -182,9 +183,9 @@ class DriversController extends GetxController{
 
 
   Future add_driver(DriverModel d)async {
+      loadingConfirmed(true);
     try {
        bool test = await isEmailRegistered(d.email);
-       print(d.email);
        if(test == true)
          {
            print("trueeeeeee");
@@ -254,11 +255,12 @@ class DriversController extends GetxController{
     }catch(e){
       print(e.toString());
     }
+    loadingConfirmed(false);
   }
 
   Future update_driver(DriverModel d)async{
 
-    driversList.doc(d.id).update(
+   await driversList.doc(d.id).update(
         {
           "driverImage":d.driverImage,
           "firstName":d.firstName,
@@ -278,10 +280,9 @@ class DriversController extends GetxController{
           "more2":d.moreImage2,
           "more3":d.moreImage3,
         }
-    ).then((value){
-      fetchDrivers();
-      init();
-    });
+    );
+   await fetchDrivers();
+    init();
   }
 
   RxBool isLoading = false.obs;

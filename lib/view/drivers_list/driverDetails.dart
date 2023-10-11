@@ -240,88 +240,91 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                 .withOpacity(
                                                                     0.4),
                                                             width: 2)),
-                                                    child: Row(
-                                                      // crossAxisAlignment: CrossAxisAlignment.end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (widget.record.identityCardImageFace1.split('?').first.endsWith(
-                                                                    '.jpg') ||
-                                                                widget.record
-                                                                    .identityCardImageFace1
-                                                                    .split('?')
-                                                                    .first
-                                                                    .endsWith(
-                                                                        '.jpeg') ||
-                                                                widget.record
-                                                                    .identityCardImageFace1
-                                                                    .split('?')
-                                                                    .first
-                                                                    .endsWith(
-                                                                        '.png'))
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      ((builder) =>
-                                                                          AlertDialog(
-                                                                            content:
-                                                                                Stack(
-                                                                              children: [
-                                                                                Container(
-                                                                                  height: 250,
-                                                                                  width: 1800,
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.only(
-                                                                                      top: 20.0,
-                                                                                    ),
-                                                                                    child: PhotoView(
-                                                                                      imageProvider: NetworkImage(
-                                                                                        widget.record.identityCardImageFace1,
-                                                                                        // width: 1300,
-                                                                                        // height: 100,
-                                                                                        // fit: BoxFit.fill,
-                                                                                      ),
-                                                                                    ),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (widget.record.identityCardImageFace1.split('?').first.endsWith(
+                                                                '.jpg') ||
+                                                            widget.record
+                                                                .identityCardImageFace1
+                                                                .split('?')
+                                                                .first
+                                                                .endsWith(
+                                                                    '.jpeg') ||
+                                                            widget.record
+                                                                .identityCardImageFace1
+                                                                .split('?')
+                                                                .first
+                                                                .endsWith(
+                                                                    '.png'))
+                                                          showDialog(
+                                                              context:
+                                                                  context,
+                                                              builder:
+                                                                  ((builder) =>
+                                                                      AlertDialog(
+                                                                        contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                        content:
+                                                                            Stack(
+                                                                          children: [
+                                                                            Container(
+                                                                              // height: 250,
+                                                                              width: 1800,
+                                                                              child: Padding(
+                                                                                padding: const EdgeInsets.only(
+                                                                                  top: 20.0,
+                                                                                ),
+                                                                                child: PhotoView(
+                                                                                  imageProvider: NetworkImage(
+                                                                                    widget.record.identityCardImageFace1,
+                                                                                    // width: 1300,
+                                                                                    // height: 100,
+                                                                                    // fit: BoxFit.fill,
                                                                                   ),
                                                                                 ),
-                                                                                Positioned(
-                                                                                    top: -15,
-                                                                                    right: -10,
-                                                                                    child: IconButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.pop(context);
-                                                                                      },
-                                                                                      icon: Icon(
-                                                                                        Icons.close,
-                                                                                        size: 30,
-                                                                                      ),
-                                                                                    ))
-                                                                              ],
-                                                                            ),
-                                                                          )));
-                                                            else {
-                                                              showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      ((builder) =>
-                                                                          AlertDialog(
-                                                                            content:
-                                                                                Container(
-                                                                              height: 500,
-                                                                              width: 2500,
-                                                                              child: SfPdfViewer.network(
-                                                                                widget.record.identityCardImageFace1,
                                                                               ),
                                                                             ),
-                                                                          )));
-                                                            }
-                                                          },
-                                                          child: Container(
+                                                                            Positioned(
+                                                                                top: -15,
+                                                                                right: -10,
+                                                                                child: IconButton(
+                                                                                  onPressed: () {
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                  icon: Icon(
+                                                                                    Icons.close,
+                                                                                    size: 30,
+                                                                                  ),
+                                                                                ))
+                                                                          ],
+                                                                        ),
+                                                                      )));
+                                                        else {
+                                                          showDialog(
+                                                              context:
+                                                                  context,
+                                                              builder:
+                                                                  ((builder) =>
+                                                                      AlertDialog(
+                                                                        contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                        content:
+                                                                            Container(
+                                                                          // height: 500,
+                                                                          width: 2500,
+                                                                          child: SfPdfViewer.network(
+                                                                            widget.record.identityCardImageFace1,
+                                                                          ),
+                                                                        ),
+                                                                      )));
+                                                        }
+                                                      },
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                                0.365,
                                                             child: widget.record
                                                                     .identityCardImageFace1
                                                                     .split('?')
@@ -388,89 +391,15 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                             ],
                                                                           ),
                                                           ),
-                                                        ),
-                                                        Center(
-                                                          child: SizedBox(
-                                                            width: 20,
-                                                            child:
-                                                                GestureDetector(
-                                                                    onTap: () {
-                                                                      if (widget.record.identityCardImageFace1.split('?').first.endsWith('.jpg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .identityCardImageFace1
-                                                                              .split(
-                                                                                  '?')
-                                                                              .first
-                                                                              .endsWith(
-                                                                                  '.jpeg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .identityCardImageFace1
-                                                                              .split('?')
-                                                                              .first
-                                                                              .endsWith('.png'))
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: 250,
-                                                                                        width: 1800,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.network(
-                                                                                            widget.record.identityCardImageFace1,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.fill,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else {
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.network(
-                                                                                      widget.record.identityCardImageFace1,
-                                                                                    ),
-                                                                                  ),
-                                                                                )));
-                                                                      }
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .remove_red_eye_sharp,
-                                                                      size: 20,
-                                                                    )),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Center(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .remove_red_eye_sharp,
+                                                              size: 20,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     )
 
                                                     // ? Text(controller.selectedFile.value!.path.split('/').last)
@@ -495,153 +424,157 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                 .withOpacity(
                                                                     0.4),
                                                             width: 2)),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (controller.selectedIdentityFace2.value !=
-                                                                null &&
-                                                                controller
-                                                                    .selectedIdentityFace2
-                                                                    .value!
-                                                                    .path
-                                                                    .split(
-                                                                    '/')!
-                                                                    .last
-                                                                    .endsWith(
-                                                                    '.pdf')) {
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Container(
-                                                                          height: 500,
-                                                                          width: 2500,
-                                                                          child: SfPdfViewer.file(controller.selectedIdentityFace2.value!),
-                                                                        ),
-                                                                      )));
-                                                            } else if (controller
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (controller.selectedIdentityFace2.value !=
+                                                            null &&
+                                                            controller
                                                                 .selectedIdentityFace2
-                                                                .value !=
-                                                                null)
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              height: 250,
-                                                                              width: 1800,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(
-                                                                                  top: 20.0,
-                                                                                ),
-                                                                                child: PhotoView(
-                                                                                  imageProvider:FileImage(
-                                                                                    controller.selectedIdentityFace2.value!,
-                                                                                    // width: 1300,
-                                                                                    // height: 100,
-                                                                                    // fit: BoxFit.cover,
-                                                                                  ),
-                                                                                ),
+                                                                .value!
+                                                                .path
+                                                                .split(
+                                                                '/')!
+                                                                .last
+                                                                .endsWith(
+                                                                '.pdf')) {
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Container(
+                                                                      // height: 500,
+                                                                      width: 2500,
+                                                                      child: SfPdfViewer.file(controller.selectedIdentityFace2.value!),
+                                                                    ),
+                                                                  )));
+                                                        } else if (controller
+                                                            .selectedIdentityFace2
+                                                            .value !=
+                                                            null)
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: 250,
+                                                                          width: 1800,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 20.0,
+                                                                            ),
+                                                                            child: PhotoView(
+                                                                              imageProvider:FileImage(
+                                                                                controller.selectedIdentityFace2.value!,
+                                                                                // width: 1300,
+                                                                                // height: 100,
+                                                                                // fit: BoxFit.cover,
                                                                               ),
                                                                             ),
-                                                                            Positioned(
-                                                                                top: -15,
-                                                                                right: -10,
-                                                                                child: IconButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  icon: Icon(
-                                                                                    Icons.close,
-                                                                                    size: 30,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        ),
-                                                                      )));
-                                                            else if (widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg') ||
-                                                                widget
-                                                                    .record
-                                                                    .identityCardImageFace2
-                                                                    .split(
-                                                                    '?')
-                                                                    .first
-                                                                    .endsWith(
-                                                                    '.jpeg') ||
-                                                                widget
-                                                                    .record
-                                                                    .identityCardImageFace2
-                                                                    .split('?')
-                                                                    .first
-                                                                    .endsWith('.png'))
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              height: 250,
-                                                                              width: 1800,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(
-                                                                                  top: 20.0,
-                                                                                ),
-                                                                                child: PhotoView(
-                                                                                  imageProvider: NetworkImage(
-                                                                                    widget.record.identityCardImageFace2,
-                                                                                    // width: 1300,
-                                                                                    // height: 100,
-                                                                                    // fit: BoxFit.fill,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            Positioned(
-                                                                                top: -15,
-                                                                                right: -10,
-                                                                                child: IconButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  icon: Icon(
-                                                                                    Icons.close,
-                                                                                    size: 30,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        ),
-                                                                      )));
-                                                            else {
-                                                              // SfPdfViewer.network(widget.record.identityCardImageFace1);
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Container(
-                                                                          height: 500,
-                                                                          width: 2500,
-                                                                          child: SfPdfViewer.network(
-                                                                            widget.record.identityCardImageFace2,
                                                                           ),
                                                                         ),
-                                                                      )));
-                                                            }
-                                                          },
-                                                          child: Container(
+                                                                        Positioned(
+                                                                            top: -15,
+                                                                            right: -10,
+                                                                            child: IconButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.close,
+                                                                                size: 30,
+                                                                              ),
+                                                                            ))
+                                                                      ],
+                                                                    ),
+                                                                  )));
+                                                        else if (widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg') ||
+                                                            widget
+                                                                .record
+                                                                .identityCardImageFace2
+                                                                .split(
+                                                                '?')
+                                                                .first
+                                                                .endsWith(
+                                                                '.jpeg') ||
+                                                            widget
+                                                                .record
+                                                                .identityCardImageFace2
+                                                                .split('?')
+                                                                .first
+                                                                .endsWith('.png'))
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: 250,
+                                                                          width: 1800,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 20.0,
+                                                                            ),
+                                                                            child: PhotoView(
+                                                                              imageProvider: NetworkImage(
+                                                                                widget.record.identityCardImageFace2,
+                                                                                // width: 1300,
+                                                                                // height: 100,
+                                                                                // fit: BoxFit.fill,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Positioned(
+                                                                            top: -15,
+                                                                            right: -10,
+                                                                            child: IconButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.close,
+                                                                                size: 30,
+                                                                              ),
+                                                                            ))
+                                                                      ],
+                                                                    ),
+                                                                  )));
+                                                        else {
+                                                          // SfPdfViewer.network(widget.record.identityCardImageFace1);
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Container(
+                                                                      // height: 500,
+                                                                      width: 2500,
+                                                                      child: SfPdfViewer.network(
+                                                                        widget.record.identityCardImageFace2,
+                                                                      ),
+                                                                    ),
+                                                                  )));
+                                                        }
+                                                      },
+                                                      child: Stack(
+
+                                                        children: [
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                                0.365,
                                                             child: widget.record
                                                                     .identityCardImageFace2
                                                                     .split('?')
@@ -712,153 +645,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                             ],
                                                                           ),
                                                           ),
-                                                        ),
-                                                        Center(
-                                                          child: SizedBox(
-                                                            width: 20,
-                                                            child:
-                                                                GestureDetector(
-                                                                    onTap: () {
-                                                                      if (controller.selectedIdentityFace2.value !=
-                                                                              null &&
-                                                                          controller
-                                                                              .selectedIdentityFace2
-                                                                              .value!
-                                                                              .path
-                                                                              .split(
-                                                                                  '/')!
-                                                                              .last
-                                                                              .endsWith(
-                                                                                  '.pdf')) {
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.file(controller.selectedIdentityFace2.value!),
-                                                                                  ),
-                                                                                )));
-                                                                      } else if (controller
-                                                                              .selectedIdentityFace2
-                                                                              .value !=
-                                                                          null)
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: 250,
-                                                                                        width: 1800,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.file(
-                                                                                            controller.selectedIdentityFace2.value!,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.cover,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else if (widget.record.identityCardImageFace2.split('?').first.endsWith('.jpg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .identityCardImageFace2
-                                                                              .split(
-                                                                                  '?')
-                                                                              .first
-                                                                              .endsWith(
-                                                                                  '.jpeg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .identityCardImageFace2
-                                                                              .split('?')
-                                                                              .first
-                                                                              .endsWith('.png'))
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: 250,
-                                                                                        width: 1800,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.network(
-                                                                                            widget.record.identityCardImageFace2,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.fill,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else {
-                                                                        // SfPdfViewer.network(widget.record.identityCardImageFace1);
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.network(
-                                                                                      widget.record.identityCardImageFace2,
-                                                                                    ),
-                                                                                  ),
-                                                                                )));
-                                                                      }
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .remove_red_eye_sharp,
-                                                                      size: 20,
-                                                                    )),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Center(child: Icon(Icons.remove_red_eye_sharp,size: 20,))
+                                                        ],
+                                                      ),
                                                     )
 
                                                     // ? Text(controller.selectedFile.value!.path.split('/').last)
@@ -900,152 +689,155 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                 .withOpacity(
                                                                     0.4),
                                                             width: 2)),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (controller.selectedLicenceFace1.value !=
-                                                                null &&
-                                                                controller
-                                                                    .selectedLicenceFace1
-                                                                    .value!
-                                                                    .path
-                                                                    .split(
-                                                                    '/')!
-                                                                    .last
-                                                                    .endsWith(
-                                                                    '.pdf')) {
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Container(
-                                                                          height: 500,
-                                                                          width: 2500,
-                                                                          child: SfPdfViewer.file(controller.selectedLicenceFace1.value!),
-                                                                        ),
-                                                                      )));
-                                                            } else if (controller
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (controller.selectedLicenceFace1.value !=
+                                                            null &&
+                                                            controller
                                                                 .selectedLicenceFace1
-                                                                .value !=
-                                                                null)
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              height: 250,
-                                                                              width: 1800,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(
-                                                                                  top: 20.0,
-                                                                                ),
-                                                                                child: PhotoView(
-                                                                                  imageProvider: FileImage(
-                                                                                    controller.selectedLicenceFace1.value!,
-                                                                                    // width: 1300,
-                                                                                    // height: 100,
-                                                                                    // fit: BoxFit.cover,
-                                                                                  ),
-                                                                                ),
+                                                                .value!
+                                                                .path
+                                                                .split(
+                                                                '/')!
+                                                                .last
+                                                                .endsWith(
+                                                                '.pdf')) {
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Container(
+                                                                      // height: 500,
+                                                                      width: 2500,
+                                                                      child: SfPdfViewer.file(controller.selectedLicenceFace1.value!),
+                                                                    ),
+                                                                  )));
+                                                        } else if (controller
+                                                            .selectedLicenceFace1
+                                                            .value !=
+                                                            null)
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: 250,
+                                                                          width: 1800,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 20.0,
+                                                                            ),
+                                                                            child: PhotoView(
+                                                                              imageProvider: FileImage(
+                                                                                controller.selectedLicenceFace1.value!,
+                                                                                // width: 1300,
+                                                                                // height: 100,
+                                                                                // fit: BoxFit.cover,
                                                                               ),
                                                                             ),
-                                                                            Positioned(
-                                                                                top: -15,
-                                                                                right: -10,
-                                                                                child: IconButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  icon: Icon(
-                                                                                    Icons.close,
-                                                                                    size: 30,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        ),
-                                                                      )));
-                                                            else if (widget.record.licenceImageFace1.split('?').first.endsWith('.jpg') ||
-                                                                widget
-                                                                    .record
-                                                                    .licenceImageFace1
-                                                                    .split(
-                                                                    '?')
-                                                                    .first
-                                                                    .endsWith(
-                                                                    '.jpeg') ||
-                                                                widget
-                                                                    .record
-                                                                    .licenceImageFace1
-                                                                    .split('?')
-                                                                    .first
-                                                                    .endsWith('.png'))
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              height: 250,
-                                                                              width: 1800,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(
-                                                                                  top: 20.0,
-                                                                                ),
-                                                                                child: PhotoView(
-                                                                                  imageProvider: NetworkImage(
-                                                                                    widget.record.licenceImageFace1,
-                                                                                    // width: 1300,
-                                                                                    // height: 100,
-                                                                                    // fit: BoxFit.fill,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            Positioned(
-                                                                                top: -15,
-                                                                                right: -10,
-                                                                                child: IconButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  icon: Icon(
-                                                                                    Icons.close,
-                                                                                    size: 30,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        ),
-                                                                      )));
-                                                            else {
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Container(
-                                                                          height: 500,
-                                                                          width: 2500,
-                                                                          child: SfPdfViewer.network(
-                                                                            widget.record.licenceImageFace1,
                                                                           ),
                                                                         ),
-                                                                      )));
-                                                            }
-                                                          },
-                                                          child: Container(
+                                                                        Positioned(
+                                                                            top: -15,
+                                                                            right: -10,
+                                                                            child: IconButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.close,
+                                                                                size: 30,
+                                                                              ),
+                                                                            ))
+                                                                      ],
+                                                                    ),
+                                                                  )));
+                                                        else if (widget.record.licenceImageFace1.split('?').first.endsWith('.jpg') ||
+                                                            widget
+                                                                .record
+                                                                .licenceImageFace1
+                                                                .split(
+                                                                '?')
+                                                                .first
+                                                                .endsWith(
+                                                                '.jpeg') ||
+                                                            widget
+                                                                .record
+                                                                .licenceImageFace1
+                                                                .split('?')
+                                                                .first
+                                                                .endsWith('.png'))
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: 250,
+                                                                          width: 1800,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 20.0,
+                                                                            ),
+                                                                            child: PhotoView(
+                                                                              imageProvider: NetworkImage(
+                                                                                widget.record.licenceImageFace1,
+                                                                                // width: 1300,
+                                                                                // height: 100,
+                                                                                // fit: BoxFit.fill,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Positioned(
+                                                                            top: -15,
+                                                                            right: -10,
+                                                                            child: IconButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.close,
+                                                                                size: 30,
+                                                                              ),
+                                                                            ))
+                                                                      ],
+                                                                    ),
+                                                                  )));
+                                                        else {
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Container(
+                                                                      // height: 500,
+                                                                      width: 2500,
+                                                                      child: SfPdfViewer.network(
+                                                                        widget.record.licenceImageFace1,
+                                                                      ),
+                                                                    ),
+                                                                  )));
+                                                        }
+                                                      },
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                                0.365,
                                                             child: widget.record
                                                                         .licenceImageFace1
                                                                         .split(
@@ -1091,152 +883,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                     ],
                                                                   ),
                                                           ),
-                                                        ),
-                                                        Center(
-                                                          child: SizedBox(
-                                                            width: 20,
-                                                            child:
-                                                                GestureDetector(
-                                                                    onTap: () {
-                                                                      if (controller.selectedLicenceFace1.value !=
-                                                                              null &&
-                                                                          controller
-                                                                              .selectedLicenceFace1
-                                                                              .value!
-                                                                              .path
-                                                                              .split(
-                                                                                  '/')!
-                                                                              .last
-                                                                              .endsWith(
-                                                                                  '.pdf')) {
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.file(controller.selectedLicenceFace1.value!),
-                                                                                  ),
-                                                                                )));
-                                                                      } else if (controller
-                                                                              .selectedLicenceFace1
-                                                                              .value !=
-                                                                          null)
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: 250,
-                                                                                        width: 1800,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.file(
-                                                                                            controller.selectedLicenceFace1.value!,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.cover,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else if (widget.record.licenceImageFace1.split('?').first.endsWith('.jpg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .licenceImageFace1
-                                                                              .split(
-                                                                                  '?')
-                                                                              .first
-                                                                              .endsWith(
-                                                                                  '.jpeg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .licenceImageFace1
-                                                                              .split('?')
-                                                                              .first
-                                                                              .endsWith('.png'))
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: 250,
-                                                                                        width: 1800,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.network(
-                                                                                            widget.record.licenceImageFace1,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.fill,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else {
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.network(
-                                                                                      widget.record.licenceImageFace1,
-                                                                                    ),
-                                                                                  ),
-                                                                                )));
-                                                                      }
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .remove_red_eye_sharp,
-                                                                      size: 20,
-                                                                    )),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Center(child: Icon(Icons.remove_red_eye_sharp,size: 20,))
+                                                        ],
+                                                      ),
                                                     )),
                                               ),
                                               Padding(
@@ -1257,88 +906,89 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                 .withOpacity(
                                                                     0.4),
                                                             width: 2)),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (widget.record.licenceImageFace2.split('?').first.endsWith('.jpg') ||
-                                                                widget
-                                                                    .record
-                                                                    .licenceImageFace2
-                                                                    .split(
-                                                                    '?')
-                                                                    .first
-                                                                    .endsWith(
-                                                                    '.jpeg') ||
-                                                                widget
-                                                                    .record
-                                                                    .licenceImageFace2
-                                                                    .split('?')
-                                                                    .first
-                                                                    .endsWith('.png'))
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Stack(
-                                                                          children: [
-                                                                            Container(
-                                                                              height: MediaQuery.of(context).size.height * 0.3,
-                                                                              width: MediaQuery.of(context).size.width,
-                                                                              child: Padding(
-                                                                                padding: const EdgeInsets.only(
-                                                                                  top: 20.0,
-                                                                                ),
-                                                                                child: PhotoView(
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (widget.record.licenceImageFace2.split('?').first.endsWith('.jpg') ||
+                                                            widget
+                                                                .record
+                                                                .licenceImageFace2
+                                                                .split(
+                                                                '?')
+                                                                .first
+                                                                .endsWith(
+                                                                '.jpeg') ||
+                                                            widget
+                                                                .record
+                                                                .licenceImageFace2
+                                                                .split('?')
+                                                                .first
+                                                                .endsWith('.png'))
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: MediaQuery.of(context).size.height * 0.3,
+                                                                          width: MediaQuery.of(context).size.width,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 20.0,
+                                                                            ),
+                                                                            child: PhotoView(
 
-                                                                                  imageProvider:NetworkImage(
-                                                                                    widget.record.licenceImageFace2,
-                                                                                    // width: 1300,
-                                                                                    // height: 100,
-                                                                                    // fit: BoxFit.fill,
-                                                                                  ),
-                                                                                ),
+                                                                              imageProvider:NetworkImage(
+                                                                                widget.record.licenceImageFace2,
+                                                                                // width: 1300,
+                                                                                // height: 100,
+                                                                                // fit: BoxFit.fill,
                                                                               ),
                                                                             ),
-                                                                            Positioned(
-                                                                                top: -15,
-                                                                                right: -10,
-                                                                                child: IconButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  icon: Icon(
-                                                                                    Icons.close,
-                                                                                    size: 30,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        ),
-                                                                      )));
-                                                            else {
-                                                              showDialog(
-                                                                  context:
-                                                                  context,
-                                                                  builder: ((builder) =>
-                                                                      AlertDialog(
-                                                                        content: Container(
-                                                                          height: 500,
-                                                                          width: 2500,
-                                                                          child: SfPdfViewer.network(
-                                                                            widget.record.licenceImageFace2,
                                                                           ),
                                                                         ),
-                                                                      )));
-                                                            }
-                                                          },
-                                                          child: Container(
+                                                                        Positioned(
+                                                                            top: -15,
+                                                                            right: -10,
+                                                                            child: IconButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              icon: Icon(
+                                                                                Icons.close,
+                                                                                size: 30,
+                                                                              ),
+                                                                            ))
+                                                                      ],
+                                                                    ),
+                                                                  )));
+                                                        else {
+                                                          showDialog(
+                                                              context:
+                                                              context,
+                                                              builder: ((builder) =>
+                                                                  AlertDialog(
+                                                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
+                                                                    content: Container(
+                                                                      // height: 500,
+                                                                      width: 2500,
+                                                                      child: SfPdfViewer.network(
+                                                                        widget.record.licenceImageFace2,
+                                                                      ),
+                                                                    ),
+                                                                  )));
+                                                        }
+                                                      },
+                                                      child: Stack(
+                                                        children: [
+                                                          Container(
+                                                            width:
+                                                            MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                                0.365,
                                                             child: widget.record
                                                                         .licenceImageFace2
                                                                         .split(
@@ -1384,89 +1034,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                                                                     ],
                                                                   ),
                                                           ),
-                                                        ),
-                                                        Center(
-                                                          child: SizedBox(
-                                                            width: 20,
-                                                            child:
-                                                                GestureDetector(
-                                                                    onTap: () {
-                                                                      if (widget.record.licenceImageFace2.split('?').first.endsWith('.jpg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .licenceImageFace2
-                                                                              .split(
-                                                                                  '?')
-                                                                              .first
-                                                                              .endsWith(
-                                                                                  '.jpeg') ||
-                                                                          widget
-                                                                              .record
-                                                                              .licenceImageFace2
-                                                                              .split('?')
-                                                                              .first
-                                                                              .endsWith('.png'))
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Stack(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        height: MediaQuery.of(context).size.height * 0.3,
-                                                                                        width: MediaQuery.of(context).size.width,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.only(
-                                                                                            top: 20.0,
-                                                                                          ),
-                                                                                          child: Image.network(
-                                                                                            widget.record.licenceImageFace2,
-                                                                                            width: 1300,
-                                                                                            height: 100,
-                                                                                            fit: BoxFit.fill,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Positioned(
-                                                                                          top: -15,
-                                                                                          right: -10,
-                                                                                          child: IconButton(
-                                                                                            onPressed: () {
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.close,
-                                                                                              size: 30,
-                                                                                            ),
-                                                                                          ))
-                                                                                    ],
-                                                                                  ),
-                                                                                )));
-                                                                      else {
-                                                                        showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: ((builder) =>
-                                                                                AlertDialog(
-                                                                                  content: Container(
-                                                                                    height: 500,
-                                                                                    width: 2500,
-                                                                                    child: SfPdfViewer.network(
-                                                                                      widget.record.licenceImageFace2,
-                                                                                    ),
-                                                                                  ),
-                                                                                )));
-                                                                      }
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .remove_red_eye_sharp,
-                                                                      size: 20,
-                                                                    )),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          Center(child: Icon(Icons.remove_red_eye_sharp,size: 20,))
+                                                        ],
+                                                      ),
                                                     )),
                                               ),
                                             ],
@@ -1587,10 +1157,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Stack(
                                           children: [
                                             Container(
-                                              height: 250,
+                                              // height: 250,
                                               width: 1800,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -1623,8 +1194,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Container(
-                                          height: 500,
+                                          // height: 500,
                                           width: 2500,
                                           child: SfPdfViewer.network(
                                             widget.record.moreImage1!,
@@ -1713,8 +1285,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Container(
-                                          height: 500,
+                                          // height: 500,
                                           width: 2500,
                                           child: SfPdfViewer.file(
                                               controller.selectedMore2.value!),
@@ -1724,10 +1297,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Stack(
                                           children: [
                                             Container(
-                                              height: 250,
+                                              // height: 250,
                                               width: 1800,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -1772,10 +1346,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Stack(
                                           children: [
                                             Container(
-                                              height: 250,
+                                              // height: 250,
                                               width: 1800,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -1808,8 +1383,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Container(
-                                          height: 500,
+                                          // height: 500,
                                           width: 2500,
                                           child: SfPdfViewer.network(
                                             widget.record.moreImage2!,
@@ -1931,8 +1507,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Container(
-                                          height: 500,
+                                          // height: 500,
                                           width: 2500,
                                           child: SfPdfViewer.file(
                                               controller.selectedMore3.value!),
@@ -1942,10 +1519,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Stack(
                                           children: [
                                             Container(
-                                              height: 250,
+                                              // height: 250,
                                               width: 1800,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -1990,10 +1568,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Stack(
                                           children: [
                                             Container(
-                                              height: 250,
+                                              // height: 250,
                                               width: 1800,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -2026,8 +1605,9 @@ class _DriverDetailsState extends State<DriverDetails> {
                               showDialog(
                                   context: context,
                                   builder: ((builder) => AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 32),
                                         content: Container(
-                                          height: 500,
+                                          // height: 500,
                                           width: 2500,
                                           child: SfPdfViewer.network(
                                             widget.record.moreImage3!,

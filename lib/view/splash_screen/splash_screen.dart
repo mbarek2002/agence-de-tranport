@@ -8,15 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SplashSreeen extends StatefulWidget {
-  const SplashSreeen({Key? key}) : super(key: key);
+class MySplashSreeen extends StatefulWidget {
+  const MySplashSreeen({Key? key}) : super(key: key);
 
   @override
-  State<SplashSreeen> createState() => _SplashSreeenState();
+  State<MySplashSreeen> createState() => _SplashSreeenState();
 }
 HomeController homeController =Get.put(HomeController());
 
-class _SplashSreeenState extends State<SplashSreeen> {
+class _SplashSreeenState extends State<MySplashSreeen> {
 
   @override
   void initState() {

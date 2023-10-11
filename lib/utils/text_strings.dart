@@ -7,5 +7,5 @@ const String tHome = "Home";
 
 
 // Welcome Screen
-const String  tDriveInSecurity= "Drive in Security";
-const String  tGetStart= 'Get started';
+const String  tDriveInSecurity= "Drive In Security";
+const String  tGetStart= 'Get Started';

@@ -1,6 +1,7 @@
 import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:admin_citygo/view/splash_screen/splash_screen.dart';
+import 'package:admin_citygo/view/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       ),
       home:
       homeController.box.read("email")==null
-        ? SplashSreeen()
+        // ? SplashSreeen()
+        ? WelcomeScreen()
       : HomeScreen(),
 
 

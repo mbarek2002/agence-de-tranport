@@ -337,10 +337,11 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                           onPrimary: Colors.white
                                                                       ),
                                                                       child: const Text('Delete',style: TextStyle(fontFamily: "Georgia",fontSize: 20),),
-                                                                      onPressed: (){
-                                                                        print( FirebaseStorage.instance.refFromURL(driversController.filteredList[index].driverImage).name );
-                                                                        print( FirebaseStorage.instance.refFromURL(driversController.filteredList[index].driverImage).fullPath );
-                                                                        print( driversController.filteredList[index].driverImage );
+                                                                      onPressed: () async {
+                                                                       await driversController.delete_driver(driversController.filteredList[index],context);
+                                                                        // print( FirebaseStorage.instance.refFromURL(driversController.filteredList[index].driverImage).name );
+                                                                        // print( FirebaseStorage.instance.refFromURL(driversController.filteredList[index].driverImage).fullPath );
+                                                                        // print( driversController.filteredList[index].driverImage );
                                                                         // print( driversController.filteredList[index].identityCardImageFace1 );
                                                                         // print( driversController.filteredList[index].identityCardImageFace2 );
                                                                         // print( driversController.filteredList[index].licenceImageFace1 );
@@ -354,7 +355,7 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                                                         if(driversController.filteredList[index].moreImage1!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage1!).delete();
                                                                         if(driversController.filteredList[index].moreImage2!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage2!).delete();
                                                                         if(driversController.filteredList[index].moreImage3!="")FirebaseStorage.instance.refFromURL(driversController.filteredList[index].moreImage3!).delete();
-                                                                        driversController.delete_driver(driversController.filteredList[index],context);
+                                                                        // driversController.delete_driver(driversController.filteredList[index],context);
                                                                         driversController.fetchDrivers();
                                                                         Navigator.pop(context);
                                                                       },
