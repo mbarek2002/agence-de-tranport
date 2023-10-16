@@ -267,7 +267,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                             children: [
-                                                              Text('Colis Number : '),
+                                                              Text('Luggage Number : '),
                                                               Text(widget.course.passengersDetails![index].collieNumber.toString())
                                                             ],
                                                           ),
@@ -411,7 +411,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
-                                                            Text('Colis Number : '),
+                                                            Text('Luggage Number : '),
                                                             Text(widget.course.passengersDetails![index].collieNumber.toString())
                                                           ],
                                                         ),
@@ -558,7 +558,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                             children: [
-                                                              Text('Colis Number : '),
+                                                              Text('Luggage Number : '),
                                                               Text(widget.course.passengersDetails![index].collieNumber.toString())
                                                             ],
                                                           ),
@@ -704,7 +704,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                           child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                             children: [
-                                                              Text('Colis Number : '),
+                                                              Text('Luggage Number : '),
                                                               Text(widget.course.passengersDetails![index].collieNumber.toString())
                                                             ],
                                                           ),
@@ -882,7 +882,7 @@ class _CoursePassengerDetailState extends State<CoursePassengerDetail> {
                                                         keyboardType:TextInputType.number,
                                                         decoration: InputDecoration(
                                                             border: InputBorder.none,
-                                                            hintText: 'Colis Number',
+                                                            hintText: 'Luggage Number',
                                                             hintStyle: TextStyle(
                                                                 fontFamily: 'Georgia',
                                                                 color: Color(0xFF0F5CA0))),

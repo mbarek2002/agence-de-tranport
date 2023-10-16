@@ -2,6 +2,7 @@ import 'package:admin_citygo/controllers/home/home_controller.dart';
 import 'package:admin_citygo/view/home/home_screen.dart';
 import 'package:admin_citygo/view/splash_screen/splash_screen.dart';
 import 'package:admin_citygo/view/welcome_screen/welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -25,6 +26,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("////////////////////////////////////////////////////////////");
+    print("////////////////////////////////////////////////////////////");
+    print(homeController.box.read("email"));
+    print("////////////////////////////////////////////////////////////");
+    print("////////////////////////////////////////////////////////////");
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       transitionDuration: Duration(milliseconds: 500),
@@ -33,7 +39,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:
-      homeController.box.read("email")==null
+      homeController.box.read("email")==null ||
+          FirebaseAuth.instance.currentUser?.email ==null
         // ? SplashSreeen()
         ? WelcomeScreen()
       : HomeScreen(),

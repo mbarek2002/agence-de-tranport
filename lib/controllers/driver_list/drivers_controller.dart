@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -292,8 +291,52 @@ class DriversController extends GetxController{
   var driverEmailList = <String>[].obs;
   var identityDriverList = <int>[].obs;
 
-  Future<void> fetchDrivers() async {
+  // Future<int> countCoursesDriver(String identityNum) async {
+  //   // try {
+  //     final QuerySnapshot snapshot = await FirebaseFirestore.instance
+  //         .collection('courses')
+  //         .where('identityNum', isEqualTo: int.tryParse(identityNum))
+  //         .where('idAdmin',isEqualTo: null)
+  //         .get();
+  //
+  //     int count = snapshot.docs.length;
+  //     print('Number of courses with identityNum $identityNum and no idAdmin: $count');
+  //     return count;
+  //   // } catch (e) {
+  //   //
+  //   //   print('Error counting courses: $e');
+  //   //   return 0;
+  //   // }
+  // }
+
+  Future<int> countCoursesDriver(String identityNum) async {
     try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('courses')
+          .where('identityNum', isEqualTo: int.tryParse(identityNum))
+          .get();
+
+      List<DocumentSnapshot> documents = snapshot.docs;
+      List<DocumentSnapshot> noAdminDocuments = documents
+          .where((doc) =>( doc.data() as Map<String,dynamic>).containsKey('idAdmin') == false)
+          .toList();
+
+      int count = noAdminDocuments.length;
+      print("-----------------------------------");
+      print(identityNum);
+      print(documents);
+      print(count);
+      print("-----------------------------------");
+      return count;
+    } catch (e) {
+      print('Error counting courses: $e');
+      return 0; // Return 0 in case of an error
+    }
+  }
+
+
+  Future<void> fetchDrivers() async {
+    // try {
       isLoading.value = true;
       QuerySnapshot drivers =
       await FirebaseFirestore.instance.collection('drivers').get();
@@ -302,6 +345,8 @@ class DriversController extends GetxController{
       identityDriverList.clear();
       driverEmailList.clear();
       for (var driver in drivers.docs) {
+      int  nbCourses = await countCoursesDriver(driver['identityNumber'].toString());
+
         driverList.add(
             DriverModel(
                           id: driver.id,
@@ -322,6 +367,7 @@ class DriversController extends GetxController{
                           moreImage1: driver['more1'],
                           moreImage2: driver['more2'],
                           moreImage3: driver['more3'],
+                          nbCourses:nbCourses.toString()
                         )
         );
         driversNameList.add(driver['firstName']+" "+driver['lastName']);
@@ -332,9 +378,9 @@ class DriversController extends GetxController{
       filteredList.addAll(driverList);
 
       isLoading.value = false;
-    } catch (e) {
-     print('Error '+ e.toString());
-    }
+    // } catch (e) {
+    //  print('Error '+ e.toString());
+    // }
   }
   void updateList(String value){
     filteredList.assignAll(driverList.where((driver) =>

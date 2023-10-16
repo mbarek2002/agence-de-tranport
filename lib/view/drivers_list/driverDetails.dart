@@ -1,8 +1,6 @@
 import 'package:admin_citygo/controllers/driver_list/drivers_controller.dart';
 import 'package:admin_citygo/models/driver_model.dart';
 import 'package:admin_citygo/utils/images_strings.dart';
-import 'package:admin_citygo/view/home/home_screen.dart';
-import 'package:admin_citygo/view/notification_new_driver_screen/consult_notification_new_driver.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -186,6 +184,11 @@ class _DriverDetailsState extends State<DriverDetails> {
                                     DataCell(Text("contract type")),
                                     DataCell(Text(':')),
                                     DataCell(Text(widget.record.contractType)),
+                                  ]),
+                                  DataRow(cells: <DataCell>[
+                                    DataCell(Text("Driver Courses")),
+                                    DataCell(Text(':')),
+                                    DataCell(Text(widget.record.nbCourses ??'-')),
                                   ]),
                                 ],
                               ),

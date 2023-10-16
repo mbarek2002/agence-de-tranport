@@ -139,7 +139,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
           title: Padding(
             padding: EdgeInsets.only(top: 30, left: 0),
             child: Text(
-              "Courses List",
+              "Target List",
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.white,
@@ -2719,7 +2719,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
 
                       child: Column(
                         children: [
-                          _buildLabelValueRow("Colis:",course.usedCollie.toString() +"/" +course.collie.toString(),Icons.card_travel_outlined),
+                          _buildLabelValueRow("Luggage:",course.usedCollie.toString() +"/" +course.collie.toString(),Icons.card_travel_outlined),
                           _buildLabelValueRow("Driver:",course.driverName.toString() ,Icons.drive_eta_outlined),
                           _buildLabelValueRow("Reg.N°:",course.regNumber.toString() ,Icons.car_repair),
                           _buildLabelValuecolumn("Pick-up Location", course.pickUpLocation, Icons.location_on_outlined),
@@ -2957,7 +2957,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
 
                       child: Column(
                         children: [
-                          _buildLabelValueRow("Colis:",course.usedCollie.toString() +"/" +course.collie.toString(),Icons.card_travel_outlined),
+                          _buildLabelValueRow("Luggage:",course.usedCollie.toString() +"/" +course.collie.toString(),Icons.card_travel_outlined),
                           _buildLabelValueRow("Driver:",course.driverName.toString() ,Icons.drive_eta_outlined),
                           _buildLabelValueRow("Reg.N°:",course.regNumber.toString() ,Icons.car_repair),
                           _buildLabelValuecolumn("Pick-up Location", course.pickUpLocation, Icons.location_on_outlined),
@@ -4137,7 +4137,7 @@ class _CoursesListSceenState extends State<CoursesListSceen> {
                                     //     ),
                                     //   ],
                                     // ),
-                                    Text('Colis',
+                                    Text('Luggage',
                                         style: TextStyle(color: Colors.white)),
                                     Row(
                                       children: [

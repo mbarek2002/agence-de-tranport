@@ -20,6 +20,7 @@ class DriverModel {
    String? moreImage1;
    String? moreImage2;
    String? moreImage3;
+   String? nbCourses="";
 
   DriverModel({
      this.id,
@@ -40,6 +41,7 @@ class DriverModel {
      this.moreImage1,
      this.moreImage2,
      this.moreImage3,
+    this.nbCourses
 
   });
 }

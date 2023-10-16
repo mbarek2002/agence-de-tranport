@@ -147,7 +147,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           title: Padding(
             padding: EdgeInsets.only(top: 30, left: 0),
             child: Text(
-              "Add course",
+              "Add Target",
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.white,
@@ -646,7 +646,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                           children: [
                                             SizedBox(height: 8,),
                                             Text(
-                                              'Colis Capacity',
+                                              'Luggage Capacity',
                                               style:TextStyle(
                                                   fontSize: 20,
                                                   fontFamily: 'Georgia',
@@ -680,7 +680,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                   },
                                                 )),
                                             SizedBox(height: 16),
-                                            Text('Used Colis Capacity',
+                                            Text('Used Luggage Capacity',
                                                 style:TextStyle(
                                                     fontSize: 20,
                                                     fontFamily: 'Georgia',
@@ -753,7 +753,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text('Colis',
+                                    Text('Luggage',
                                       style: TextStyle(
                                         fontFamily: "Georgia",
                                           fontSize: 20,
@@ -892,7 +892,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                     labelStyle: TextStyle(
                                         fontFamily: 'Georgia',
                                         color: Color(0xFF0F5CA0)),
-                                    labelText: 'Reg n°',
+                                    labelText: 'Matricule',
                                     // prefixIcon: Icon(Icons.car_rental),
                                     border: InputBorder.none,
                                       hintText:"xxxxTNxxxx"
@@ -1047,7 +1047,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 if((int.tryParse(coursesController.seatingCapacityController.text) ?? 0)<=0 || coursesController.seatingCapacityController.text=="")
                                   errorList.add("check the seating capcity");
                                 if((int.tryParse(coursesController.collieController.text) ?? 0 )<=0 || coursesController.collieController.text=="")
-                                  errorList.add("Colis capacity");
+                                  errorList.add("Luggage capacity");
 
 
 

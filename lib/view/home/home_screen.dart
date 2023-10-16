@@ -33,7 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
+    print("************************************");
+    print("************************************");
+  print(FirebaseAuth.instance.currentUser?.email.toString());
+    print("************************************");
+    print("************************************");
     loginController
         .getAdminImage(FirebaseAuth.instance.currentUser!.email.toString());
     driversController.fetchDrivers();
@@ -277,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Center(
                                       child: Text(
-                                    'Courses List',
+                                    'Target List',
                                     style: TextStyle(
                                         color: Color(0xFF105EA0),
                                         fontSize: 20,

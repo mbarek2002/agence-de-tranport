@@ -190,7 +190,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                 top:30,
                 left: 0
             ),
-            child: Text("Edit course",style: TextStyle(
+            child: Text("Edit Target",style: TextStyle(
                 fontSize: 22,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -690,7 +690,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                         children: [
                                           SizedBox(height: 8,),
                                           Text(
-                                            'Colis Capacity',
+                                            'Luggage Capacity',
                                             style:TextStyle(
                                                 fontSize: 20,
                                                 fontFamily: 'Georgia',
@@ -724,7 +724,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                                 },
                                               )),
                                           SizedBox(height: 16),
-                                          Text('Used Colis Capacity',
+                                          Text('Used Luggage Capacity',
                                               style:TextStyle(
                                                   fontSize: 20,
                                                   fontFamily: 'Georgia',
@@ -797,7 +797,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('Colis',
+                                  Text('Luggage',
                                     style: TextStyle(
                                         fontFamily: "Georgia",
                                         fontSize: 20,
@@ -905,7 +905,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                   labelStyle: TextStyle(
                                       fontFamily: 'Georgia',
                                       color: Color(0xFF0F5CA0)),
-                                  labelText: 'Reg n°',
+                                  labelText: 'Matricule',
                                   // prefixIcon: Icon(Icons.car_rental),
                                   border: InputBorder.none,
                                 ),
@@ -1283,7 +1283,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                                 errorList.add("check the seating capcity");
 
                               if((int.tryParse(coursesController.collieController.text) ?? 0)<=0 || coursesController.collieController.text=="")
-                                errorList.add("check Colis capacity");
+                                errorList.add("check Luggage capacity");
 
                               if (errorList.isEmpty) {
                                 showDialog(context: context, builder: ((builder)=>Center(child:CircularProgressIndicator())));
